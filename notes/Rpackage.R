@@ -17,7 +17,7 @@ document()
 check()
 install()
 
-library(miae)
+library(vismi)
 
 use_readme_rmd()
 

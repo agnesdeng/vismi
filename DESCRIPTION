@@ -9,6 +9,20 @@ Authors@R: c(
            role = "ths")
   ) 
 Description: Diagnostic functions for exploring multiply-imputed data using 'ggplot2'.
-License: What license is it under?
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    data.table,
+    ggplot2,
+    rlang,
+    scales,
+    tidyr,
+    utils
+Suggests: 
+    knitr,
+    rmarkdown,
+    mixgb,
+    RColorBrewer
+Depends: R (>= 3.5.0)
+RoxygenNote: 7.2.0

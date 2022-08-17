@@ -15,6 +15,7 @@
 #' @export
 #' @examples
 #' # obtain m multiply datasets
+#' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3, m = 2)
 #'
 #' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
@@ -91,6 +92,7 @@ plot_2num <- function(imputation.list, var.x, var.y, original.data, true.data = 
 #' @export
 #' @examples
 #' # obtain m multiply datasets
+#' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3, m = 2)
 #'
 #' # plot the multiply imputed values for variables "BMPHEAD" versus "HSSEX"
@@ -181,6 +183,7 @@ plot_1num1fac <- function(imputation.list, var.num, var.fac, original.data, true
 #' nhanes3_NA<-createNA(nhanes3, var.names = c("HSSEX","DMARETHN"), p = 0.1)
 #'
 #' # obtain m multiply datasets
+#' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3_NA, m = 2)
 #'
 #' # plot the multiply imputed values for variables "HSSEX" versus "DMARETHN"

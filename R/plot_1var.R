@@ -14,6 +14,7 @@
 #' @export
 #' @examples
 #' #obtain m multiply datasets
+#' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3, m = 3)
 #'
 #' #plot the multiply imputed values for variable "BMPHEAD"
@@ -68,6 +69,7 @@ plot_hist <- function(imputation.list, var.name, original.data, true.data = NULL
 #' @export
 #' @examples
 #' #obtain m multiply datasets
+#' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3, m = 3)
 #'
 #' #plot the multiply imputed values for variable "BMPHEAD"
@@ -127,6 +129,7 @@ plot_box <- function(imputation.list, var.name, original.data, true.data = NULL,
 #' nhanes3_NA<-createNA(nhanes3,var.names="HSSEX",p=0.1)
 #'
 #' #obtain m multiply datasets
+#' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3_NA, m = 3)
 #'
 #' #plot the multiply imputed values for variable "HSSEX"

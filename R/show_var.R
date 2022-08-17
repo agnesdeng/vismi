@@ -8,6 +8,7 @@
 #' @export
 #' @examples
 #' #obtain m multiply datasets
+#' library(mixgb)
 #' mixgb.data <- mixgb(data = nhanes3, m = 3)
 #'
 #' imputed.BMPHEAD <- show_var(imputation.list = mixgb.data, var.name = "BMPHEAD",

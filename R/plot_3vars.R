@@ -16,6 +16,7 @@
 #' @export
 #' @examples
 #' # obtain m multiply datasets
+#' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3, m = 2)
 #'
 #' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD" conditional on "HSSEX"
@@ -98,6 +99,7 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
 #' # create some extra missing values in factor variables "HSSEX" and "DMARETHN"
 #' nhanes3_NA <- createNA(nhanes3, var.names = c("HSSEX", "DMARETHN"), p = 0.1)
 #' # obtain m multiply datasets
+#' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3_NA, m = 5)
 #'
 #' # plot the multiply imputed values for variables "BMPRECUM" versus "HSSEX" conditional on "DMARETHN"
