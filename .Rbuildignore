@@ -1,0 +1,15 @@
+^miae\.Rproj$
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^LICENSE\.md$
+^doc$
+^Meta$
+^pkgdown$
+^_pkgdown\.yml$
+^docs$
+^\.github$
+^vignettes\web$
+^cran-comments\.md$
+^CRAN-SUBMISSION$
+^notes$
