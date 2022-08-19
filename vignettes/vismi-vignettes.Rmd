@@ -1,0 +1,73 @@
+---
+title: "vismi-vignettes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{vismi-vignettes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  tidy.opts = list(width.cutoff = 60), tidy = TRUE,
+  dpi = 200, fig.asp = 0.5, fig.width = 7, fig.retina = 1,
+  out.width = "95%",
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r setup}
+devtools::load_all()
+library(vismi)
+```
+
+##Overimputation with Training set and Test set
+```{r}
+data(nhanes3_newborn)
+set.seed(2022)
+
+n=nrow(nhanes3_newborn)
+idx=sample(1:n, size = round(0.7*n), replace=FALSE)
+
+trainNA.df=nhanes3_newborn[idx,]
+testNA.df=nhanes3_newborn[-idx,]
+
+#overimpute the whole dataset using mixgb
+whole.obj<-overimpute_mixgb(train.data=nhanes3_newborn,p=0.3,m=10)
+
+#overimpute the training set, and use the trained imputer to overimpute test set
+train_test.obj<-overimpute_mixgb(train.data=trainNA.df,test.data=testNA.df,p=0.3,m=10)
+```
+
+
+## Overimpute the whole dataset
+```{r,fig.width = 5,fig.asp = 1, out.width = "50%",fig.retina = 1,dpi=200}
+plot1D.entries(obj=whole.obj,var.name="BMPHEAD", train.data=nhanes3_newborn)
+```
+
+## Plot some randomly selected entries of overimputed values
+### Actual
+```{r,fig.asp = 1}
+plot1D.entries(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df)
+plot1D.entries(obj=train_test.obj,var.name="HYD1", train.data=trainNA.df,test.data=testNA.df,n.entries=10)
+```
+
+### Error
+```{r}
+plot1D.entriesV2(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df,n.entries=10)
+plot1D.entriesV2(obj=train_test.obj,var.name="HYD1", train.data=trainNA.df,test.data=testNA.df,n.entries=10)
+```
+
+## Plot m sets of overimputed values vs true values
+```{r}
+plot1D.imputations(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df)
+plot1D.imputations(obj=train_test.obj,var.name="HYD1", train.data=trainNA.df,test.data=testNA.df)
+```
+## Plot m sets of overimputed values vs true values
+```{r,fig.width = 5,fig.height=8,fig.asp = 1.2}
+plot2D(obj=train_test.obj,var.x="BMPHEAD", var.y="BMPRECUM",train.data=trainNA.df,test.data=testNA.df)
+```
+
