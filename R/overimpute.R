@@ -1,6 +1,6 @@
-#overimpute main function
-#'@param method can be one of the following: "mixgb","miae","mice","cart" or "ranger"
-
+#' Overimpute main function
+#' @description Overimpute
+#' @param method can be one of the following: "mixgb","miae","mice","cart" or "ranger"
 overimpute<-function(train.data,test.data = NULL, p=0.3,m=5,method="mixgb",...){
 
   overimpute.fn<-paste("overimpute",method,sep="_")

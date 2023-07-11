@@ -1,3 +1,10 @@
+
+setwd("C:/Users/agnes/Desktop/phd-thesis/my-packages/vismi")
+devtools::load_all()
+devtools::document()
+
+
+
 #create package
 library(usethis)
 usethis::create_package(path = "C:/Users/agnes/Desktop/phd-thesis/my-packages/miae")

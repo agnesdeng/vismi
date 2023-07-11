@@ -41,3 +41,6 @@ vignettes/*.pdf
 .Rdata
 .DS_Store
 inst/doc
+
+# Windows desktop hidden file
+desktop.ini

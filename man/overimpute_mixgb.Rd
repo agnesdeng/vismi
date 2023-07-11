@@ -21,9 +21,9 @@ overimpute_mixgb(
   save.models = TRUE,
   save.vars = colnames(train.data),
   verbose = F,
-  xgb.params = list(max_depth = 3, gamma = 0, eta = 0.3, min_child_weight = 1,
-    subsample = 1, colsample_bytree = 1, colsample_bylevel = 1, colsample_bynode = 1,
-    tree_method = "auto", gpu_id = 0, predictor = "auto"),
+  xgb.params = list(max_depth = 3, gamma = 0, eta = 0.3, min_child_weight = 1, subsample
+    = 1, colsample_bytree = 1, colsample_bylevel = 1, colsample_bynode = 1, tree_method =
+    "auto", gpu_id = 0, predictor = "auto"),
   nrounds = 100,
   early_stopping_rounds = 10,
   print_every_n = 10L,
