@@ -51,7 +51,7 @@ plot_density_facet <- function(imputation.lists, methods, var.name, original.dat
     facet_grid(cols = vars(methods)) +
     labs(title = "Density curve", subtitle = paste(" imputed sets for variable: ", var.name)) +
     scale_color_manual(values = color.pal) +
-    guides(color = guide_legend(title="Imputed sets"))+
+    guides(color = guide_legend(title="Imputed set"))+
     #scale_fill_manual(values = color.pal) +
     #guides(color = "none", fill = "none", linetype = "none") +
     theme(

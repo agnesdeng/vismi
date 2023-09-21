@@ -101,7 +101,7 @@ plot_hist <- function(imputation.list, var.name, original.data, true.data = NULL
   ggplot(data = all.dt, aes(x = .data[[var.name]])) +
    # geom_histogram(alpha = 0.5, aes(fill = m.set, color = m.set, y = ..density..), breaks = breaks) +
     geom_histogram(alpha = 0.5, aes(fill = m.set, color = m.set, y = after_stat(density)), breaks = breaks) +
-    geom_density(size = 1, alpha = 0.6, aes(color = m.set)) +
+    #geom_density(size = 1, alpha = 0.6, aes(color = m.set)) +
     facet_grid(cols = vars(m.set)) +
     labs(title = "Histogram with density curve", subtitle = paste(" imputed sets for variable: ", var.name)) +
     scale_color_manual(values = color.pal) +
@@ -271,8 +271,7 @@ summary1var <- function(imputation.list, var.name, original.data, true.data, col
   observed <- original.data[[var.name]][-na.idx]
   N.obs <- length(observed)
   N.mis <- length(na.idx)
-  # observed.df <- data.frame(1:N.obs, rep("Observed", N.obs), observed)
-  # colnames(observed.df) <- c("obs", "m.set", var.name)
+
 
 
 
@@ -287,7 +286,7 @@ summary1var <- function(imputation.list, var.name, original.data, true.data, col
     if (class(imp.dt[[var.name]])[1] != class(original.data[[var.name]])[1]) {
       true <- fac2int(true)
     }
-    other.dt <- data.table(m.set = c(rep("Observed", N.obs), rep("MaskedTrue", N.mis)), var.name = c(observed, true))
+    other.dt <- data.table(m.set = c(rep("observed", N.obs), rep("masked true", N.mis)), var.name = c(observed, true))
     all.dt <- rbind(other.dt, imp.dt, use.names = FALSE)
     all.dt[, obs := c(1:N.obs, rep(1:N.mis, N.imp + 1))]
     if (is.null(color.pal)) {
@@ -295,7 +294,7 @@ summary1var <- function(imputation.list, var.name, original.data, true.data, col
     }
   } else {
     # without true.data
-    other.dt <- data.table(m.set = c(rep("Observed", N.obs)), var.name = observed)
+    other.dt <- data.table(m.set = c(rep("observed", N.obs)), var.name = observed)
     all.dt <- rbind(other.dt, imp.dt, use.names = FALSE)
     all.dt[, obs := c(1:N.obs, rep(1:N.mis, N.imp))]
     if (is.null(color.pal)) {

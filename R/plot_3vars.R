@@ -274,14 +274,14 @@ summary3var <- function(imputation.list, var.x, var.y, con.fac, original.data, t
     }
 
     all.dt <- rbindlist(list(observed, true, imp.dt))
-    all.dt[, m.set := factor(c(rep("Observed", N.obs), rep("MaskedTrue", N.mis), rep(M, each = N.mis)), levels = c("Observed", "MaskedTrue", M))]
+    all.dt[, m.set := factor(c(rep("observed", N.obs), rep("masked true", N.mis), rep(M, each = N.mis)), levels = c("observed", "masked true", M))]
     if (is.null(color.pal)) {
       color.pal <- c("gray40", "gray20", scales::hue_pal()(N.imp))
     }
   } else {
     # without true.data
     all.dt <- rbindlist(list(observed, imp.dt))
-    all.dt[, m.set := factor(c(rep("Observed", N.obs), rep(M, each = N.mis)), levels = c("Observed", M))]
+    all.dt[, m.set := factor(c(rep("observed", N.obs), rep(M, each = N.mis)), levels = c("observed", M))]
     if (is.null(color.pal)) {
       color.pal <- c("gray40", scales::hue_pal()(N.imp))
     }
