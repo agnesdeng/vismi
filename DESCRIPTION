@@ -18,8 +18,6 @@ Imports:
     ggridges,
     forcats,
     magrittr,
-    mice,
-    mixgb,
     rlang,
     RColorBrewer,
     scales,
