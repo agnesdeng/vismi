@@ -6,7 +6,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
-
+#' @export
 plotcon.trelliscope <- function(obj, train.data, test.data = NULL,type="ridges") {
 
 Names <- obj$params$Names

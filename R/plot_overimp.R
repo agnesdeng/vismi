@@ -4,6 +4,7 @@
 #' @importFrom rlang .data
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
+#' @export
 plot1D.imputations <- function(obj, var.name, train.data, test.data = NULL) {
 
   Names <- obj$params$Names
@@ -174,6 +175,7 @@ plot1D.imputations <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom rlang .data
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
+#' @export
 plot1D.imputationsV2 <- function(obj, var.name, train.data, test.data = NULL) {
 
   Names <- obj$params$Names
@@ -349,6 +351,7 @@ plot1D.imputationsV2 <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom rlang .data
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
+#' @export
 plot1D.imputationsV3 <- function(obj, var.name, train.data, test.data = NULL) {
 
   Names <- obj$params$Names
@@ -526,7 +529,7 @@ plot1D.imputationsV3 <- function(obj, var.name, train.data, test.data = NULL) {
 
 
 # qqline ------------------------------------------------------------------
-
+#' @export
 plot1D.imputationsV4 <- function(obj, var.name, train.data, test.data = NULL) {
 
   Names <- obj$params$Names

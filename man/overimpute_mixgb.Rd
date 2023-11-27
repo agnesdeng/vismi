@@ -11,21 +11,19 @@ overimpute_mixgb(
   m = 5,
   maxit = 1,
   ordinalAsInteger = FALSE,
-  bootstrap = TRUE,
-  pmm.type = "auto",
+  pmm.type = NULL,
   pmm.k = 5,
   pmm.link = "prob",
   initial.num = "normal",
   initial.int = "mode",
   initial.fac = "mode",
-  save.models = TRUE,
+  save.models = FALSE,
   save.vars = colnames(train.data),
+  save.models.folder = NULL,
   verbose = F,
-  xgb.params = list(max_depth = 3, gamma = 0, eta = 0.3, min_child_weight = 1, subsample
-    = 1, colsample_bytree = 1, colsample_bylevel = 1, colsample_bynode = 1, tree_method =
-    "auto", gpu_id = 0, predictor = "auto"),
+  xgb.params = list(),
   nrounds = 100,
-  early_stopping_rounds = 10,
+  early_stopping_rounds = NULL,
   print_every_n = 10L,
   xgboost_verbose = 0,
   ...
@@ -43,8 +41,6 @@ overimpute_mixgb(
 \item{maxit}{The number of imputation iterations. Default: 1}
 
 \item{ordinalAsInteger}{Whether to convert ordinal factors to integers. By default, \code{ordinalAsInteger = FALSE}. Setting \code{ordinalAsInteger = TRUE} may speed up the imputation process for large datasets.}
-
-\item{bootstrap}{Whether to use bootstrapping for multiple imputation. By default, \code{bootstrap = TRUE}. Setting \code{bootstrap = FALSE} would underestimate imputation variability if sampling-related hyperparameters of XGBoost are set to 1 (default).}
 
 \item{pmm.type}{The types of predictive mean matching (PMM). Possible values:
 \itemize{
@@ -101,6 +97,8 @@ overimpute_mixgb(
 \item{xgboost_verbose}{Verbose setting for XGBoost training: 0 (silent), 1 (print information) and 2 (print additional information). Default: 0}
 
 \item{...}{Extra arguments to pass to XGBoost}
+
+\item{bootstrap}{Whether to use bootstrapping for multiple imputation. By default, \code{bootstrap = TRUE}. Setting \code{bootstrap = FALSE} would underestimate imputation variability if sampling-related hyperparameters of XGBoost are set to 1 (default).}
 }
 \value{
 an overimpute object

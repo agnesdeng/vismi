@@ -1,4 +1,4 @@
-#' Overimputation using mixgb
+#' Overimputation using mixgb0
 #' @description Create extra missing values and overimpute them
 #' @param train.data A data.frame with missing values
 #' @param test.data A data.frame with missing values
@@ -48,22 +48,18 @@
 #' @param print_every_n Print XGBoost evaluation information at every nth iteration if \code{xgboost_verbose > 0}.
 #' @param xgboost_verbose Verbose setting for XGBoost training: 0 (silent), 1 (print information) and 2 (print additional information). Default: 0
 #' @param ... Extra arguments to pass to XGBoost
-#' @importFrom mixgb mixgb default_params impute_new
+#' @importFrom mixgb mixgb impute_new
 #' @return an overimpute object
 #' @export
 overimpute_mixgb <- function(train.data, test.data = NULL, p = 0.3,
-                             m = 5, maxit = 1, ordinalAsInteger = FALSE,
-                             pmm.type = NULL, pmm.k = 5, pmm.link = "prob",
+                             m = 5, maxit = 1, ordinalAsInteger = FALSE, bootstrap = TRUE,
+                             pmm.type = "auto", pmm.k = 5, pmm.link = "prob",
                              initial.num = "normal", initial.int = "mode", initial.fac = "mode",
-                             save.models = FALSE, save.vars = colnames(train.data), save.models.folder = NULL,
-                             verbose = F,
-                             xgb.params = list(),
-                             nrounds = 100, early_stopping_rounds = NULL, print_every_n = 10L, xgboost_verbose = 0, ...) {
+                             save.models = TRUE, save.vars = colnames(train.data), verbose = F,
+                             xgb.params = list(max_depth = 3, gamma = 0, eta = 0.3, min_child_weight = 1, subsample = 1, colsample_bytree = 1, colsample_bylevel = 1, colsample_bynode = 1, tree_method = "auto", gpu_id = 0, predictor = "auto"),
+                             nrounds = 100, early_stopping_rounds = 10, print_every_n = 10L, xgboost_verbose = 0, ...) {
 
-  params <- list()
-  if(!is.null(test.data)){
-    save.models<-TRUE
-  }
+   params <- list()
 
   Nrow <- nrow(train.data)
   Ncol <- ncol(train.data)
@@ -96,23 +92,14 @@ overimpute_mixgb <- function(train.data, test.data = NULL, p = 0.3,
   }
 
 
-  train.obj <- mixgb(data = addNA.df, m = m, maxit = maxit, ordinalAsInteger = ordinalAsInteger,
+  train.obj <- mixgb(data = addNA.df, m = m, maxit = maxit, ordinalAsInteger = ordinalAsInteger, bootstrap = bootstrap,
                      pmm.type = pmm.type, pmm.k = pmm.k, pmm.link = pmm.link,
                      initial.num = initial.num, initial.int = initial.int, initial.fac = initial.fac,
-                     save.models = save.models, save.vars = save.vars, save.models.folder = save.models.folder,
-                     verbose = verbose,
+                     save.models = save.models, save.vars = save.vars, verbose = verbose,
                      xgb.params = xgb.params,
-                     nrounds = nrounds, early_stopping_rounds = early_stopping_rounds,
-                     print_every_n = print_every_n, xgboost_verbose = xgboost_verbose,...)
+                     nrounds = nrounds, early_stopping_rounds = early_stopping_rounds, print_every_n = print_every_n, xgboost_verbose = xgboost_verbose, ...)
 
-
-  if(save.models==TRUE){
-    imputed.traindata <- train.obj$imputed.data
-  }else{
-    imputed.traindata <-train.obj
-  }
-
-
+  imputed.traindata <- train.obj$imputed.data
 
 
   # save params

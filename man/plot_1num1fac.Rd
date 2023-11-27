@@ -11,7 +11,8 @@ plot_1num1fac(
   original.data,
   true.data = NULL,
   color.pal = NULL,
-  shape = FALSE
+  shape = FALSE,
+  point.size = 1.5
 )
 }
 \arguments{

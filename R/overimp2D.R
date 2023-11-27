@@ -1,11 +1,15 @@
+
+
+
+
 #' @importFrom tibble is_tibble
 #' @importFrom gridExtra grid.arrange
 #' @importFrom tidyr pivot_longer
 #' @importFrom rlang .data
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_point geom_density coord_cartesian facet_grid facet_wrap labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
-
-plot2D <- function(obj, var.x, var.y, train.data, test.data = NULL, plotfac.type = 1) {
+#' @export
+overimp_scatter <- function(obj, var.x, var.y, train.data, test.data = NULL, plotfac.type = 1) {
 
 
 

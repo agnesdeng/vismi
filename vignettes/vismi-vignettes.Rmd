@@ -20,16 +20,18 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-devtools::document()
-devtools::load_all()
+#devtools::document()
+#devtools::load_all()
+library(mixgb)
 library(vismi)
+
 ```
 
 #Overimputation
 
 ```{r}
 data(nhanes3_newborn)
-set.seed(2022)
+set.seed(2023)
 
 n=nrow(nhanes3_newborn)
 idx=sample(1:n, size = round(0.7*n), replace=FALSE)
@@ -44,7 +46,7 @@ testNA.df=nhanes3_newborn[-idx,]
 Note that overimputation with training and test set can only be used with "mixgb" and "miae" method.
 ```{r}
 #overimpute the whole dataset using mixgb
-mixgb.obj<-overimpute(train.data=nhanes3_newborn,p=0.3,m=10, method = "mixgb")
+mixgb.obj<-overimpute(train.data=nhanes3_newborn,p=0.3,m=2, method = "mixgb")
 ```
 
 Methods within "mice" can only use overimputation with the entire dataset.

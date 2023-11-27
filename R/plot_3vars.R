@@ -24,7 +24,7 @@
 #'   imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
 #'   con.fac = "HSSEX", original.data = nhanes3
 #' )
-plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE) {
+plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
   Types <- feature_type(imputation.list[[1]])
 
   if (Types[var.x] != "numeric" & Types[var.x] != "integer") {
@@ -43,7 +43,7 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
 
   if (!shape) {
     gp <- ggplot(all.dt, aes(x = .data[[var.x]], y = .data[[var.y]])) +
-      geom_point(alpha = 0.6, aes(color = m.set, fill = m.set)) +
+      geom_point(alpha = 0.6, aes(color = m.set, fill = m.set), size = point.size) +
       facet_grid(reformulate(termlabels = "m.set", response = con.fac)) +
       labs(title = "Scatter plots of two numeric variables conditional on one factor", subtitle = paste("Imputed sets: ", var.y, "vs", var.x, "|", con.fac))
   } else {
@@ -56,7 +56,7 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
       shapes <- c(23, 84, 21, 4)
     }
     gp <- ggplot(all.dt, aes(x = .data[[var.x]], y = .data[[var.y]])) +
-      geom_point(alpha = 0.6, aes(shape = NA.condition, color = m.set, fill = m.set)) +
+      geom_point(alpha = 0.6, aes(shape = NA.condition, color = m.set, fill = m.set), size = point.size) +
       facet_grid(reformulate(termlabels = "m.set", response = con.fac)) +
       labs(title = "Scatter plots of two numeric variables conditional on one factor", subtitle = paste("Imputed sets: ", var.y, "vs", var.x, "|", con.fac)) +
       scale_shape_manual(values = shapes, drop = FALSE)
@@ -108,7 +108,7 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
 #'   con.fac = "DMARETHN", original.data = nhanes3_NA
 #' )
 #' }
-plot_1num2fac <- function(imputation.list, var.fac, var.num, con.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE) {
+plot_1num2fac <- function(imputation.list, var.fac, var.num, con.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size = 1.5) {
   Types <- feature_type(imputation.list[[1]])
 
   if (Types[var.num] != "numeric" & Types[var.num] != "integer") {
@@ -133,10 +133,10 @@ plot_1num2fac <- function(imputation.list, var.fac, var.num, con.fac, original.d
   if (!shape) {
     if (Types[var.num] == "integer") {
       gp <- ggplot(all.dt, aes(x = .data[[var.fac]], y = .data[[var.num]])) +
-        geom_point(alpha = 0.6, aes(color = m.set, fill = m.set))
+        geom_point(alpha = 0.6, aes(color = m.set, fill = m.set), size = point.size)
     } else {
       gp <- ggplot(all.dt, aes(x = .data[[var.fac]], y = .data[[var.num]])) +
-        geom_jitter(alpha = 0.6, position = position_jitter(), aes(color = m.set, fill = m.set))
+        geom_jitter(alpha = 0.6, position = position_jitter(), aes(color = m.set, fill = m.set), size = point.size)
     }
 
     gp <- gp +
@@ -156,10 +156,10 @@ plot_1num2fac <- function(imputation.list, var.fac, var.num, con.fac, original.d
 
     if (Types[var.num] == "integer") {
       gp <- ggplot(all.dt, aes(x = .data[[var.fac]], y = .data[[var.num]])) +
-        geom_point(alpha = 0.6, aes(color = m.set, fill = m.set, shape = NA.condition))
+        geom_point(alpha = 0.6, aes(color = m.set, fill = m.set, shape = NA.condition), size = point.size)
     } else {
       gp <- ggplot(all.dt, aes(x = .data[[var.fac]], y = .data[[var.num]])) +
-        geom_jitter(alpha = 0.6, position = position_jitter(), aes(color = m.set, fill = m.set, shape = NA.condition))
+        geom_jitter(alpha = 0.6, position = position_jitter(), aes(color = m.set, fill = m.set, shape = NA.condition), size = point.size)
     }
     gp <- gp +
       geom_boxplot(alpha = 0.5, aes(fill = m.set), outlier.shape = NA) +

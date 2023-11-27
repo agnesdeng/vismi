@@ -22,11 +22,13 @@ Imports:
     RColorBrewer,
     scales,
     tidyr,
-    utils
+    utils,
+    gridExtra,
+    trelliscopejs
 Suggests: 
     knitr,
     rmarkdown,
-    mixgb
+    mixgb (>= 1.4.0)
 Depends: R (>= 3.5.0)
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr

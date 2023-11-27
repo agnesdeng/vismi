@@ -7,7 +7,7 @@
 #' @importFrom forcats fct_rev
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_point geom_segment geom_label geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete scale_x_discrete guides theme element_text element_blank
-
+#' @export
 plot1D.entries <- function(obj, var.name, train.data, test.data = NULL, n.entries = 20) {
 
   Names <- obj$params$Names
@@ -259,7 +259,7 @@ plot1D.entries <- function(obj, var.name, train.data, test.data = NULL, n.entrie
 
 
 #plot error for each entry
-
+#' @export
 plot1D.entriesV2 <- function(obj, var.name, train.data, test.data = NULL, n.entries = 20) {
 
   Names <- obj$params$Names
