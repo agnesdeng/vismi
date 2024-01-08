@@ -7,7 +7,8 @@
 overimpute_mixgb(
   train.data,
   test.data = NULL,
-  p = 0.3,
+  p = 0.2,
+  seed = NULL,
   m = 5,
   maxit = 1,
   ordinalAsInteger = FALSE,

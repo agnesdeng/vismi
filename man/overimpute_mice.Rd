@@ -7,7 +7,8 @@
 overimpute_mice(
   train.data,
   test.data = NULL,
-  p = 0.3,
+  p = 0.2,
+  seed = NULL,
   m = 5,
   maxit = 5,
   printFlag = FALSE,

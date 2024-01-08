@@ -1,3 +1,47 @@
+#' Inspection plot of multiply imputed values for two variables
+#' @description Plot observed values vesus m sets of imputed values for two specified variables.
+#' @param imputation.list A list of \code{m} imputed datasets returned by the \code{mixgb} imputer
+#' @param var.x A numeric variable on the x-axis
+#' @param var.y A numeric variable on the y-axis
+#' @param original.data The original data with missing data
+#' @param true.data The true data without missing values. In general, this is unknown. Only use for simulation studies.
+#' @param color.pal A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)
+#' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
+#' @param point.size The size of point. Default: 1.5
+#' @importFrom scales hue_pal
+#' @importFrom tidyr pivot_longer
+#' @importFrom rlang .data
+#' @importFrom ggplot2 ggplot aes vars geom_point facet_grid labs scale_shape_manual scale_color_manual scale_fill_manual guides theme guide_legend element_text element_rect
+#' @return Scatter plots for two numeric/integer variable
+#' @export
+
+plot2D <- function(imputation.list, var.x, var.y, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
+
+  Types <- feature_type(imputation.list[[1]])
+
+  fac.idx<-which(Types %in% c("binary","multiclass"))
+  if (length(fac.idx) > 0) {
+    Types[fac.idx] <- "factor"
+  }
+
+
+
+  if(Types[var.x]=="numeric" & Types[var.y]=="numeric"){
+    plot_2num(imputation.list = imputation.list, var.x = var.x, var.y = var.y, original.data = original.data, true.data = true.data, color.pal = color.pal, shape = shape, point.size=point.size)
+  }else if (Types[var.x]=="numeric" & Types[var.y]=="factor"){
+    plot_1num1fac(imputation.list = imputation.list,var.num = var.x, var.fac = var.y, original.data = original.data, true.data = true.data, color.pal = color.pal, shape = shape, point.size=point.size)
+  }else if (Types[var.x]=="factor" & Types[var.y]=="numeric"){
+    plot_1num1fac(imputation.list = imputation.list,var.num = var.y, var.fac = var.x, original.data = original.data, true.data = true.data, color.pal = color.pal, shape = shape, point.size=point.size)
+  }else if (Types[var.x]=="factor" & Types[var.y]=="factor"){
+    plot_2fac(imputation.list = imputation.list, var.fac1 = var.x, var.fac2 = var.y, original.data = original.data, true.data = true.data, color.pal = color.pal)
+  }else if (Types[var.x]=="numeric" & Types[var.y]=="integer"){
+    plot_1num1fac(imputation.list = imputation.list,var.num = var.x, var.fac = var.y, original.data = original.data, true.data = true.data, color.pal = color.pal, shape = shape, point.size=point.size)
+  }else if (Types[var.x]=="integer" & Types[var.y]=="numeric"){
+    plot_1num1fac(imputation.list = imputation.list,var.num = var.y, var.fac = var.x, original.data = original.data, true.data = true.data, color.pal = color.pal, shape = shape, point.size=point.size)
+  }
+}
+
+
 #' Scatter plots for two imputed numeric variables
 #' @description Plot observed values vesus m sets of imputed values for two specified numeric variables using \pkg{ggplot2}.
 #' @param imputation.list A list of \code{m} imputed datasets returned by the \code{mixgb} imputer
@@ -53,9 +97,9 @@ plot_2num <- function(imputation.list, var.x, var.y, original.data, true.data = 
       shapes <- c(23, 84, 21, 88, 89)
     }
     gp <- ggplot(all.dt, aes(x = .data[[var.x]], y = .data[[var.y]])) +
-      geom_point(alpha = 0.6, aes(shape = NA.condition, color = m.set, fill = m.set), size = point.size) +
+      geom_point(alpha = 0.6, aes(shape = NA.pattern, color = m.set, fill = m.set), size = point.size) +
       facet_grid(cols = vars(m.set)) +
-      labs(title = "Scatter plots of two numeric variables", subtitle = paste("Imputed sets: ", var.y, "vs", var.x)) +
+      labs(shape = "NA Pattern",title = "Scatter plots of two numeric variables", subtitle = paste("Imputed sets: ", var.y, "vs", var.x)) +
       scale_shape_manual(values = shapes, drop = FALSE)
   }
 
@@ -85,6 +129,7 @@ plot_2num <- function(imputation.list, var.x, var.y, original.data, true.data = 
 #' @param color.pal A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)
 #' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
 #' @importFrom scales hue_pal
+#' @importFrom dplyr mutate_at
 #' @importFrom tidyr pivot_longer
 #' @importFrom rlang .data
 #' @importFrom ggplot2 ggplot aes vars geom_point geom_jitter position_jitter geom_boxplot facet_grid labs scale_shape_manual scale_color_manual scale_fill_manual guides theme guide_legend element_text element_rect
@@ -115,6 +160,11 @@ plot_1num1fac <- function(imputation.list, var.num, var.fac, original.data, true
   all.dt <- imp.sum$all.dt
   color.pal <- imp.sum$color.pal
 
+  if (Types[var.fac] == "integer"){
+    all.dt <- all.dt %>% dplyr::mutate_at(vars(var.fac), as.factor)
+  }
+
+
   if (!shape) {
     if (Types[var.num] == "integer") {
       gp <- ggplot(all.dt, aes(x = .data[[var.fac]], y = .data[[var.num]])) +
@@ -128,7 +178,7 @@ plot_1num1fac <- function(imputation.list, var.num, var.fac, original.data, true
       facet_grid(cols = vars(m.set)) +
       labs(title = "Boxplot with points for a numeric variable vs a factor", subtitle = paste("Imputed sets: ", var.num, "vs", var.fac))
   } else {
-    # plot NA.condition with shapes
+    # plot NA.pattern with shapes
     if (is.null(true.data)) {
       # "N":78  "F":70
       shapes <- c(23, 21, 78, 70)
@@ -137,17 +187,18 @@ plot_1num1fac <- function(imputation.list, var.num, var.fac, original.data, true
       shapes <- c(23, 84, 21, 78, 70)
     }
 
+
     if (Types[var.num] == "integer") {
       gp <- ggplot(all.dt, aes(x = .data[[var.fac]], y = .data[[var.num]])) +
-        geom_point(alpha = 0.6, aes(color = m.set, fill = m.set, shape = NA.condition),size=point.size)
+        geom_point(alpha = 0.6, aes(color = m.set, fill = m.set, shape = NA.pattern),size=point.size)
     } else {
       gp <- ggplot(all.dt, aes(x = .data[[var.fac]], y = .data[[var.num]])) +
-        geom_jitter(alpha = 0.6, position = position_jitter(), aes(color = m.set, fill = m.set, shape = NA.condition),size=point.size)
+        geom_jitter(alpha = 0.6, position = position_jitter(), aes(color = m.set, fill = m.set, shape = NA.pattern),size=point.size)
     }
     gp <- gp +
       geom_boxplot(alpha = 0.5, aes(fill = m.set), outlier.shape = NA) +
       facet_grid(cols = vars(m.set)) +
-      labs(title = "Boxplot with points for a numeric variable vs a factor", subtitle = paste("Imputed sets: ", var.num, "vs", var.fac)) +
+      labs(shape = "NA Pattern", title = "Boxplot with points for a numeric variable vs a factor", subtitle = paste("Imputed sets: ", var.num, "vs", var.fac)) +
       scale_shape_manual(values = shapes, drop = FALSE)
   }
   gp + scale_color_manual(values = color.pal) +
@@ -157,7 +208,7 @@ plot_1num1fac <- function(imputation.list, var.num, var.fac, original.data, true
       strip.text = element_text(face = "bold"),
       plot.title = element_text(face = "bold"),
       plot.subtitle = element_text(face = "bold"),
-      legend.background = element_rect(size = 0.5),
+      legend.background = element_rect(linewidth = 0.5),
       legend.title = element_text(color = "black", size = 12, face = "bold"),
       legend.text = element_text(color = "black", size = 10)
     )
@@ -217,7 +268,7 @@ plot_2fac <- function(imputation.list, var.fac1, var.fac2, original.data, true.d
   ggplot(prop.df, aes(x = Var1, y = Freq)) +
     geom_bar(stat = "identity", position = "dodge2", aes(fill = Var3)) +
     facet_grid(Var2 ~ Var3) +
-    labs(x = var.fac1, y = "Proportion", title = "Barplots of two factor variables", subtitle = paste("Imputed sets: ", var.fac2, "vs", var.fac1)) +
+    labs(x = var.fac1, y = "proportion", title = "Barplots of two factor variables", subtitle = paste("Imputed sets: ", var.fac2, "vs", var.fac1)) +
     scale_fill_manual(values = color.pal) +
     scale_y_continuous(sec.axis = sec_axis(~., name = var.fac2, breaks = NULL, labels = NULL)) +
     guides(color = "none", fill = "none") +
@@ -313,8 +364,8 @@ summary2var <- function(imputation.list, var.x, var.y, original.data, true.data,
       color.pal <- c("gray40", "gray20", scales::hue_pal()(N.imp))
     }
 
-    # imp.df$NA.condition <- c(rep(NA.condition[na.union], N.imp), NA.condition[-na.union], rep("masked.observed",N.mis))
-    # imp.df$NA.condition <- factor(imp.df$NA.condition, levels = c("both.observed", "masked.observed", "both.missing", X, Y))
+    # imp.df$NA.pattern <- c(rep(NA.pattern[na.union], N.imp), NA.pattern[-na.union], rep("masked.observed",N.mis))
+    # imp.df$NA.pattern <- factor(imp.df$NA.pattern, levels = c("both.observed", "masked.observed", "both.missing", X, Y))
   } else {
     # without true.data
     all.dt <- rbindlist(list(observed, imp.dt))
@@ -323,7 +374,7 @@ summary2var <- function(imputation.list, var.x, var.y, original.data, true.data,
       color.pal <- c("gray40", scales::hue_pal()(N.imp))
     }
 
-    # imp.df$NA.condition <- factor(imp.df$NA.condition, levels = c("both.observed", "both.missing", X, Y))
+    # imp.df$NA.pattern <- factor(imp.df$NA.pattern, levels = c("both.observed", "both.missing", X, Y))
   }
 
 
@@ -337,25 +388,25 @@ summary2var <- function(imputation.list, var.x, var.y, original.data, true.data,
     # missing in y but not x
     na.onlyy <- setdiff(na.y, na.x)
 
-    NA.condition <- rep("both.observed", nrow(original.data))
+    NA.pattern <- rep("both.observed", nrow(original.data))
     # both missing
-    NA.condition[na.both] <- "both.missing"
+    NA.pattern[na.both] <- "both.missing"
     # only var.x missing
     X <- paste(var.x, "missing", sep = ".")
-    NA.condition[na.onlyx] <- X
+    NA.pattern[na.onlyx] <- X
     # only var.y missing
     Y <- paste(var.y, "missing", sep = ".")
-    NA.condition[na.onlyy] <- Y
+    NA.pattern[na.onlyy] <- Y
     if (!is.null(true.data)) {
-      na.condition <- factor(c(NA.condition[-na.union], rep("masked.observed", N.mis), rep(NA.condition[na.union], N.imp)),
+      NA.pattern <- factor(c(NA.pattern[-na.union], rep("masked.observed", N.mis), rep(NA.pattern[na.union], N.imp)),
         levels = c("both.observed", "masked.observed", "both.missing", X, Y)
       )
     } else {
-      na.condition <- factor(c(NA.condition[-na.union], rep(NA.condition[na.union], N.imp)),
+      NA.pattern <- factor(c(NA.pattern[-na.union], rep(NA.pattern[na.union], N.imp)),
         levels = c("both.observed", "both.missing", X, Y)
       )
     }
-    all.dt[, NA.condition := na.condition]
+    all.dt[, NA.pattern := NA.pattern]
   }
 
   return(list("all.dt" = all.dt, "color.pal" = color.pal))

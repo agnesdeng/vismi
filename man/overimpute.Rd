@@ -4,7 +4,7 @@
 \alias{overimpute}
 \title{Overimpute main function}
 \usage{
-overimpute(train.data, test.data = NULL, p = 0.3, m = 5, method, ...)
+overimpute(train.data, test.data = NULL, p = 0.2, m = 5, method, ...)
 }
 \arguments{
 \item{train.data}{a data frame with training set data}
@@ -15,7 +15,7 @@ overimpute(train.data, test.data = NULL, p = 0.3, m = 5, method, ...)
 
 \item{m}{the number of imputation}
 
-\item{method}{can be one of the following: "mixgb", "midae", "mivae","mice","cart" or "ranger"}
+\item{method}{can be one of the following: "mixgb", "midae", "mivae", "mice","cart" or "ranger"}
 
 \item{...}{other arguments to be passed into the overimpute function}
 }

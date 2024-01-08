@@ -7,7 +7,8 @@
 overimpute_cart(
   train.data,
   test.data = NULL,
-  p = 0.3,
+  seed = NULL,
+  p = 0.2,
   m = 5,
   maxit = 5,
   printFlag = FALSE,

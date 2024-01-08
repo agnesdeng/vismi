@@ -4,14 +4,13 @@
 #' @param p The proportion of extra missing values
 #' @param m The number of overimputed datasets. Default: 5
 #' @param maxit The number of imputation iterations. Default: 1
-#' @param rfPackage The backend of rf. Can be either "ranger" or "randomForest". Default: "ranger".
 #' @param printFlag Verbose setting of the mice package. If TRUE, it will print out information. Default: FALSE.
 #' @param ... Extra arguments to pass to mice
 #' @importFrom mice mice
 #' @return an overimpute object
 #' @export
-overimpute_rf <- function(train.data, test.data = NULL, p = 0.3,
-                            m = 5, maxit = 5, rfPackage = "ranger", printFlag = FALSE,...) {
+overimpute_ranger <- function(train.data, test.data = NULL, p = 0.3, seed = NULL,
+                            m = 5, maxit = 5, printFlag = FALSE,...) {
 
   params <- list()
 
@@ -39,6 +38,9 @@ overimpute_rf <- function(train.data, test.data = NULL, p = 0.3,
   } else {
     total <- Nrow * Ncol
     addNA.loc <- rep(FALSE, total)
+    if(!is.null(seed)){
+      set.seed(seed)
+    }
     addNA.loc[sample(obs.idx, num.obs * p)] <- TRUE
     addNA.m <- matrix(addNA.loc, nrow = Nrow, ncol = Ncol)
     colnames(addNA.m) <- colnames(train.data)
@@ -46,7 +48,7 @@ overimpute_rf <- function(train.data, test.data = NULL, p = 0.3,
   }
 
 
-  train.imp <- mice::mice(data = addNA.df, m = m, maxit = maxit, method="rf",printFlag = printFlag, ...)
+  train.imp <- mice::mice(data = addNA.df, m = m, maxit = maxit, method="rf", rfPackage = "ranger", printFlag = printFlag, ...)
 
   imputed.traindata <- complete(train.imp, action = "all")
 

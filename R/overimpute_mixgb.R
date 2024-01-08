@@ -51,7 +51,7 @@
 #' @importFrom mixgb mixgb default_params impute_new
 #' @return an overimpute object
 #' @export
-overimpute_mixgb <- function(train.data, test.data = NULL, p = 0.3,
+overimpute_mixgb <- function(train.data, test.data = NULL, p = 0.2, seed = NULL,
                              m = 5, maxit = 1, ordinalAsInteger = FALSE,
                              pmm.type = NULL, pmm.k = 5, pmm.link = "prob",
                              initial.num = "normal", initial.int = "mode", initial.fac = "mode",
@@ -72,9 +72,9 @@ overimpute_mixgb <- function(train.data, test.data = NULL, p = 0.3,
   Types <- sapply(train.data, class)
 
 
- check.types <- lapply(Types,function(x) x %in% c("numeric","integer","factor","ordered"))
+  check.types <- lapply(Types,function(x) x %in% c("numeric","integer","logical","factor","ordered"))
   if (!all(unlist(check.types))) {
-    stop("Variables need to be of type numeric, integer or factor.")
+    stop("Variables need to be of type `numeric`, `integer`, `logical`, `factor` or `ordinal factor`.")
   }
 
   # store originally missing values location
@@ -89,6 +89,9 @@ overimpute_mixgb <- function(train.data, test.data = NULL, p = 0.3,
   } else {
     total <- Nrow * Ncol
     addNA.loc <- rep(FALSE, total)
+    if(!is.null(seed)){
+      set.seed(seed)
+    }
     addNA.loc[sample(obs.idx, num.obs * p)] <- TRUE
     addNA.m <- matrix(addNA.loc, nrow = Nrow, ncol = Ncol)
     colnames(addNA.m) <- colnames(train.data)
@@ -158,6 +161,10 @@ overimpute_mixgb <- function(train.data, test.data = NULL, p = 0.3,
     } else {
       total2 <- Nrow2 * Ncol2
       addNA.loc2 <- rep(FALSE, total2)
+
+      if(!is.null(seed)){
+        set.seed(seed)
+      }
       addNA.loc2[sample(obs.idx2, num.obs2 * p)] <- TRUE
       addNA.m2 <- matrix(addNA.loc2, nrow = Nrow2, ncol = Ncol2)
       colnames(addNA.m2) <- colnames(test.data)

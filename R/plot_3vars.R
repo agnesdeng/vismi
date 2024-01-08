@@ -1,3 +1,36 @@
+#' Inspection plot of multiply imputed values for three variables
+#' @description Plot observed values with m sets of imputed values for two specified numeric variables and a factor using \pkg{ggplot2}.
+#' @param imputation.list A list of \code{m} imputed datasets returned by the \code{mixgb} imputer
+#' @param var.x A numeric variable on the x-axis
+#' @param var.y A numeric variable on the y-axis
+#' @param con.fac A conditional factor
+#' @param original.data The original data with missing data
+#' @param true.data The true data without missing values. In general, this is unknown. Only use for simulation studies.
+#' @param color.pal A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)
+#' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
+#' @export
+plot3D<- function(imputation.list, var.x, var.y, con.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
+  Types <- feature_type(imputation.list[[1]])
+
+  fac.idx<-which(Types %in% c("binary","multiclass"))
+  if (length(fac.idx) > 0) {
+    Types[fac.idx] <- "factor"
+  }
+
+
+  if(Types[var.x]=="numeric" & Types[var.y]=="numeric"){
+    plot_2num1fac(imputation.list = imputation.list, var.x = var.x, var.y = var.y, con.fac = con.fac, original.data = original.data, true.data = true.data, color.pal = color.pal, shape = shape, point.size=point.size)
+  }else if(Types[var.x]=="numeric" & Types[var.y]=="factor"){
+    plot_1num2fac(imputation.list = imputation.list, var.fac = var.y, var.num = var.x, con.fac = con.fac, original.data = original.data, true.data = true.data, color.pal = color.pal, shape = shape, point.size=point.size)
+  }else if(Types[var.x]=="factor" & Types[var.y]=="numeric"){
+    plot_1num2fac(imputation.list = imputation.list, var.fac = var.x, var.num = var.y, con.fac = con.fac, original.data = original.data, true.data = true.data, color.pal = color.pal, shape = shape, point.size=point.size)
+  }else{
+    stop("The combination of variable types is not supported yet.")
+  }
+
+
+}
+
 #' Scatter plots for two imputed numeric variables condition on a factor
 #' @description Plot observed values with m sets of imputed values for two specified numeric variables and a factor using \pkg{ggplot2}.
 #' @param imputation.list A list of \code{m} imputed datasets returned by the \code{mixgb} imputer
@@ -8,6 +41,7 @@
 #' @param true.data The true data without missing values. In general, this is unknown. Only use for simulation studies.
 #' @param color.pal A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)
 #' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
+#' @param point.size The size of point. Default: 1.5
 #' @importFrom scales hue_pal
 #' @importFrom tidyr pivot_longer
 #' @importFrom rlang .data
@@ -36,9 +70,20 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
     stop(paste("Variable", var.y, "is a factor. Please use another plot function."))
   }
 
+  if(Types[con.fac]=="numeric"){
+    stop("The conditional factor should be a factor variable, or an integer variable that can would be treated as a factor.")
+  }
+
+
   imp.sum <- summary3var(imputation.list = imputation.list, var.x = var.x, var.y = var.y, con.fac = con.fac, original.data = original.data, true.data = true.data, color.pal = color.pal, shape = shape)
   all.dt <- imp.sum$all.dt
   color.pal <- imp.sum$color.pal
+
+
+  if (Types[con.fac] == "integer"){
+    all.dt <- all.dt %>% dplyr::mutate_at(vars(con.fac), as.factor)
+    warning("The conditional factor should be a factor variable. The integer variable is converted to a factor variable.")
+  }
 
 
   if (!shape) {
@@ -56,9 +101,9 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
       shapes <- c(23, 84, 21, 4)
     }
     gp <- ggplot(all.dt, aes(x = .data[[var.x]], y = .data[[var.y]])) +
-      geom_point(alpha = 0.6, aes(shape = NA.condition, color = m.set, fill = m.set), size = point.size) +
+      geom_point(alpha = 0.6, aes(shape = NA.pattern, color = m.set, fill = m.set), size = point.size) +
       facet_grid(reformulate(termlabels = "m.set", response = con.fac)) +
-      labs(title = "Scatter plots of two numeric variables conditional on one factor", subtitle = paste("Imputed sets: ", var.y, "vs", var.x, "|", con.fac)) +
+      labs(shape = "NA Pattern", title = "Scatter plots of two numeric variables conditional on one factor", subtitle = paste("Imputed sets: ", var.y, "vs", var.x, "|", con.fac)) +
       scale_shape_manual(values = shapes, drop = FALSE)
   }
 
@@ -144,7 +189,7 @@ plot_1num2fac <- function(imputation.list, var.fac, var.num, con.fac, original.d
       facet_grid(reformulate(termlabels = "m.set", response = con.fac)) +
       labs(title = "Boxplots for one numeric variable vs one factor conditional on another factor ", subtitle = paste("Imputed sets: ", var.num, "vs", var.fac, "|", con.fac))
   } else {
-    # plot NA.condition with shapes
+    # plot NA.pattern with shapes
     if (is.null(true.data)) {
       # levels: all.observed, confac.observed, confac.missing
       shapes <- c(23, 21, 4)
@@ -156,15 +201,15 @@ plot_1num2fac <- function(imputation.list, var.fac, var.num, con.fac, original.d
 
     if (Types[var.num] == "integer") {
       gp <- ggplot(all.dt, aes(x = .data[[var.fac]], y = .data[[var.num]])) +
-        geom_point(alpha = 0.6, aes(color = m.set, fill = m.set, shape = NA.condition), size = point.size)
+        geom_point(alpha = 0.6, aes(color = m.set, fill = m.set, shape = NA.pattern), size = point.size)
     } else {
       gp <- ggplot(all.dt, aes(x = .data[[var.fac]], y = .data[[var.num]])) +
-        geom_jitter(alpha = 0.6, position = position_jitter(), aes(color = m.set, fill = m.set, shape = NA.condition), size = point.size)
+        geom_jitter(alpha = 0.6, position = position_jitter(), aes(color = m.set, fill = m.set, shape = NA.pattern), size = point.size)
     }
     gp <- gp +
       geom_boxplot(alpha = 0.5, aes(fill = m.set), outlier.shape = NA) +
       facet_grid(reformulate(termlabels = "m.set", response = con.fac)) +
-      labs(title = "Boxplots for one numeric variable vs one factor conditional on another factor ", subtitle = paste("Imputed sets: ", var.num, "vs", var.fac, "|", con.fac)) +
+      labs(shape = "NA Pattern", title = "Boxplots for one numeric variable vs one factor conditional on another factor ", subtitle = paste("Imputed sets: ", var.num, "vs", var.fac, "|", con.fac)) +
       scale_shape_manual(values = shapes, drop = FALSE)
   }
 
@@ -289,23 +334,23 @@ summary3var <- function(imputation.list, var.x, var.y, con.fac, original.data, t
 
 
   if (shape) {
-    NA.condition <- rep("all.observed", nrow(original.data))
+    NA.pattern <- rep("all.observed", nrow(original.data))
     # con.fac missing
-    NA.condition[na.con] <- paste(con.fac, "missing", sep = ".")
+    NA.pattern[na.con] <- paste(con.fac, "missing", sep = ".")
     # con.fac observed
-    NA.condition[setdiff(na.combine, na.con)] <- paste(con.fac, "observed", sep = ".")
+    NA.pattern[setdiff(na.combine, na.con)] <- paste(con.fac, "observed", sep = ".")
 
     # use shape
     if (!is.null(true.data)) {
-      na.condition <- factor(c(NA.condition[-na.combine], rep("masked.observed", N.mis), rep(NA.condition[na.combine], N.imp)),
+      NA.pattern <- factor(c(NA.pattern[-na.combine], rep("masked.observed", N.mis), rep(NA.pattern[na.combine], N.imp)),
         levels = c("all.observed", "masked.observed", paste(con.fac, c("observed", "missing"), sep = "."))
       )
     } else {
-      na.condition <- factor(c(NA.condition[-na.combine], rep(NA.condition[na.combine], N.imp)),
+      NA.pattern <- factor(c(NA.pattern[-na.combine], rep(NA.pattern[na.combine], N.imp)),
         levels = c("all.observed", paste(con.fac, c("observed", "missing"), sep = "."))
       )
     }
-    all.dt[, NA.condition := na.condition]
+    all.dt[, NA.pattern := NA.pattern]
   }
 
   return(list("all.dt" = all.dt, "color.pal" = color.pal))

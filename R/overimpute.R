@@ -4,10 +4,10 @@
 #' @param test.data a data fram with test set data
 #' @param p the extra proportion of missing values
 #' @param m the number of imputation
-#' @param method can be one of the following: "mixgb", "midae", "mivae","mice","cart" or "ranger"
+#' @param method can be one of the following: "mixgb", "midae", "mivae", "mice","cart" or "ranger"
 #' @param ... other arguments to be passed into the overimpute function
 #' @export
-overimpute<-function(train.data,test.data = NULL, p=0.3,m=5,method,...){
+overimpute<-function(train.data,test.data = NULL, p = 0.2, m = 5, method,...){
 
   overimpute.fn<-paste("overimpute",method,sep="_")
 

@@ -11,37 +11,37 @@ overimp1D <- function(obj, var.name, train.data, test.data = NULL, num.plot = "r
 
   if (Types[var.name] == "numeric" ) {
     if (num.plot == "ridge") {
-      overimp_ridge(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_ridge(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else if (num.plot == "density") {
-      overimp_density(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_density(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else if (num.plot == "qq") {
-      overimp_qq(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_qq(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else if (num.plot == "qqline") {
-      overimp_qqline(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_qqline(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else {
       stop("The value specified in `num.plot` is not valid. Please use `ridge`, `density`,`qq`, or `qqline`.")
     }
   }else if(Types[var.name] == "integer"){
     if (int.plot == "ridge") {
-      overimp_ridge(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_ridge(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else if (int.plot == "density") {
-      overimp_density(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_density(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else if (int.plot == "qq") {
-      overimp_qq(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_qq(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else if (int.plot == "qqline") {
-      overimp_qqline(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_qqline(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else if (int.plot == "bar") {
-      overimp_bar(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_bar(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else if (int.plot == "dodge") {
-      overimp_dodge(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_dodge(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     }  else {
       stop("The value specified in `int.plot` is not valid. Please use `ridge`, `density`,`qq`, or `qqline`.")
     }
   } else {
     if (cat.plot == "bar") {
-      overimp_bar(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_bar(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else if (cat.plot == "dodge") {
-      overimp_dodge(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
+      overimp1D_dodge(obj = obj, var.name = var.name, train.data = train.data, test.data = test.data)
     } else {
       stop("The value specified in `cat.plot` is not valid. Please use `bar` or `dodge`.")
     }
@@ -62,7 +62,7 @@ overimp1D <- function(obj, var.name, train.data, test.data = NULL, num.plot = "r
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
 #'
-overimp_ridge <- function(obj, var.name, train.data, test.data = NULL) {
+overimp1D_ridge <- function(obj, var.name, train.data, test.data = NULL) {
   Names <- obj$params$Names
   Types <- obj$params$Types
   m <- obj$params$m
@@ -72,7 +72,7 @@ overimp_ridge <- function(obj, var.name, train.data, test.data = NULL) {
   }
 
   if (Types[var.name] != "numeric" & Types[var.name] != "integer") {
-    stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp_bar() or overimp_dodge() instead.")
+    stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp1D_bar() or overimp1D_dodge() instead.")
   }
 
 
@@ -110,9 +110,9 @@ overimp_ridge <- function(obj, var.name, train.data, test.data = NULL) {
 
   sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
 
-  # blue
+  # blue. "#0c71ff", "#bcd8ff"
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
-  colfunc <- colorRampPalette(c("#0c71ff", "#bcd8ff"))
+  colfunc <- colorRampPalette(c("#002cb3", "#85aeff"))
   traincolor <- c(colfunc(m), "gray40")
 
 
@@ -121,7 +121,7 @@ overimp_ridge <- function(obj, var.name, train.data, test.data = NULL) {
     geom_density_ridges(alpha = 0.8, aes(y = set, fill = set)) +
     scale_fill_manual(values = traincolor, guide = guide_legend(reverse = TRUE)) +
     guides(fill = "none") +
-    theme_ridges(center_axis_labels = TRUE) +
+    #theme_ridges(center_axis_labels = TRUE) +
     labs(title = "Training Data", subtitle = sub.title, y = "Imputed sets")
 
 
@@ -162,8 +162,8 @@ overimp_ridge <- function(obj, var.name, train.data, test.data = NULL) {
     # Reds <- colorRampPalette(brewer.pal(name = "OrRd", n = 9))(m + 3)[-(1:3)]
     # Reds <- rev(Reds)
     # testcolor <- c(Reds, "#030303")
-    # yellow
-    colfunc <- colorRampPalette(c("#FFBF00", "#ffe69d"))
+    # yellow "#FFBF00", "#ffe69d". "#FFBF00","#cc7700"
+    colfunc <- colorRampPalette(c("#cc7700", "#ffd24d"))
     testcolor <- c(colfunc(m), "gray40")
 
 
@@ -178,7 +178,7 @@ overimp_ridge <- function(obj, var.name, train.data, test.data = NULL) {
       coord_cartesian(xlim = xrange) +
       scale_fill_manual(values = testcolor, guide = guide_legend(reverse = TRUE)) +
       guides(fill = "none") +
-      theme_ridges(center_axis_labels = TRUE) +
+      #theme_ridges(center_axis_labels = TRUE) +
       labs(title = "Test Data", subtitle = sub.title, y = "Imputed sets")
 
 
@@ -195,7 +195,7 @@ overimp_ridge <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
-overimp_density <- function(obj, var.name, train.data, test.data = NULL) {
+overimp1D_density <- function(obj, var.name, train.data, test.data = NULL) {
   Names <- obj$params$Names
   Types <- obj$params$Types
   m <- obj$params$m
@@ -205,7 +205,7 @@ overimp_density <- function(obj, var.name, train.data, test.data = NULL) {
   }
 
   if (Types[var.name] != "numeric" & Types[var.name] != "integer") {
-    stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp_bar() or overimp_dodge() instead.")
+    stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp1D_bar() or overimp1D_dodge() instead.")
   }
 
   addNA.m <- obj$params$addNA.m
@@ -244,7 +244,7 @@ overimp_density <- function(obj, var.name, train.data, test.data = NULL) {
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
-  colfunc <- colorRampPalette(c("#0c71ff", "#bcd8ff"))
+  colfunc <- colorRampPalette(c("#002cb3", "#85aeff"))
   traincolor <- c(colfunc(m), "black")
 
   P1 <- ggplot(data = long.df, aes(.data[[var.name]], color = set)) +
@@ -287,7 +287,7 @@ overimp_density <- function(obj, var.name, train.data, test.data = NULL) {
     # Reds <- rev(Reds)
     # testcolor <- c(Reds, "#030303")
     # yellow
-    colfunc <- colorRampPalette(c("#FFBF00", "#ffe69d"))
+    colfunc <- colorRampPalette(c("#cc7700", "#ffd24d"))
     testcolor <- c(colfunc(m), "black")
 
 
@@ -319,7 +319,7 @@ overimp_density <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
-overimp_qq <- function(obj, var.name, train.data, test.data = NULL) {
+overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size = 1) {
   Names <- obj$params$Names
   Types <- obj$params$Types
   m <- obj$params$m
@@ -329,7 +329,7 @@ overimp_qq <- function(obj, var.name, train.data, test.data = NULL) {
   }
 
   if (Types[var.name] != "numeric" & Types[var.name] != "integer") {
-    stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp_bar() or overimp_dodge() instead.")
+    stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp1D_bar() or overimp1D_dodge() instead.")
   }
 
   addNA.m <- obj$params$addNA.m
@@ -368,7 +368,7 @@ overimp_qq <- function(obj, var.name, train.data, test.data = NULL) {
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
-  colfunc <- colorRampPalette(c("#0c71ff", "#bcd8ff"))
+  colfunc <- colorRampPalette(c("#002cb3", "#85aeff"))
   traincolor <- c(colfunc(m), "black")
 
 
@@ -376,7 +376,7 @@ overimp_qq <- function(obj, var.name, train.data, test.data = NULL) {
 
   # true values as points and bars
   P1 <- ggplot(data = long.df, aes(sample = .data[[var.name]], color = set)) +
-    stat_qq(size = 1) +
+    stat_qq(size = point.size) +
     # stat_qq_line()+
     # geom_density()+
     scale_color_manual(values = traincolor) +
@@ -421,7 +421,7 @@ overimp_qq <- function(obj, var.name, train.data, test.data = NULL) {
     # Reds <- rev(Reds)
     # testcolor <- c(Reds, "#030303")
     # yellow
-    colfunc <- colorRampPalette(c("#FFBF00", "#ffe69d"))
+    colfunc <- colorRampPalette(c("#cc7700", "#ffd24d"))
     testcolor <- c(colfunc(m), "black")
 
 
@@ -430,7 +430,7 @@ overimp_qq <- function(obj, var.name, train.data, test.data = NULL) {
     xrange <- ggplot_build(P1)$layout$panel_params[[1]]$x.range
 
     P2 <- ggplot(data = long.df2, aes(sample = .data[[var.name]], color = set)) +
-      stat_qq(size = 1) +
+      stat_qq(size = point.size) +
       coord_cartesian(xlim = xrange) +
       scale_color_manual(values = testcolor) +
       labs(title = "Test Data", subtitle = sub.title)
@@ -456,7 +456,7 @@ overimp_qq <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
-overimp_qqline <- function(obj, var.name, train.data, test.data = NULL) {
+overimp1D_qqline <- function(obj, var.name, train.data, test.data = NULL) {
   Names <- obj$params$Names
   Types <- obj$params$Types
   m <- obj$params$m
@@ -466,7 +466,7 @@ overimp_qqline <- function(obj, var.name, train.data, test.data = NULL) {
   }
 
   if (Types[var.name] != "numeric" & Types[var.name] != "integer") {
-    stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp_bar() or overimp_dodge() instead.")
+    stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp1D_bar() or overimp1D_dodge() instead.")
   }
 
   addNA.m <- obj$params$addNA.m
@@ -505,7 +505,7 @@ overimp_qqline <- function(obj, var.name, train.data, test.data = NULL) {
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
-  colfunc <- colorRampPalette(c("#0c71ff", "#bcd8ff"))
+  colfunc <- colorRampPalette(c("#002cb3", "#85aeff"))
   traincolor <- c(colfunc(m), "black")
 
 
@@ -555,7 +555,7 @@ overimp_qqline <- function(obj, var.name, train.data, test.data = NULL) {
     # Reds <- rev(Reds)
     # testcolor <- c(Reds, "#030303")
     # yellow
-    colfunc <- colorRampPalette(c("#FFBF00", "#ffe69d"))
+    colfunc <- colorRampPalette(c("#cc7700", "#ffd24d"))
     testcolor <- c(colfunc(m), "black")
 
 
@@ -583,7 +583,7 @@ overimp_qqline <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
-overimp_bar <- function(obj, var.name, train.data, test.data = NULL) {
+overimp1D_bar <- function(obj, var.name, train.data, test.data = NULL) {
   Names <- obj$params$Names
   Types <- obj$params$Types
   m <- obj$params$m
@@ -593,7 +593,7 @@ overimp_bar <- function(obj, var.name, train.data, test.data = NULL) {
   }
 
   if (Types[var.name] == "numeric") {
-    stop("The variable name specified in `var.name` is numeric. Please use overimp_ridge(), overimp_density(), overimp_qq(), overimp_qqline() instead.")
+    stop("The variable name specified in `var.name` is numeric. Please use overimp1D_ridge(), overimp1D_density(), overimp1D_qq(), overimp1D_qqline() instead.")
   }
 
 
@@ -636,11 +636,11 @@ overimp_bar <- function(obj, var.name, train.data, test.data = NULL) {
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
-  colfunc <- colorRampPalette(c("#0c71ff", "#bcd8ff"))
+  colfunc <- colorRampPalette(c("#002cb3", "#85aeff"))
   traincolor <- c(colfunc(m), "gray40")
 
   if (Types[var.name] == "integer") {
-    warning("The variable name specified in `var.name` is integer. If you want to treat it as numeric, please use overimp_ridge(), overimp_density(), overimp_qq(), overimp_qqline() instead.")
+    warning("The variable name specified in `var.name` is integer. If you want to treat it as numeric, please use overimp1D_ridge(), overimp1D_density(), overimp1D_qq(), overimp1D_qqline() instead.")
     long.df[[var.name]] <- as.factor(long.df[[var.name]])
   }
 
@@ -695,7 +695,7 @@ overimp_bar <- function(obj, var.name, train.data, test.data = NULL) {
     # Reds <- rev(Reds)
     # testcolor <- c(Reds, "#030303")
     # yellow
-    colfunc <- colorRampPalette(c("#FFBF00", "#ffe69d"))
+    colfunc <- colorRampPalette(c("#cc7700", "#ffd24d"))
     testcolor <- c(colfunc(m), "gray40")
 
 
@@ -734,7 +734,7 @@ overimp_bar <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
-overimp_dodge <- function(obj, var.name, train.data, test.data = NULL) {
+overimp1D_dodge <- function(obj, var.name, train.data, test.data = NULL) {
   Names <- obj$params$Names
   Types <- obj$params$Types
   m <- obj$params$m
@@ -745,7 +745,7 @@ overimp_dodge <- function(obj, var.name, train.data, test.data = NULL) {
 
 
   if (Types[var.name] == "numeric") {
-    stop("The variable name specified in `var.name` is numeric. Please use overimp_ridge(), overimp_density(), overimp_qq(), overimp_qqline() instead.")
+    stop("The variable name specified in `var.name` is numeric. Please use overimp1D_ridge(), overimp1D_density(), overimp1D_qq(), overimp1D_qqline() instead.")
   }
 
 
@@ -785,11 +785,12 @@ overimp_dodge <- function(obj, var.name, train.data, test.data = NULL) {
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
-  colfunc <- colorRampPalette(c("#0c71ff", "#bcd8ff"))
+  #colfunc <- colorRampPalette(c("#3d2bfe", "#2b83fe"))
+  colfunc <- colorRampPalette(c("#002cb3", "#85aeff"))
   traincolor <- c(colfunc(m), "black")
 
   if (Types[var.name] == "integer") {
-    warning("The variable name specified in `var.name` is integer. If you want to treat it as numeric, please use overimp_ridge(), overimp_density(), overimp_qq(), overimp_qqline() instead.")
+    warning("The variable name specified in `var.name` is integer. If you want to treat it as numeric, please use overimp1D_ridge(), overimp1D_density(), overimp1D_qq(), overimp1D_qqline() instead.")
     long.df[[var.name]] <- as.factor(long.df[[var.name]])
   }
 
@@ -851,7 +852,9 @@ overimp_dodge <- function(obj, var.name, train.data, test.data = NULL) {
     # Reds <- rev(Reds)
     # testcolor <- c(Reds, "#030303")
     # yellow
-    colfunc <- colorRampPalette(c("#FFBF00", "#ffe69d"))
+    #colfunc <- colorRampPalette(c("#ff7a00", "#ffe300"))
+    colfunc <- colorRampPalette(c("#cc7700", "#ffd24d"))
+
     testcolor <- c(colfunc(m), "black")
 
 

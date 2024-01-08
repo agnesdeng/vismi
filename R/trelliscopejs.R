@@ -1,4 +1,4 @@
-#' plot continuous variables using trelliscope
+#' Create trelliscope display for overimputations of all continuous variables in a dataset
 #' @importFrom trelliscopejs facet_trelliscope
 #' @importFrom tibble is_tibble as_tibble
 #' @importFrom tidyr pivot_longer
@@ -7,7 +7,7 @@
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
-plotcon.trelliscope <- function(obj, train.data, test.data = NULL,type="ridges") {
+trelliscope_con<- function(obj, train.data, test.data = NULL,type="ridge") {
 
 Names <- obj$params$Names
 Types <- obj$params$Types
@@ -58,12 +58,13 @@ combine.tb<-do.call(rbind,var.list)
 if(is.null(test.data)){
   #only plot training data
 
-  if(type=="ridges"){
+  if(type=="ridge"){
     #blue
     combine.tb$set <- factor(combine.tb$set, levels = c(paste0("m", m:1), "True"))
     #light: #bcd8ff
     #dark: #0c71ff
-    colfunc <- colorRampPalette(c("#0c71ff","#bcd8ff"))
+
+    colfunc <- colorRampPalette(c("#002cb3","#85aeff"))
     traincolor<-c(colfunc(m),"gray40")
 
     ggplot(data =combine.tb , aes(x = value)) +
@@ -72,7 +73,7 @@ if(is.null(test.data)){
       guides(fill="none")+
       theme_ridges(center_axis_labels = TRUE) +
       labs(title = "Training Data", y = "Imputed sets")+
-      facet_trelliscope(~ variable, nrow = 2, ncol = 5,scales = "free")
+      facet_trelliscope(~ variable, nrow = 2, ncol = 4,scales = "free")
 
   }else if (type=="density"){
 
@@ -80,14 +81,14 @@ if(is.null(test.data)){
     combine.tb$set <- factor(combine.tb$set, levels = c("True",paste0("m", 1:m)))
     #light: #bcd8ff
     #dark: #0c71ff
-    colfunc <- colorRampPalette(c("#bcd8ff","#0c71ff"))
+    colfunc <- colorRampPalette(c("#85aeff","#002cb3"))
     traincolor<-c("gray40",colfunc(m))
 
     ggplot(data=combine.tb,aes(x=value,color=set))+
       geom_density()+
       scale_color_manual(values=traincolor)+
       labs(title = "Training Data")+
-     facet_trelliscope(~ variable, nrow = 2, ncol = 5,scales = "free")
+     facet_trelliscope(~ variable, nrow = 2, ncol = 4,scales = "free")
 
   }else if (type=="qq"){
 
@@ -95,7 +96,7 @@ if(is.null(test.data)){
     combine.tb$set <- factor(combine.tb$set, levels = c("True",paste0("m", 1:m)))
     #light: #bcd8ff
     #dark: #0c71ff
-    colfunc <- colorRampPalette(c("#bcd8ff","#0c71ff"))
+    colfunc <- colorRampPalette(c("#85aeff","#002cb3"))
     traincolor<-c("gray40",colfunc(m))
 
     ggplot(data=combine.tb,aes(sample=value,color=set))+
@@ -104,11 +105,27 @@ if(is.null(test.data)){
       #geom_density()+
       scale_color_manual(values=traincolor)+
       labs(title = "Training Data")+
-      facet_trelliscope(~ variable, nrow = 2, ncol = 5,scales = "free")
+      facet_trelliscope(~ variable, nrow = 2, ncol = 4,scales = "free")
 
-  }else(
-    stop("Plotting type should be one of the following: `ridges`, `error.ridges`,`density` or `qq`. ")
-  )
+  }else if (type=="qqline"){
+
+    #blue
+    combine.tb$set <- factor(combine.tb$set, levels = c("True",paste0("m", 1:m)))
+    #light: #bcd8ff
+    #dark: #0c71ff
+    colfunc <- colorRampPalette(c("#85aeff","#002cb3"))
+    traincolor<-c("gray40",colfunc(m))
+
+    ggplot(data=combine.tb,aes(sample=value,color=set))+
+      stat_qq_line()+
+      scale_color_manual(values=traincolor)+
+      labs(title = "Training Data")+
+      facet_trelliscope(~ variable, nrow = 2, ncol = 4,scales = "free")
+
+  }else{
+    stop("Plotting type should be one of the following: `ridges`, `error.ridges`,`density`, `qq` or `qqline`.")
+  }
+
 
 
 
@@ -177,19 +194,20 @@ if(is.null(test.data)){
 
 
 
-  if(type=="ridges"){
+  if(type=="ridge"){
 
     combine.both$set <-factor(combine.both$set, levels = c(paste0("m", m:1), "True"))
     combine.both$colorset <- factor(combine.both$colorset,levels=c(paste0("train",c(paste0("m", m:1), "True")),paste0("test",c(paste0("m", m:1), "True"))))
 
     #dark: #0c71ff
     #light: #bcd8ff
-    colfunc <- colorRampPalette(c("#0c71ff","#bcd8ff"))
+    colfunc <- colorRampPalette(c("#002cb3","#85aeff"))
     traincolor<-c(colfunc(m),"gray40")
 
     #dark:#FFBF00
     #light:#ffe69d
-    colfunc <- colorRampPalette(c("#FFBF00","#ffe69d"))
+
+    colfunc <- colorRampPalette(c("#cc7700","#ffd24d"))
     testcolor<-c(colfunc(m),"gray40")
 
     allcolor<-c(traincolor,testcolor)
@@ -202,7 +220,7 @@ if(is.null(test.data)){
       guides(fill="none")+
       #theme_ridges(center_axis_labels = TRUE) +
       labs(y = "Imputed sets")+
-      facet_trelliscope(~ variable, nrow=2,ncol = 5,scales = "free")
+      facet_trelliscope(~ variable, nrow=2,ncol = 4,scales = "free")
   }else if (type=="density"){
 
     combine.both$set <-factor(combine.both$set, levels = c("True",paste0("m", 1:m)))
@@ -210,12 +228,12 @@ if(is.null(test.data)){
 
     #light: #bcd8ff
     #dark: #0c71ff
-    colfunc <- colorRampPalette(c("#bcd8ff","#0c71ff"))
+    colfunc <- colorRampPalette(c("#85aeff","#002cb3"))
     traincolor<-c("gray40",colfunc(m))
 
     #light:#ffe69d
     #dark:#FFBF00
-    colfunc <- colorRampPalette(c("#ffe69d","#FFBF00"))
+    colfunc <- colorRampPalette(c("#ffd24d","#cc7700"))
     testcolor<-c("gray40",colfunc(m))
 
     allcolor<-c(traincolor,testcolor)
@@ -227,7 +245,7 @@ if(is.null(test.data)){
       facet_wrap(~dataset,ncol=2)+
       #guides(color="none")+
       #labs(title = "Training Data")+
-      facet_trelliscope(~ variable, nrow = 2, ncol = 5,scales = "free")
+      facet_trelliscope(~ variable, nrow = 2, ncol = 4,scales = "free")
 
 
   }else if (type=="qq"){
@@ -237,12 +255,14 @@ if(is.null(test.data)){
 
     #light: #bcd8ff
     #dark: #0c71ff
-    colfunc <- colorRampPalette(c("#bcd8ff","#0c71ff"))
+    colfunc <- colorRampPalette(c("#85aeff","#002cb3"))
     traincolor<-c("gray40",colfunc(m))
 
     #light:#ffe69d
     #dark:#FFBF00
-    colfunc <- colorRampPalette(c("#ffe69d","#FFBF00"))
+    #"#ffe69d","#FFBF00"
+
+    colfunc <- colorRampPalette(c("#ffd24d","#cc7700"))
     testcolor<-c("gray40",colfunc(m))
 
     allcolor<-c(traincolor,testcolor)
@@ -255,11 +275,38 @@ if(is.null(test.data)){
       facet_wrap(~dataset,ncol=2)+
       #guides(color="none")+
       #labs(title = "Training Data")+
-      facet_trelliscope(~ variable, nrow = 2, ncol = 5,scales = "free")
+      facet_trelliscope(~ variable, nrow = 2, ncol = 4,scales = "free")
 
-  }else(
-    stop("Plotting type should be one of the following: `ridges`, `error.ridges`,`density` or `qq`. ")
-  )
+  }else if (type=="qqline"){
+    combine.both$set <-factor(combine.both$set, levels = c("True",paste0("m", 1:m)))
+    combine.both$colorset <- factor(combine.both$colorset,levels=c(paste0("train",c("True",paste0("m", 1:m))),paste0("test",c("True",paste0("m", 1:m)))))
+
+    #light: #bcd8ff
+    #dark: #0c71ff
+    colfunc <- colorRampPalette(c("#85aeff","#002cb3"))
+    traincolor<-c("gray40",colfunc(m))
+
+    #light:#ffe69d
+    #dark:#FFBF00
+    #"#ffe69d","#FFBF00"
+
+    colfunc <- colorRampPalette(c("#ffd24d","#cc7700"))
+    testcolor<-c("gray40",colfunc(m))
+
+    allcolor<-c(traincolor,testcolor)
+
+    ggplot(data=combine.both,aes(sample=value,color=colorset))+
+      stat_qq_line()+
+      scale_color_manual(values=allcolor)+
+      facet_wrap(~dataset,ncol=2)+
+      #guides(color="none")+
+      #labs(title = "Training Data")+
+      facet_trelliscope(~ variable, nrow = 2, ncol = 4,scales = "free")
+  }else{
+    stop("Plotting type should be one of the following: `ridges`, `error.ridges`,`density`, `qq` or `qqline. ")
+  }
+
+
 
 
 
@@ -269,8 +316,8 @@ if(is.null(test.data)){
 
 
 
-#
-#' plot categorical variables using trelliscope
+
+#' Create trelliscope display for overimputations of all categorical variables in a dataset
 #' @importFrom trelliscopejs facet_trelliscope
 #' @importFrom tibble is_tibble as_tibble
 #' @importFrom tidyr pivot_longer
@@ -278,8 +325,7 @@ if(is.null(test.data)){
 #' @importFrom magrittr %>%
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
-
-plotcat.trelliscope <- function(obj, train.data, test.data = NULL, type = "dodge") {
+trelliscope_cat<- function(obj, train.data, test.data = NULL, type = "dodge") {
 
   Names <- obj$params$Names
   Types <- obj$params$Types
@@ -329,7 +375,8 @@ plotcat.trelliscope <- function(obj, train.data, test.data = NULL, type = "dodge
   combine.tb$set <- factor(combine.tb$set, levels = c("True",paste0("m", 1:m)))
   #light: #bcd8ff
   #dark: #0c71ff
-  colfunc <- colorRampPalette(c("#bcd8ff","#0c71ff"))
+  #"#85aeff","#002cb3"
+  colfunc <- colorRampPalette(c("#85aeff","#002cb3"))
   traincolor<-c("gray40",colfunc(m))
 
   if(is.null(test.data)){
@@ -412,7 +459,9 @@ plotcat.trelliscope <- function(obj, train.data, test.data = NULL, type = "dodge
 
     #light:#ffe69d
     #dark:#FFBF00
-    colfunc <- colorRampPalette(c("#ffe69d","#FFBF00"))
+    #"#ffe69d","#FFBF00"
+
+    colfunc <- colorRampPalette(c("#ffd24d","#cc7700"))
     testcolor<-c("gray40",colfunc(m))
 
 
@@ -442,7 +491,7 @@ plotcat.trelliscope <- function(obj, train.data, test.data = NULL, type = "dodge
        labs(y = "Imputed sets") +
        scale_fill_manual(values = allcolor)+
        guides(fill="none",alpha="none")+
-       facet_trelliscope(~ variable, nrow = 2, ncol = 5,scales = "free")
+       facet_trelliscope(~ variable, nrow = 2, ncol = 4,scales = "free")
    }else{
      ggplot(data = combine.both, aes(x = value,  fill = colorset)) +
        geom_bar(aes(alpha = set),position="dodge") +

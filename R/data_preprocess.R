@@ -9,6 +9,9 @@ fac2int <- function(vec) {
 }
 
 # Classify the type of each variable in a dataset
+#'Return the feature types.
+#'@param data a data frame
+#'@export
 feature_type <- function(data) {
   # @param data A data.frame or a data.table
   # @return The type (numeric/integer/binary/multiclass) of each variable in a dataset

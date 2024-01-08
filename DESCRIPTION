@@ -28,7 +28,8 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    mixgb (>= 1.4.0)
+    mixgb (>= 1.4.0),
+    miae,
 Depends: R (>= 3.5.0)
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr

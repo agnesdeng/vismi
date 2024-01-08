@@ -8,7 +8,7 @@
 #' @importFrom mice mice complete
 #' @return an overimpute object
 #' @export
-overimpute_mice <- function(train.data, test.data = NULL, p = 0.3,
+overimpute_mice <- function(train.data, test.data = NULL, p = 0.2, seed = NULL,
                              m = 5, maxit = 5, printFlag = FALSE,...) {
 
   params <- list()
@@ -20,10 +20,7 @@ overimpute_mice <- function(train.data, test.data = NULL, p = 0.3,
   Types <- sapply(train.data, class)
 
 
-  check.types <- lapply(Types,function(x) x %in% c("numeric","integer","factor","ordered"))
-  if (!all(unlist(check.types))) {
-    stop("Variables need to be of type numeric, integer or factor.")
-  }
+
 
   # store originally missing values location
   trainNA.m <- is.na(train.data)
@@ -37,6 +34,9 @@ overimpute_mice <- function(train.data, test.data = NULL, p = 0.3,
   } else {
     total <- Nrow * Ncol
     addNA.loc <- rep(FALSE, total)
+    if(!is.null(seed)){
+      set.seed(seed)
+    }
     addNA.loc[sample(obs.idx, num.obs * p)] <- TRUE
     addNA.m <- matrix(addNA.loc, nrow = Nrow, ncol = Ncol)
     colnames(addNA.m) <- colnames(train.data)

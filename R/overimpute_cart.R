@@ -9,8 +9,8 @@
 #' @importFrom mice mice
 #' @return an overimpute object
 #' @export
-overimpute_cart <- function(train.data, test.data = NULL, p = 0.3,
-                            m = 5, maxit = 5, printFlag = FALSE,...) {
+overimpute_cart <- function(train.data, test.data = NULL, seed = NULL,
+                            p = 0.2, m = 5, maxit = 5, printFlag = FALSE,...) {
 
   params <- list()
 
@@ -38,6 +38,9 @@ overimpute_cart <- function(train.data, test.data = NULL, p = 0.3,
   } else {
     total <- Nrow * Ncol
     addNA.loc <- rep(FALSE, total)
+    if(!is.null(seed)){
+      set.seed(seed)
+    }
     addNA.loc[sample(obs.idx, num.obs * p)] <- TRUE
     addNA.m <- matrix(addNA.loc, nrow = Nrow, ncol = Ncol)
     colnames(addNA.m) <- colnames(train.data)
