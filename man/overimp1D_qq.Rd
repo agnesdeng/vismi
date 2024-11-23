@@ -4,7 +4,14 @@
 \alias{overimp1D_qq}
 \title{plot qqplot for numeric}
 \usage{
-overimp1D_qq(obj, var.name, train.data, test.data = NULL, point.size = 1)
+overimp1D_qq(
+  obj,
+  var.name,
+  train.data,
+  test.data = NULL,
+  point.size = 1,
+  ylim = NULL
+)
 }
 \description{
 plot qqplot for numeric

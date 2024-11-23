@@ -4,7 +4,7 @@
 \alias{overimp1D_qqline}
 \title{plot qqline plot for numeric}
 \usage{
-overimp1D_qqline(obj, var.name, train.data, test.data = NULL)
+overimp1D_qqline(obj, var.name, train.data, test.data = NULL, ylim = NULL)
 }
 \description{
 plot qqline plot for numeric

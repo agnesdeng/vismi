@@ -195,7 +195,7 @@ overimp1D_ridge <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
-overimp1D_density <- function(obj, var.name, train.data, test.data = NULL) {
+overimp1D_density <- function(obj, var.name, train.data, test.data = NULL,ylim = NULL) {
   Names <- obj$params$Names
   Types <- obj$params$Types
   m <- obj$params$m
@@ -252,6 +252,9 @@ overimp1D_density <- function(obj, var.name, train.data, test.data = NULL) {
     scale_color_manual(values = traincolor) +
     labs(title = "Training Data", subtitle = sub.title)
 
+ if(!is.null(ylim)){
+    P1 <- P1 + ylim(ylim)
+  }
 
   # test data ---------------------------------------------------------------
 
@@ -301,8 +304,12 @@ overimp1D_density <- function(obj, var.name, train.data, test.data = NULL) {
       scale_color_manual(values = testcolor) +
       labs(title = "Test Data", subtitle = sub.title)
 
+    if(!is.null(ylim)){
+      P2 <- P2 + ylim(ylim)
+    }
 
     gridExtra::grid.arrange(P1, P2, ncol = 2)
+
   } else {
     P1
   }
@@ -319,7 +326,7 @@ overimp1D_density <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
-overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size = 1) {
+overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size = 1,ylim = NULL) {
   Names <- obj$params$Names
   Types <- obj$params$Types
   m <- obj$params$m
@@ -382,7 +389,9 @@ overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size
     scale_color_manual(values = traincolor) +
     labs(title = "Training Data", subtitle = sub.title)
 
-
+  if(!is.null(ylim)){
+    P1 <- P1 + ylim(ylim)
+  }
 
 
 
@@ -435,6 +444,10 @@ overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size
       scale_color_manual(values = testcolor) +
       labs(title = "Test Data", subtitle = sub.title)
 
+    if(!is.null(ylim)){
+      P2 <- P2 + ylim(ylim)
+    }
+
 
     gridExtra::grid.arrange(P1, P2, ncol = 2)
   } else {
@@ -456,7 +469,7 @@ overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggplot2 ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
-overimp1D_qqline <- function(obj, var.name, train.data, test.data = NULL) {
+overimp1D_qqline <- function(obj, var.name, train.data, test.data = NULL,ylim = NULL) {
   Names <- obj$params$Names
   Types <- obj$params$Types
   m <- obj$params$m
@@ -519,7 +532,9 @@ overimp1D_qqline <- function(obj, var.name, train.data, test.data = NULL) {
     scale_color_manual(values = traincolor) +
     labs(title = "Training Data", subtitle = sub.title)
 
-
+  if(!is.null(ylim)){
+    P1 <- P1 + ylim(ylim)
+  }
 
   # test data ---------------------------------------------------------------
 
@@ -568,6 +583,9 @@ overimp1D_qqline <- function(obj, var.name, train.data, test.data = NULL) {
       scale_color_manual(values = testcolor) +
       labs(title = "Test Data", subtitle = sub.title)
 
+    if(!is.null(ylim)){
+      P2 <- P2 + ylim(ylim)
+    }
 
     gridExtra::grid.arrange(P1, P2, ncol = 2)
   } else {
