@@ -1,5 +1,5 @@
 #' Inspection plot of multiply imputed values for three variables
-#' @description Plot observed values with m sets of imputed values for two specified numeric variables and a factor using \pkg{ggplot2}.
+#' @description High-level function to plot observed values with m sets of imputed values for three variables using \pkg{ggplot2}.
 #' @param imputation.list A list of \code{m} imputed datasets returned by the \code{mixgb} imputer
 #' @param var.x A numeric variable on the x-axis
 #' @param var.y A numeric variable on the y-axis
@@ -8,7 +8,19 @@
 #' @param true.data The true data without missing values. In general, this is unknown. Only use for simulation studies.
 #' @param color.pal A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)
 #' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
+#' @param point.size The size of point. Default: 1.5
 #' @export
+#' @examples
+#' # obtain m multiply datasets
+#' library(mixgb)
+#' imputed.data <- mixgb(data = nhanes3, m = 2)
+#'
+#' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
+#' # conditional on "HSSEX"
+#' plot3D(
+#'   imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
+#'   con.fac = "HSSEX", original.data = nhanes3
+#' )
 plot3D<- function(imputation.list, var.x, var.y, con.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
   Types <- feature_type(imputation.list[[1]])
 
@@ -43,6 +55,7 @@ plot3D<- function(imputation.list, var.x, var.y, con.fac, original.data, true.da
 #' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
 #' @param point.size The size of point. Default: 1.5
 #' @importFrom scales hue_pal
+#' @importFrom dplyr mutate_at
 #' @importFrom tidyr pivot_longer
 #' @importFrom rlang .data
 #' @importFrom ggplot2 ggplot aes geom_point facet_grid labs scale_shape_manual scale_color_manual scale_fill_manual scale_y_continuous guides theme sec_axis guide_legend element_text element_rect
@@ -53,7 +66,8 @@ plot3D<- function(imputation.list, var.x, var.y, con.fac, original.data, true.da
 #' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3, m = 2)
 #'
-#' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD" conditional on "HSSEX"
+#' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
+#' # conditional on "HSSEX"
 #' plot_2num1fac(
 #'   imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
 #'   con.fac = "HSSEX", original.data = nhanes3
@@ -133,6 +147,7 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
 #' @param true.data The true data without missing values. In general, this is unknown. Only use for simulation studies.
 #' @param color.pal A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)
 #' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
+#' @param point.size The size of point. Default: 1.5
 #' @importFrom scales hue_pal
 #' @importFrom tidyr pivot_longer
 #' @importFrom rlang .data
@@ -147,7 +162,8 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
 #' library(mixgb)
 #' imputed.data <- mixgb(data = nhanes3_NA, m = 5)
 #'
-#' # plot the multiply imputed values for variables "BMPRECUM" versus "HSSEX" conditional on "DMARETHN"
+#' # plot the multiply imputed values for variables "BMPRECUM" versus "HSSEX"
+#' # conditional on "DMARETHN"
 #' plot_1num2fac(
 #'   imputation.list = imputed.data, var.fac = "HSSEX", var.num = "BMPRECUM",
 #'   con.fac = "DMARETHN", original.data = nhanes3_NA

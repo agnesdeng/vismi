@@ -39,8 +39,10 @@ vignettes/*.pdf
 .Renviron
 .Rproj.user
 .Rdata
-.DS_Store
 inst/doc
 
 # Windows desktop hidden file
 desktop.ini
+
+# Mac
+.DS_Store

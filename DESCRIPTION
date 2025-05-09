@@ -8,11 +8,19 @@ Authors@R: c(
     person(given = "Thomas", family = "Lumley", email = "t.lumley@auckland.ac.nz",
            role = "ths")
   ) 
-Description: Diagnostic functions for exploring multiply-imputed data using 'ggplot2'.
+Description: A comprehensive suite of visual diagnostic functions for assessing the 
+    quality of multiply-imputed data. 'vismi' provides functions for inspecting 
+    distribution characteristics and overimputation diagnostics. Flexible graphics 
+    functions are powered by 'ggplot2', 'ggridges' and 'trelliscopejs'. Details of
+    this work can be found Deng (2024) <https://hdl.handle.net/2292/70308>.
+URL: https://github.com/agnesdeng/vismi,
+     https://agnesdeng.github.io/vismi/
+BugReports: https://github.com/agnesdeng/vismi/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    dplyr,
     data.table,
     ggplot2 (>= 3.4.1),
     ggridges,
@@ -31,5 +39,5 @@ Suggests:
     mixgb (>= 1.4.0),
     miae,
 Depends: R (>= 3.5.0)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr

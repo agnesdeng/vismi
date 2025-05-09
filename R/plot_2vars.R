@@ -1,5 +1,5 @@
 #' Inspection plot of multiply imputed values for two variables
-#' @description Plot observed values vesus m sets of imputed values for two specified variables.
+#' @description High-level function to plot observed values vesus m sets of imputed values for two specified variables.
 #' @param imputation.list A list of \code{m} imputed datasets returned by the \code{mixgb} imputer
 #' @param var.x A numeric variable on the x-axis
 #' @param var.y A numeric variable on the y-axis
@@ -14,7 +14,16 @@
 #' @importFrom ggplot2 ggplot aes vars geom_point facet_grid labs scale_shape_manual scale_color_manual scale_fill_manual guides theme guide_legend element_text element_rect
 #' @return Scatter plots for two numeric/integer variable
 #' @export
-
+#' @examples
+#' # obtain m multiply datasets
+#' library(mixgb)
+#' imputed.data <- mixgb(data = nhanes3, m = 2)
+#'
+#' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
+#' plot2D(
+#'   imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
+#'   original.data = nhanes3
+#' )
 plot2D <- function(imputation.list, var.x, var.y, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
 
   Types <- feature_type(imputation.list[[1]])
@@ -51,6 +60,7 @@ plot2D <- function(imputation.list, var.x, var.y, original.data, true.data = NUL
 #' @param true.data The true data without missing values. In general, this is unknown. Only use for simulation studies.
 #' @param color.pal A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)
 #' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
+#' @param point.size The size of point. Default: 1.5
 #' @importFrom scales hue_pal
 #' @importFrom tidyr pivot_longer
 #' @importFrom rlang .data
@@ -128,6 +138,7 @@ plot_2num <- function(imputation.list, var.x, var.y, original.data, true.data = 
 #' @param true.data The true data without missing values. In general, this is unknown. Only use for simulation studies.
 #' @param color.pal A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)
 #' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
+#' @param point.size The size of point. Default: 1.5
 #' @importFrom scales hue_pal
 #' @importFrom dplyr mutate_at
 #' @importFrom tidyr pivot_longer
