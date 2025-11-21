@@ -32,6 +32,8 @@ plot_1num2fac(
 \item{color.pal}{A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)}
 
 \item{shape}{Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.}
+
+\item{point.size}{The size of point. Default: 1.5}
 }
 \value{
 Boxplots with overlaying data points
@@ -47,7 +49,8 @@ nhanes3_NA <- createNA(nhanes3, var.names = c("HSSEX", "DMARETHN"), p = 0.1)
 library(mixgb)
 imputed.data <- mixgb(data = nhanes3_NA, m = 5)
 
-# plot the multiply imputed values for variables "BMPRECUM" versus "HSSEX" conditional on "DMARETHN"
+# plot the multiply imputed values for variables "BMPRECUM" versus "HSSEX"
+# conditional on "DMARETHN"
 plot_1num2fac(
   imputation.list = imputed.data, var.fac = "HSSEX", var.num = "BMPRECUM",
   con.fac = "DMARETHN", original.data = nhanes3_NA

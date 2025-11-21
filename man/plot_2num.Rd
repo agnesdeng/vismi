@@ -29,6 +29,8 @@ plot_2num(
 \item{color.pal}{A vector of hex color codes for the observed and m sets of imputed values panels. The vector should be of length \code{m+1}. Default: NULL (use "gray40" for the observed panel, use ggplot2 default colors for other panels.)}
 
 \item{shape}{Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.}
+
+\item{point.size}{The size of point. Default: 1.5}
 }
 \value{
 Scatter plots for two numeric/integer variable
