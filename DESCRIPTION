@@ -1,7 +1,7 @@
 Package: vismi
 Type: Package
 Title: Visualisation Tools for Multiple Imputation
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person(given = "Yongshi", family ="Deng", email = "yongshi.deng@auckland.ac.nz",
            role = c("aut","cre"),comment =c(ORCID = "0000-0001-5845-859X")),
@@ -19,25 +19,24 @@ BugReports: https://github.com/agnesdeng/vismi/issues
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 4.2.0)
 Imports: 
-    dplyr,
     data.table,
+    dplyr,
+    forcats,
     ggplot2 (>= 4.0.1),
     ggridges,
-    forcats,
+    gridExtra,
     magrittr,
-    rlang,
-    scales,
-    tidyr,
-    tibble,
     mice,
     mixgb,
-    utils,
-    gridExtra,
-    trelliscopejs
+    rlang,
+    scales,
+    tibble,
+    tidyr,
+    trelliscopejs,
+    utils
 Suggests: 
     knitr,
-    rmarkdown
-Depends: R (>= 4.5.0)
-RoxygenNote: 7.3.3
-VignetteBuilder: knitr
+    rmarkdown,
+    testthat (>= 3.0.0)

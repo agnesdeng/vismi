@@ -76,39 +76,8 @@ overimp1D_ridge <- function(obj, var.name, train.data, test.data = NULL) {
   }
 
 
-  addNA.m <- obj$params$addNA.m
-
-
-
-  imputed.traindata <- obj$imputed.traindata
-
-
-
-
-
-
-  # train data --------------------------------------------------------------
-  imputed <- lapply(imputed.traindata, function(x) x[[var.name]][addNA.m[, var.name]])
-  Nrow <- length(imputed[[1]])
-
-  L <- unlist(imputed)
-  Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-  # original observed values for this variable
-  if (is.data.table(train.data) | is_tibble(train.data)) {
-    # data.table
-    train.data <- as.data.frame(train.data)
-  }
-
-  # data.frame
-  True <- train.data[, var.name][addNA.m[, var.name]]
-
-  combine.df <- cbind.data.frame(Mat, True)
-  colnames(combine.df) <- c(paste0("m", 1:m), "True")
-  long.df <- pivot_longer(data = combine.df, cols = everything(), names_to = "set", values_to = var.name)
-
-
-  sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+  long.df <- .overimp1d_long_data(obj, var.name, train.data, dataset = "train")
+  sub.title <- .overimp1d_subtitle(m, var.name)
 
   # blue. "#0c71ff", "#bcd8ff"
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
@@ -132,30 +101,7 @@ overimp1D_ridge <- function(obj, var.name, train.data, test.data = NULL) {
   # test data ---------------------------------------------------------------
 
   if (!is.null(test.data)) {
-    addNA.m2 <- obj$params$addNA.m2
-    imputed.testdata <- obj$imputed.testdata
-
-
-    imputed <- lapply(imputed.testdata, function(x) x[[var.name]][addNA.m2[, var.name]])
-    Nrow <- length(imputed[[1]])
-
-    L <- unlist(imputed)
-    Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-    # originally observed values
-    if (is.data.table(test.data) | is_tibble(test.data)) {
-      # data.table
-      test.data <- as.data.frame(test.data)
-    }
-
-
-    True <- test.data[, var.name][addNA.m2[, var.name]]
-
-    combine.df2 <- cbind.data.frame(Mat, True)
-    colnames(combine.df2) <- c(paste0("m", 1:m), "True")
-    long.df2 <- pivot_longer(data = combine.df2, cols = everything(), names_to = "set", values_to = var.name)
-
-    sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+    long.df2 <- .overimp1d_long_data(obj, var.name, test.data, dataset = "test")
 
 
     long.df2$set <- factor(long.df2$set, levels = c(paste0("m", m:1), "True"))
@@ -193,7 +139,7 @@ overimp1D_ridge <- function(obj, var.name, train.data, test.data = NULL) {
 #' @importFrom tidyr pivot_longer
 #' @importFrom rlang .data
 #' @importFrom ggridges geom_density_ridges theme_ridges
-#' @importFrom ggplot2 ggplot_build ggplot ylim aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
+#' @importFrom ggplot2 ggplot_build ggplot aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
 overimp1D_density <- function(obj, var.name, train.data, test.data = NULL,ylim = NULL) {
   Names <- obj$params$Names
@@ -208,39 +154,8 @@ overimp1D_density <- function(obj, var.name, train.data, test.data = NULL,ylim =
     stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp1D_bar() or overimp1D_dodge() instead.")
   }
 
-  addNA.m <- obj$params$addNA.m
-
-
-
-  imputed.traindata <- obj$imputed.traindata
-
-
-
-
-
-
-  # train data --------------------------------------------------------------
-  imputed <- lapply(imputed.traindata, function(x) x[[var.name]][addNA.m[, var.name]])
-  Nrow <- length(imputed[[1]])
-
-  L <- unlist(imputed)
-  Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-  # original observed values for this variable
-  if (is.data.table(train.data) | is_tibble(train.data)) {
-    # data.table
-    train.data <- as.data.frame(train.data)
-  }
-
-  # data.frame
-  True <- train.data[, var.name][addNA.m[, var.name]]
-
-  combine.df <- cbind.data.frame(Mat, True)
-  colnames(combine.df) <- c(paste0("m", 1:m), "True")
-  long.df <- pivot_longer(data = combine.df, cols = everything(), names_to = "set", values_to = var.name)
-
-
-  sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+  long.df <- .overimp1d_long_data(obj, var.name, train.data, dataset = "train")
+  sub.title <- .overimp1d_subtitle(m, var.name)
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
@@ -259,30 +174,7 @@ overimp1D_density <- function(obj, var.name, train.data, test.data = NULL,ylim =
   # test data ---------------------------------------------------------------
 
   if (!is.null(test.data)) {
-    addNA.m2 <- obj$params$addNA.m2
-    imputed.testdata <- obj$imputed.testdata
-
-
-    imputed <- lapply(imputed.testdata, function(x) x[[var.name]][addNA.m2[, var.name]])
-    Nrow <- length(imputed[[1]])
-
-    L <- unlist(imputed)
-    Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-    # originally observed values
-    if (is.data.table(test.data) | is_tibble(test.data)) {
-      # data.table
-      test.data <- as.data.frame(test.data)
-    }
-
-
-    True <- test.data[, var.name][addNA.m2[, var.name]]
-
-    combine.df2 <- cbind.data.frame(Mat, True)
-    colnames(combine.df2) <- c(paste0("m", 1:m), "True")
-    long.df2 <- pivot_longer(data = combine.df2, cols = everything(), names_to = "set", values_to = var.name)
-
-    sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+    long.df2 <- .overimp1d_long_data(obj, var.name, test.data, dataset = "test")
 
 
     long.df2$set <- factor(long.df2$set, levels = c(paste0("m", m:1), "True"))
@@ -324,7 +216,7 @@ overimp1D_density <- function(obj, var.name, train.data, test.data = NULL,ylim =
 #' @importFrom tidyr pivot_longer
 #' @importFrom rlang .data
 #' @importFrom ggridges geom_density_ridges theme_ridges
-#' @importFrom ggplot2 ggplot_build ggplot ylim stat_qq aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
+#' @importFrom ggplot2 ggplot_build ggplot ylim aes vars stat_qq geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
 overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size = 1,ylim = NULL) {
   Names <- obj$params$Names
@@ -339,39 +231,8 @@ overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size
     stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp1D_bar() or overimp1D_dodge() instead.")
   }
 
-  addNA.m <- obj$params$addNA.m
-
-
-
-  imputed.traindata <- obj$imputed.traindata
-
-
-
-
-
-
-  # train data --------------------------------------------------------------
-  imputed <- lapply(imputed.traindata, function(x) x[[var.name]][addNA.m[, var.name]])
-  Nrow <- length(imputed[[1]])
-
-  L <- unlist(imputed)
-  Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-  # original observed values for this variable
-  if (is.data.table(train.data) | is_tibble(train.data)) {
-    # data.table
-    train.data <- as.data.frame(train.data)
-  }
-
-  # data.frame
-  True <- train.data[, var.name][addNA.m[, var.name]]
-
-  combine.df <- cbind.data.frame(Mat, True)
-  colnames(combine.df) <- c(paste0("m", 1:m), "True")
-  long.df <- pivot_longer(data = combine.df, cols = everything(), names_to = "set", values_to = var.name)
-
-
-  sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+  long.df <- .overimp1d_long_data(obj, var.name, train.data, dataset = "train")
+  sub.title <- .overimp1d_subtitle(m, var.name)
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
@@ -399,30 +260,7 @@ overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size
   # test data ---------------------------------------------------------------
 
   if (!is.null(test.data)) {
-    addNA.m2 <- obj$params$addNA.m2
-    imputed.testdata <- obj$imputed.testdata
-
-
-    imputed <- lapply(imputed.testdata, function(x) x[[var.name]][addNA.m2[, var.name]])
-    Nrow <- length(imputed[[1]])
-
-    L <- unlist(imputed)
-    Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-    # originally observed values
-    if (is.data.table(test.data) | is_tibble(test.data)) {
-      # data.table
-      test.data <- as.data.frame(test.data)
-    }
-
-
-    True <- test.data[, var.name][addNA.m2[, var.name]]
-
-    combine.df2 <- cbind.data.frame(Mat, True)
-    colnames(combine.df2) <- c(paste0("m", 1:m), "True")
-    long.df2 <- pivot_longer(data = combine.df2, cols = everything(), names_to = "set", values_to = var.name)
-
-    sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+    long.df2 <- .overimp1d_long_data(obj, var.name, test.data, dataset = "test")
 
 
     long.df2$set <- factor(long.df2$set, levels = c(paste0("m", m:1), "True"))
@@ -467,7 +305,7 @@ overimp1D_qq <- function(obj, var.name, train.data, test.data = NULL, point.size
 #' @importFrom tidyr pivot_longer
 #' @importFrom rlang .data
 #' @importFrom ggridges geom_density_ridges theme_ridges
-#' @importFrom ggplot2 ggplot_build ggplot stat_qq_line aes vars geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
+#' @importFrom ggplot2 ggplot_build ggplot ylim aes vars stat_qq_line geom_bar geom_density coord_cartesian facet_grid labs scale_color_manual scale_fill_manual scale_alpha_discrete guides theme element_text element_blank
 #' @export
 overimp1D_qqline <- function(obj, var.name, train.data, test.data = NULL,ylim = NULL) {
   Names <- obj$params$Names
@@ -482,39 +320,8 @@ overimp1D_qqline <- function(obj, var.name, train.data, test.data = NULL,ylim = 
     stop("The variable name specified in `var.name` is not numeric or integer. Please use overimp1D_bar() or overimp1D_dodge() instead.")
   }
 
-  addNA.m <- obj$params$addNA.m
-
-
-
-  imputed.traindata <- obj$imputed.traindata
-
-
-
-
-
-
-  # train data --------------------------------------------------------------
-  imputed <- lapply(imputed.traindata, function(x) x[[var.name]][addNA.m[, var.name]])
-  Nrow <- length(imputed[[1]])
-
-  L <- unlist(imputed)
-  Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-  # original observed values for this variable
-  if (is.data.table(train.data) | is_tibble(train.data)) {
-    # data.table
-    train.data <- as.data.frame(train.data)
-  }
-
-  # data.frame
-  True <- train.data[, var.name][addNA.m[, var.name]]
-
-  combine.df <- cbind.data.frame(Mat, True)
-  colnames(combine.df) <- c(paste0("m", 1:m), "True")
-  long.df <- pivot_longer(data = combine.df, cols = everything(), names_to = "set", values_to = var.name)
-
-
-  sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+  long.df <- .overimp1d_long_data(obj, var.name, train.data, dataset = "train")
+  sub.title <- .overimp1d_subtitle(m, var.name)
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
@@ -539,30 +346,7 @@ overimp1D_qqline <- function(obj, var.name, train.data, test.data = NULL,ylim = 
   # test data ---------------------------------------------------------------
 
   if (!is.null(test.data)) {
-    addNA.m2 <- obj$params$addNA.m2
-    imputed.testdata <- obj$imputed.testdata
-
-
-    imputed <- lapply(imputed.testdata, function(x) x[[var.name]][addNA.m2[, var.name]])
-    Nrow <- length(imputed[[1]])
-
-    L <- unlist(imputed)
-    Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-    # originally observed values
-    if (is.data.table(test.data) | is_tibble(test.data)) {
-      # data.table
-      test.data <- as.data.frame(test.data)
-    }
-
-
-    True <- test.data[, var.name][addNA.m2[, var.name]]
-
-    combine.df2 <- cbind.data.frame(Mat, True)
-    colnames(combine.df2) <- c(paste0("m", 1:m), "True")
-    long.df2 <- pivot_longer(data = combine.df2, cols = everything(), names_to = "set", values_to = var.name)
-
-    sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+    long.df2 <- .overimp1d_long_data(obj, var.name, test.data, dataset = "test")
 
 
     long.df2$set <- factor(long.df2$set, levels = c(paste0("m", m:1), "True"))
@@ -614,43 +398,8 @@ overimp1D_bar <- function(obj, var.name, train.data, test.data = NULL) {
     stop("The variable name specified in `var.name` is numeric. Please use overimp1D_ridge(), overimp1D_density(), overimp1D_qq(), overimp1D_qqline() instead.")
   }
 
-
-
-
-
-  addNA.m <- obj$params$addNA.m
-
-
-
-  imputed.traindata <- obj$imputed.traindata
-
-
-
-
-
-
-  # train data --------------------------------------------------------------
-  imputed <- lapply(imputed.traindata, function(x) x[[var.name]][addNA.m[, var.name]])
-  Nrow <- length(imputed[[1]])
-
-  L <- unlist(imputed)
-  Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-  # original observed values for this variable
-  if (is.data.table(train.data) | is_tibble(train.data)) {
-    # data.table
-    train.data <- as.data.frame(train.data)
-  }
-
-  # data.frame
-  True <- train.data[, var.name][addNA.m[, var.name]]
-
-  combine.df <- cbind.data.frame(Mat, True)
-  colnames(combine.df) <- c(paste0("m", 1:m), "True")
-  long.df <- pivot_longer(data = combine.df, cols = everything(), names_to = "set", values_to = var.name)
-
-
-  sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+  long.df <- .overimp1d_long_data(obj, var.name, train.data, dataset = "train")
+  sub.title <- .overimp1d_subtitle(m, var.name)
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
@@ -682,30 +431,7 @@ overimp1D_bar <- function(obj, var.name, train.data, test.data = NULL) {
   # test data ---------------------------------------------------------------
 
   if (!is.null(test.data)) {
-    addNA.m2 <- obj$params$addNA.m2
-    imputed.testdata <- obj$imputed.testdata
-
-
-    imputed <- lapply(imputed.testdata, function(x) x[[var.name]][addNA.m2[, var.name]])
-    Nrow <- length(imputed[[1]])
-
-    L <- unlist(imputed)
-    Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-    # originally observed values
-    if (is.data.table(test.data) | is_tibble(test.data)) {
-      # data.table
-      test.data <- as.data.frame(test.data)
-    }
-
-
-    True <- test.data[, var.name][addNA.m2[, var.name]]
-
-    combine.df2 <- cbind.data.frame(Mat, True)
-    colnames(combine.df2) <- c(paste0("m", 1:m), "True")
-    long.df2 <- pivot_longer(data = combine.df2, cols = everything(), names_to = "set", values_to = var.name)
-
-    sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+    long.df2 <- .overimp1d_long_data(obj, var.name, test.data, dataset = "test")
 
 
     long.df2$set <- factor(long.df2$set, levels = c(paste0("m", m:1), "True"))
@@ -765,41 +491,8 @@ overimp1D_dodge <- function(obj, var.name, train.data, test.data = NULL) {
   if (Types[var.name] == "numeric") {
     stop("The variable name specified in `var.name` is numeric. Please use overimp1D_ridge(), overimp1D_density(), overimp1D_qq(), overimp1D_qqline() instead.")
   }
-
-
-  addNA.m <- obj$params$addNA.m
-
-
-
-  imputed.traindata <- obj$imputed.traindata
-
-
-
-
-
-
-  # train data --------------------------------------------------------------
-  imputed <- lapply(imputed.traindata, function(x) x[[var.name]][addNA.m[, var.name]])
-  Nrow <- length(imputed[[1]])
-
-  L <- unlist(imputed)
-  Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-  # original observed values for this variable
-  if (is.data.table(train.data) | is_tibble(train.data)) {
-    # data.table
-    train.data <- as.data.frame(train.data)
-  }
-
-  # data.frame
-  True <- train.data[, var.name][addNA.m[, var.name]]
-
-  combine.df <- cbind.data.frame(Mat, True)
-  colnames(combine.df) <- c(paste0("m", 1:m), "True")
-  long.df <- pivot_longer(data = combine.df, cols = everything(), names_to = "set", values_to = var.name)
-
-
-  sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+  long.df <- .overimp1d_long_data(obj, var.name, train.data, dataset = "train")
+  sub.title <- .overimp1d_subtitle(m, var.name)
 
   # blue
   long.df$set <- factor(long.df$set, levels = c(paste0("m", m:1), "True"))
@@ -839,30 +532,7 @@ overimp1D_dodge <- function(obj, var.name, train.data, test.data = NULL) {
   # test data ---------------------------------------------------------------
 
   if (!is.null(test.data)) {
-    addNA.m2 <- obj$params$addNA.m2
-    imputed.testdata <- obj$imputed.testdata
-
-
-    imputed <- lapply(imputed.testdata, function(x) x[[var.name]][addNA.m2[, var.name]])
-    Nrow <- length(imputed[[1]])
-
-    L <- unlist(imputed)
-    Mat <- matrix(L, nrow = Nrow, ncol = m)
-
-    # originally observed values
-    if (is.data.table(test.data) | is_tibble(test.data)) {
-      # data.table
-      test.data <- as.data.frame(test.data)
-    }
-
-
-    True <- test.data[, var.name][addNA.m2[, var.name]]
-
-    combine.df2 <- cbind.data.frame(Mat, True)
-    colnames(combine.df2) <- c(paste0("m", 1:m), "True")
-    long.df2 <- pivot_longer(data = combine.df2, cols = everything(), names_to = "set", values_to = var.name)
-
-    sub.title <- paste(paste("Distribution of", m, "imputed values"), paste("in variable", var.name), sep = "\n")
+    long.df2 <- .overimp1d_long_data(obj, var.name, test.data, dataset = "test")
 
 
     long.df2$set <- factor(long.df2$set, levels = c(paste0("m", m:1), "True"))
