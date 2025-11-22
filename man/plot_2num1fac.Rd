@@ -41,15 +41,3 @@ Scatter plots
 \description{
 Plot observed values with m sets of imputed values for two specified numeric variables and a factor using \pkg{ggplot2}.
 }
-\examples{
-# obtain m multiply datasets
-library(mixgb)
-imputed.data <- mixgb(data = nhanes3, m = 2)
-
-# plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
-# conditional on "HSSEX"
-plot_2num1fac(
-  imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
-  con.fac = "HSSEX", original.data = nhanes3
-)
-}

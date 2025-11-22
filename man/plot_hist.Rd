@@ -29,14 +29,3 @@ Histogram with density plots
 \description{
 Plot histograms with density curves of observed values versus m sets of imputed values for a specified numeric variable using \pkg{ggplot2}.
 }
-\examples{
-# obtain m multiply datasets
-params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
-
-# plot the multiply imputed values for variable "BMPHEAD"
-plot_hist(
-  imputation.list = imputed.data, var.name = "BMPHEAD",
-  original.data = nhanes3
-)
-}

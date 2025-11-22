@@ -15,16 +15,7 @@
 #' @importFrom ggplot2 ggplot aes vars geom_histogram geom_density facet_grid labs scale_color_manual scale_fill_manual guides theme element_text after_stat
 #' @return Histogram with density plots
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-#' imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
-#'
-#' # plot the multiply imputed values for variable "BMPHEAD"
-#' plot_hist(
-#'   imputation.list = imputed.data, var.name = "BMPHEAD",
-#'   original.data = nhanes3
-#' )
+
 plot_density_facet <- function(imputation.lists, methods, var.name, original.data, true.data = NULL, color.pal = NULL,xlim = NULL) {
 
   n.methods<-length(methods)
@@ -93,16 +84,6 @@ plot_density_facet <- function(imputation.lists, methods, var.name, original.dat
 #' @importFrom ggplot2 ggplot aes vars geom_histogram geom_density facet_grid labs scale_color_manual scale_fill_manual guides theme element_text after_stat
 #' @return Histogram with density plots
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-#' imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
-#'
-#' # plot the multiply imputed values for variable "BMPHEAD"
-#' plot_hist(
-#'   imputation.list = imputed.data, var.name = "BMPHEAD",
-#'   original.data = nhanes3
-#' )
 plot_2num_facet <- function(imputation.lists, methods, var.x, var.y, original.data, true.data = NULL, color.pal = NULL,xlim = NULL) {
 
   n.methods<-length(methods)

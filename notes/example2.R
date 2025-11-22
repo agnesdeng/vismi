@@ -111,16 +111,19 @@ library(ggplot2)
 library(gapminder)
 
 
-qplot(year, lifeExp, data = subset(gapminder, continent == "Europe")) +
+ggplot(data = subset(gapminder, continent == "Europe"), aes(x = year, y = lifeExp)) +
+  geom_point() +
   facet_wrap(~ country + continent) +
   theme_bw()
 
 
-qplot(year, lifeExp, data = gapminder) +
+ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
+  geom_point() +
   xlim(1948, 2011) + ylim(10, 95) + theme_bw() +
   facet_wrap(~ country + continent)
 
-qplot(year, lifeExp, data = gapminder) +
+ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
+  geom_point() +
   xlim(1948, 2011) + ylim(10, 95) + theme_bw() +
   facet_trelliscope(~ country + continent, nrow = 2, ncol = 7, width = 300)
 

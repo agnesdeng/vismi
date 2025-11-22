@@ -330,7 +330,7 @@ plot1D.entriesV2 <- function(obj, var.names = c(1, 2), plot.all = FALSE, train.d
       Blues <- rev(Blues)
 
       # true values as points and bars
-      P <- ggplot(data = long.df, aes_string(x = Names[k])) +
+      P <- ggplot(data = long.df, aes(x = .data[[Names[k]]])) +
         geom_density_ridges(scale = 4, rel_min_height = 0.005, size = 0.3, alpha = 0.9, aes(y = entry, fill = entry)) +
         geom_vline(xintercept = 0, colour = "navy", linetype = "longdash") +
         scale_fill_manual(values = Blues) +
@@ -410,7 +410,7 @@ plot1D.entriesV2 <- function(obj, var.names = c(1, 2), plot.all = FALSE, train.d
 
 
 
-      P <- ggplot(data = long.df, aes_string(x = "entry", fill = Names[k])) +
+      P <- ggplot(data = long.df, aes(x = .data[["entry"]], fill = .data[[Names[k]]])) +
         geom_bar(position = "fill") +
         scale_fill_brewer(palette = "Set2") +
         geom_text(data = true.df, aes(label = true.df[, Names[k]], x = entry, y = pos), colour = "navy") +
@@ -482,7 +482,7 @@ plot1D.entriesV2 <- function(obj, var.names = c(1, 2), plot.all = FALSE, train.d
       # wrong: xrange=ggplot_build(obj)$layout$panel_scales_x[[1]]$range$range
 
       # true values as points and bars
-      P <- ggplot(data = long.df2, aes_string(x = Names[k])) +
+      P <- ggplot(data = long.df2, aes(x = .data[[Names[k]]])) +
         geom_density_ridges(scale = 4, rel_min_height = 0.005, size = 0.3, alpha = 0.9, aes(y = entry, fill = entry)) +
         geom_vline(xintercept = 0, colour = "red3", linetype = "longdash") +
         scale_fill_manual(values = Reds) +
@@ -564,7 +564,7 @@ plot1D.entriesV2 <- function(obj, var.names = c(1, 2), plot.all = FALSE, train.d
       true.df2$pos <- pos
 
 
-      P <- ggplot(data = long.df2, aes_string(x = "entry", fill = Names[k])) +
+      P <- ggplot(data = long.df2, aes(x = .data[["entry"]], fill = .data[[Names[k]]])) +
         geom_bar(position = "fill") +
         scale_fill_brewer(palette = "Set2") +
         geom_text(data = true.df2, aes(label = true.df2[, Names[k]], x = entry, y = pos), colour = "red3") +
@@ -672,7 +672,7 @@ plot1D.imputations <- function(obj, var.names = c(1, 2), plot.all = FALSE, train
       traincolor <- c(Blues, "#030303")
 
       # true values as points and bars
-      P <- ggplot(data = long.df, aes_string(x = Names[k])) +
+      P <- ggplot(data = long.df, aes(x = .data[[Names[k]]])) +
         geom_density_ridges(alpha = 0.5, aes(y = set, fill = set)) +
         scale_fill_manual(values = traincolor, guide = guide_legend(reverse = TRUE)) +
         theme_ridges(center_axis_labels = TRUE) +
@@ -687,7 +687,7 @@ plot1D.imputations <- function(obj, var.names = c(1, 2), plot.all = FALSE, train
       traincolor <- c("#030303", Blues)
 
 
-      P <- ggplot(data = long.df, aes_string(x = Names[k], alpha = Names[k])) +
+      P <- ggplot(data = long.df, aes(x = .data[[Names[k]]], alpha = .data[[Names[k]]])) +
         geom_bar(aes(fill = set)) +
         scale_alpha_discrete(range = c(0.5, 1)) +
         # scale_alpha_manual(values =seq(0.5,1,length.out=nlevels(combine.df$value)))+
@@ -743,7 +743,7 @@ plot1D.imputations <- function(obj, var.names = c(1, 2), plot.all = FALSE, train
       # xrange=ggplot_build(obj)$layout$panel_scales_x[[1]]$range$range
 
       # true values as points and bars
-      P <- ggplot(data = long.df2, aes_string(x = Names[k])) +
+      P <- ggplot(data = long.df2, aes(x = .data[[Names[k]]])) +
         geom_density_ridges(alpha = 0.5, aes(y = set, fill = set)) +
         coord_cartesian(xlim = xrange) +
         scale_fill_manual(values = testcolor, guide = guide_legend(reverse = TRUE)) +
@@ -757,7 +757,7 @@ plot1D.imputations <- function(obj, var.names = c(1, 2), plot.all = FALSE, train
       testcolor <- c("#030303", Reds)
 
 
-      P <- ggplot(data = long.df2, aes_string(x = Names[k], alpha = Names[k])) +
+      P <- ggplot(data = long.df2, aes(x = .data[[Names[k]]], alpha = .data[[Names[k]]])) +
         geom_bar(aes(fill = set)) +
         scale_alpha_discrete(range = c(0.5, 1)) +
         facet_wrap(~set, nrow = M + 1) +
@@ -864,7 +864,7 @@ plot2D <- function(obj, var.names = c(1, 2), train.data = trainNA.df, test.data 
 
     sub.title <- paste("Distribution of overimputed values:", paste(var.names[2], "vs", var.names[1]), sep = "\n")
 
-    Ptrain <- ggplot(data = combine.df, aes_string(x = var.names[1], y = var.names[2])) +
+    Ptrain <- ggplot(data = combine.df, aes(x = .data[[var.names[1]]], y = .data[[var.names[2]]])) +
       geom_point(alpha = 0.6, aes(colour = factor(M))) +
       facet_grid(rows = vars(M)) +
       scale_colour_manual(values = traincolor) +
@@ -875,7 +875,7 @@ plot2D <- function(obj, var.names = c(1, 2), train.data = trainNA.df, test.data 
     sub.title <- paste("Distribution of overimputed values:", paste(var.names[2], "vs", var.names[1]), sep = "\n")
 
     if (plotfac.type == 1) {
-      Ptrain <- ggplot(data = combine.df, aes_string(x = var.names[1], fill = var.names[2])) +
+      Ptrain <- ggplot(data = combine.df, aes(x = .data[[var.names[1]]], fill = .data[[var.names[2]]])) +
         geom_bar() +
         facet_wrap(~M, nrow = M + 1) +
         labs(title = "Training Data", subtitle = sub.title)
@@ -891,7 +891,7 @@ plot2D <- function(obj, var.names = c(1, 2), train.data = trainNA.df, test.data 
         k <- k + 1
       }
     } else {
-      Ptrain <- ggplot(data = combine.df, aes_string(x = var.names[1], alpha = var.names[2])) +
+      Ptrain <- ggplot(data = combine.df, aes(x = .data[[var.names[1]]], alpha = .data[[var.names[2]]])) +
         geom_bar(aes(fill = M, color = M), size = 0.2) +
         scale_alpha_discrete(range = c(0.1, 1)) +
         facet_wrap(~M, nrow = M + 1) +
@@ -907,7 +907,7 @@ plot2D <- function(obj, var.names = c(1, 2), train.data = trainNA.df, test.data 
     yaxis.idx <- which(Types[var.names] == "numeric" | Types[var.names] == "integer")
     sub.title <- paste("Distribution of overimputed values:", paste(var.names[yaxis.idx], "vs", var.names[xaxis.idx]), sep = "\n")
 
-    Ptrain <- ggplot(data = combine.df, aes_string(x = var.names[xaxis.idx], y = var.names[yaxis.idx])) +
+    Ptrain <- ggplot(data = combine.df, aes(x = .data[[var.names[xaxis.idx]]], y = .data[[var.names[yaxis.idx]]])) +
       geom_jitter(position = position_jitter(width = 0.05), aes(colour = factor(M)), alpha = 0.7) +
       geom_boxplot(alpha = 0.7, aes(fill = factor(M), color = factor(M))) +
       facet_grid(rows = vars(M)) +
@@ -952,7 +952,7 @@ plot2D <- function(obj, var.names = c(1, 2), train.data = trainNA.df, test.data 
     # both numeric
     sub.title <- paste("Distribution of overimputed values:", paste(var.names[2], "vs", var.names[1]), sep = "\n")
 
-    Ptest <- ggplot(data = combine.df2, aes_string(x = var.names[1], y = var.names[2])) +
+    Ptest <- ggplot(data = combine.df2, aes(x = .data[[var.names[1]]], y = .data[[var.names[2]]])) +
       geom_point(alpha = 0.6, aes(colour = factor(M))) +
       coord_cartesian(xlim = xrange, ylim = yrange) +
       facet_grid(rows = vars(M)) +
@@ -967,7 +967,7 @@ plot2D <- function(obj, var.names = c(1, 2), train.data = trainNA.df, test.data 
     sub.title <- paste("Distribution of overimputed values:", paste(var.names[2], "vs", var.names[1]), sep = "\n")
 
     if (plotfac.type == 1) {
-      Ptest <- ggplot(data = combine.df2, aes_string(x = var.names[1], fill = var.names[2])) +
+      Ptest <- ggplot(data = combine.df2, aes(x = .data[[var.names[1]]], fill = .data[[var.names[2]]])) +
         geom_bar() +
         facet_wrap(~M, nrow = M + 1) +
         labs(title = "Test Data", subtitle = sub.title)
@@ -986,7 +986,7 @@ plot2D <- function(obj, var.names = c(1, 2), train.data = trainNA.df, test.data 
 
       gridExtra::grid.arrange(g, g2, ncol = 2)
     } else {
-      Ptest <- ggplot(data = combine.df2, aes_string(x = var.names[1], alpha = var.names[2])) +
+      Ptest <- ggplot(data = combine.df2, aes(x = .data[[var.names[1]]], alpha = .data[[var.names[2]]])) +
         geom_bar(aes(fill = M, color = M), size = 0.2) +
         scale_alpha_discrete(range = c(0.1, 1)) +
         facet_wrap(~M, nrow = M + 1) +
@@ -1002,7 +1002,7 @@ plot2D <- function(obj, var.names = c(1, 2), train.data = trainNA.df, test.data 
     yaxis.idx <- which(Types[var.names] == "numeric" | Types[var.names] == "integer")
     sub.title <- paste("Distribution of overimputed values:", paste(var.names[yaxis.idx], "vs", var.names[xaxis.idx]), sep = "\n")
 
-    Ptest <- ggplot(data = combine.df2, aes_string(x = var.names[xaxis.idx], y = var.names[yaxis.idx])) +
+    Ptest <- ggplot(data = combine.df2, aes(x = .data[[var.names[xaxis.idx]]], y = .data[[var.names[yaxis.idx]]])) +
       geom_jitter(position = position_jitter(width = 0.05), aes(colour = factor(M)), alpha = 0.7) +
       geom_boxplot(alpha = 0.7, aes(fill = factor(M), color = factor(M))) +
       facet_grid(rows = vars(M)) +

@@ -23,9 +23,8 @@ Show m sets of imputed values for a specified variable.
 }
 \examples{
 #obtain m multiply datasets
-library(mixgb)
-mixgb.data <- mixgb(data = nhanes3, m = 3)
-
-imputed.BMPHEAD <- show_var(imputation.list = mixgb.data, var.name = "BMPHEAD",
-  original.data = nhanes3)
+# use precomputed imputed datasets shipped with the package
+data(imp_nhanes3_newborn)
+imputed.BMPHEAD <- show_var(imputation.list = imp_nhanes3_newborn, var.name = "BMPHEAD",
+  original.data = na_nhanes3_newborn)
 }

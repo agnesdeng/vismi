@@ -38,14 +38,3 @@ Scatter plots for two numeric/integer variable
 \description{
 Plot observed values vesus m sets of imputed values for two specified numeric variables using \pkg{ggplot2}.
 }
-\examples{
-# obtain m multiply datasets
-library(mixgb)
-imputed.data <- mixgb(data = nhanes3, m = 2)
-
-# plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
-plot_2num(
-  imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
-  original.data = nhanes3
-)
-}

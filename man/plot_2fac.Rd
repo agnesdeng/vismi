@@ -32,19 +32,3 @@ Scatter plots for two numeric/integer variable
 \description{
 Plot observed values with m sets of imputed values for two specified numeric variables using \pkg{ggplot2}.
 }
-\examples{
-\donttest{
-#create some extra missing values in factor variables "HSSEX" and "DMARETHN"
-nhanes3_NA<-createNA(nhanes3, var.names = c("HSSEX","DMARETHN"), p = 0.1)
-
-# obtain m multiply datasets
-library(mixgb)
-imputed.data <- mixgb(data = nhanes3_NA, m = 2)
-
-# plot the multiply imputed values for variables "HSSEX" versus "DMARETHN"
-plot_2fac(
-  imputation.list = imputed.data, var.fac1 = "DMARETHN", var.fac2 = "HSSEX",
-  original.data = nhanes3_NA
-)
-}
-}

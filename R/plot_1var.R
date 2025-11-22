@@ -10,14 +10,13 @@
 #' @param cat.plot The type of plot for categorical variables. Options are "bar" (default).
 #' @export
 #' @examples
-#' # obtain m multiply datasets
-#' params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-#' imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
-#'
+#' # use precomputed imputed datasets shipped with the package
+#' data(imp_nhanes3_newborn)
+#' data(na_nhanes3_newborn)
 #' # plot the multiply imputed values for variable "BMPHEAD"
 #' plot1D(
-#'   imputation.list = imputed.data, var.name = "BMPHEAD",
-#'   original.data = nhanes3
+#'   imputation.list = imp_nhanes3_newborn, var.name = "BMPHEAD",
+#'   original.data = na_nhanes3_newborn
 #' )
 plot1D<-function(imputation.list, var.name, original.data, true.data = NULL, color.pal = NULL,
                  num.plot = "hist", int.plot="bar", cat.plot = "bar"){
@@ -79,16 +78,6 @@ plot1D<-function(imputation.list, var.name, original.data, true.data = NULL, col
 #' @importFrom ggplot2 ggplot aes vars geom_histogram geom_density facet_grid labs scale_color_manual scale_fill_manual guides theme element_text after_stat
 #' @return Histogram with density plots
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-#' imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
-#'
-#' # plot the multiply imputed values for variable "BMPHEAD"
-#' plot_hist(
-#'   imputation.list = imputed.data, var.name = "BMPHEAD",
-#'   original.data = nhanes3
-#' )
 plot_density <- function(imputation.list, var.name, original.data, true.data = NULL, color.pal = NULL) {
   Types <- feature_type(imputation.list[[1]])
   if (Types[var.name] == "binary" | Types[var.name] == "multiclass") {
@@ -139,16 +128,6 @@ plot_density <- function(imputation.list, var.name, original.data, true.data = N
 #' @importFrom ggplot2 ggplot aes vars geom_histogram geom_density facet_grid labs scale_color_manual scale_fill_manual guides theme element_text after_stat
 #' @return Histogram with density plots
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-#' imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
-#'
-#' # plot the multiply imputed values for variable "BMPHEAD"
-#' plot_hist(
-#'   imputation.list = imputed.data, var.name = "BMPHEAD",
-#'   original.data = nhanes3
-#' )
 plot_hist <- function(imputation.list, var.name, original.data, true.data = NULL, color.pal = NULL) {
   Types <- feature_type(imputation.list[[1]])
   if (Types[var.name] == "binary" | Types[var.name] == "multiclass") {
@@ -215,16 +194,6 @@ plot_hist <- function(imputation.list, var.name, original.data, true.data = NULL
 #' @importFrom ggplot2 ggplot aes vars geom_point geom_jitter position_jitter geom_boxplot facet_grid labs scale_color_manual scale_fill_manual guides theme element_text element_blank
 #' @return Boxplots with data points for a numeric variable
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-#' imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
-#'
-#' # plot the multiply imputed values for variable "BMPHEAD"
-#' plot_box(
-#'   imputation.list = imputed.data, var.name = "BMPHEAD",
-#'   original.data = nhanes3
-#' )
 plot_box <- function(imputation.list, var.name, original.data, true.data = NULL, color.pal = NULL) {
   Types <- feature_type(imputation.list[[1]])
   if (Types[var.name] == "binary" | Types[var.name] == "multiclass") {
@@ -273,19 +242,6 @@ plot_box <- function(imputation.list, var.name, original.data, true.data = NULL,
 #' @importFrom ggplot2 ggplot aes vars geom_bar scale_y_continuous ylab facet_grid labs scale_color_manual scale_fill_manual guides theme element_text after_stat
 #' @return Bar plots for a factor variable
 #' @export
-#' @examples
-#' # create some extra missing values in a factor variable "HSSEX" (originally fully observed)
-#' nhanes3_NA <- createNA(nhanes3, var.names = "HSSEX", p = 0.1)
-#'
-#' # obtain m multiply datasets
-#' params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-#' imputed.data <- mixgb(data = nhanes3_NA, m = 3, xgb.params = params, nrounds = 30)
-#'
-#' # plot the multiply imputed values for variable "HSSEX"
-#' plot_bar(
-#'   imputation.list = imputed.data, var.name = "HSSEX",
-#'   original.data = nhanes3_NA
-#' )
 plot_bar <- function(imputation.list, var.name, original.data, true.data = NULL, color.pal = NULL) {
   Types <- feature_type(imputation.list[[1]])
   if (Types[var.name] == "numeric") {

@@ -1,19 +1,23 @@
+#!/usr/bin/env Rscript
 #' Overimputation using mivae
 #' @return an overimpute object
-#' @export
+#' overimpute_midae <- function(...) {
+  #stop("`overimpute_midae()` is development-only and has been moved to `dev/overimpute_midae.R`.\n",
+       "To use it locally, source the file from the `dev/` directory.")
+#}
 overimpute_mivae <- function(train.data, test.data = NULL, p = 0.2, seed = NULL,
                              m = 5, categorical.encoding = "onehot", device = "cpu",
                              epochs = 100, batch.size = 512,
                              subsample = 1,
                              early.stopping.epochs = 1,
                              vae.params = list(),
-                             pmm.type = NULL, pmm.k = 5, pmm.link = "prob", pmm.save.vars = NULL,
+                             pmm.type = NULL, pmm.k = 5, pmm.link = "prob", pmm.save.vars = pmm.save.vars,
                              loss.na.scale = FALSE,
                              verbose = TRUE, print.every.n = 1,
                              save.model = TRUE, path = NULL
                              #save.models = FALSE, save.vars = colnames(train.data), save.models.folder = NULL,
-) {
-
+)
+{
 
   if (is.null(path)) {
     stop("Please specify a path to save the imputation model.")
@@ -58,6 +62,7 @@ overimpute_mivae <- function(train.data, test.data = NULL, p = 0.2, seed = NULL,
     colnames(addNA.m) <- colnames(train.data)
     addNA.df[addNA.m] <- NA
   }
+
 
 
   train.obj <- miae::mivae(data = addNA.df, m = m,

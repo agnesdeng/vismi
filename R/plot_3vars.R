@@ -10,17 +10,6 @@
 #' @param shape Whether to plot shapes for different types of missing values. By default, this is set to FALSE to speed up plotting. We only recommend using `shape = TRUE` for small datasets.
 #' @param point.size The size of point. Default: 1.5
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' library(mixgb)
-#' imputed.data <- mixgb(data = nhanes3, m = 2)
-#'
-#' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
-#' # conditional on "HSSEX"
-#' plot3D(
-#'   imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
-#'   con.fac = "HSSEX", original.data = nhanes3
-#' )
 plot3D<- function(imputation.list, var.x, var.y, con.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
   Types <- feature_type(imputation.list[[1]])
 
@@ -61,17 +50,7 @@ plot3D<- function(imputation.list, var.x, var.y, con.fac, original.data, true.da
 #' @importFrom ggplot2 ggplot aes geom_point facet_grid labs scale_shape_manual scale_color_manual scale_fill_manual scale_y_continuous guides theme sec_axis guide_legend element_text element_rect
 #' @return Scatter plots
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' library(mixgb)
-#' imputed.data <- mixgb(data = nhanes3, m = 2)
-#'
-#' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
-#' # conditional on "HSSEX"
-#' plot_2num1fac(
-#'   imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
-#'   con.fac = "HSSEX", original.data = nhanes3
-#' )
+
 plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
   Types <- feature_type(imputation.list[[1]])
 
@@ -130,7 +109,7 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
       strip.text = element_text(face = "bold"),
       plot.title = element_text(face = "bold"),
       plot.subtitle = element_text(face = "bold"),
-      legend.background = element_rect(size = 0.5),
+      legend.background = element_rect(linewidth = 0.5),
       legend.title = element_text(color = "black", size = 12, face = "bold"),
       legend.text = element_text(color = "black", size = 10)
     )
@@ -154,21 +133,7 @@ plot_2num1fac <- function(imputation.list, var.x, var.y, con.fac, original.data,
 #' @importFrom ggplot2 ggplot aes geom_point geom_jitter geom_boxplot facet_grid labs scale_shape_manual scale_color_manual scale_fill_manual scale_y_continuous guides theme sec_axis guide_legend element_text element_rect
 #' @return Boxplots with overlaying data points
 #' @export
-#' @examples
-#' \donttest{
-#' # create some extra missing values in factor variables "HSSEX" and "DMARETHN"
-#' nhanes3_NA <- createNA(nhanes3, var.names = c("HSSEX", "DMARETHN"), p = 0.1)
-#' # obtain m multiply datasets
-#' library(mixgb)
-#' imputed.data <- mixgb(data = nhanes3_NA, m = 5)
-#'
-#' # plot the multiply imputed values for variables "BMPRECUM" versus "HSSEX"
-#' # conditional on "DMARETHN"
-#' plot_1num2fac(
-#'   imputation.list = imputed.data, var.fac = "HSSEX", var.num = "BMPRECUM",
-#'   con.fac = "DMARETHN", original.data = nhanes3_NA
-#' )
-#' }
+
 plot_1num2fac <- function(imputation.list, var.fac, var.num, con.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size = 1.5) {
   Types <- feature_type(imputation.list[[1]])
 
@@ -238,7 +203,7 @@ plot_1num2fac <- function(imputation.list, var.fac, var.num, con.fac, original.d
       strip.text = element_text(face = "bold"),
       plot.title = element_text(face = "bold"),
       plot.subtitle = element_text(face = "bold"),
-      legend.background = element_rect(size = 0.5),
+      legend.background = element_rect(linewidth = 0.5),
       legend.title = element_text(color = "black", size = 12, face = "bold"),
       legend.text = element_text(color = "black", size = 10)
     )

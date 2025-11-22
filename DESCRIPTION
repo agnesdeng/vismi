@@ -22,22 +22,22 @@ LazyData: true
 Imports: 
     dplyr,
     data.table,
-    ggplot2 (>= 3.4.1),
+    ggplot2 (>= 4.0.1),
     ggridges,
     forcats,
     magrittr,
     rlang,
-    RColorBrewer,
     scales,
     tidyr,
+    tibble,
+    mice,
+    mixgb,
     utils,
     gridExtra,
     trelliscopejs
 Suggests: 
     knitr,
-    rmarkdown,
-    mixgb (>= 1.4.0),
-    miae,
-Depends: R (>= 3.5.0)
+    rmarkdown
+Depends: R (>= 4.5.0)
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr

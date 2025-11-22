@@ -38,15 +38,3 @@ plot3D(
 \description{
 High-level function to plot observed values with m sets of imputed values for three variables using \pkg{ggplot2}.
 }
-\examples{
-# obtain m multiply datasets
-library(mixgb)
-imputed.data <- mixgb(data = nhanes3, m = 2)
-
-# plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
-# conditional on "HSSEX"
-plot3D(
-  imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
-  con.fac = "HSSEX", original.data = nhanes3
-)
-}

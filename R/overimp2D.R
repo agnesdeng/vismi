@@ -316,7 +316,7 @@ overimp2D_bar <- function(obj, var.x, var.y, train.data, test.data = NULL, group
 
   if (group.by.color) {
     # aes_string(x = var.names[1], fill = var.names[2])
-    Ptrain <- ggplot(data = combine.df, aes_string(x = var.names[1], fill = var.names[2])) +
+    Ptrain <- ggplot(data = combine.df, aes(x = .data[[var.names[1]]], fill = .data[[var.names[2]]])) +
       geom_bar() +
       facet_wrap(~m, nrow = m + 1) +
       labs(title = "Training Data", subtitle = sub.title)+
@@ -339,7 +339,7 @@ overimp2D_bar <- function(obj, var.x, var.y, train.data, test.data = NULL, group
       k <- k + 1
     }
   } else {
-    Ptrain <- ggplot(data = combine.df, aes_string(x = var.names[1], alpha = var.names[2])) +
+    Ptrain <- ggplot(data = combine.df, aes(x = .data[[var.names[1]]], alpha = .data[[var.names[2]]])) +
       geom_bar(aes(fill = m, color = m), size = 0.5) +
       scale_alpha_discrete(range = c(0.1, 1)) +
       facet_wrap(~m, nrow = m + 1) +
@@ -427,7 +427,7 @@ overimp2D_bar <- function(obj, var.x, var.y, train.data, test.data = NULL, group
 
 
     if (group.by.color) {
-      Ptest <- ggplot(data = combine.df2, aes_string(x = var.names[1], fill = var.names[2])) +
+      Ptest <- ggplot(data = combine.df2, aes(x = .data[[var.names[1]]], fill = .data[[var.names[2]]])) +
         geom_bar() +
         facet_wrap(~m, nrow = m + 1) +
         labs(title = "Test Data", subtitle = sub.title)+
@@ -453,7 +453,7 @@ overimp2D_bar <- function(obj, var.x, var.y, train.data, test.data = NULL, group
 
       gridExtra::grid.arrange(g, g2, ncol = 2)
     } else {
-      Ptest <- ggplot(data = combine.df2, aes_string(x = var.names[1], alpha = var.names[2])) +
+      Ptest <- ggplot(data = combine.df2, aes(x = .data[[var.names[1]]], alpha = .data[[var.names[2]]])) +
         geom_bar(aes(fill = m, color = m), size = 0.5) +
         scale_alpha_discrete(range = c(0.1, 1)) +
         facet_wrap(~m, nrow = m + 1) +
@@ -583,7 +583,7 @@ overimp2D_box <- function(obj, var.x, var.y, train.data, test.data = NULL) {
     # yaxis.idx <- which(Types[var.names] == "numeric" | Types[var.names] == "integer")
     sub.title <- paste("Distribution of overimputed values:", paste(var.names[num.idx], "vs", var.names[fac.idx]), sep = "\n")
 
-    Ptrain <- ggplot(data = combine.df, aes_string(x = var.names[fac.idx], y = var.names[num.idx])) +
+    Ptrain <- ggplot(data = combine.df, aes(x = .data[[var.names[fac.idx]]], y = .data[[var.names[num.idx]]])) +
       geom_jitter(position = position_jitter(width = 0.05), aes(colour = m), alpha = 0.7) +
       geom_boxplot(alpha = 0.7, aes(fill = m, color = m)) +
       facet_grid(rows = vars(m)) +
@@ -661,7 +661,7 @@ overimp2D_box <- function(obj, var.x, var.y, train.data, test.data = NULL) {
 
     sub.title <- paste("Distribution of overimputed values:", paste(var.names[num.idx], "vs", var.names[fac.idx]), sep = "\n")
 
-    Ptest <- ggplot(data = combine.df2, aes_string(x = var.names[fac.idx], y = var.names[num.idx])) +
+    Ptest <- ggplot(data = combine.df2, aes(x = .data[[var.names[fac.idx]]], y = .data[[var.names[num.idx]]])) +
       geom_jitter(position = position_jitter(width = 0.05), aes(colour = m), alpha = 0.7) +
       geom_boxplot(alpha = 0.7, aes(fill = m, color = m)) +
       facet_grid(rows = vars(m)) +

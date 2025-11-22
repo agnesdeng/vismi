@@ -52,20 +52,13 @@ Plot overlay density curves of observed values versus m sets of imputed values f
 \examples{
 # obtain m multiply datasets
 params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
+# use precomputed imputed datasets shipped with the package
+data(imp_nhanes3_newborn)
+imputed.data <- imp_nhanes3_newborn
 
 # plot the multiply imputed values for variable "BMPHEAD"
 plot_hist(
   imputation.list = imputed.data, var.name = "BMPHEAD",
-  original.data = nhanes3
-)
-# obtain m multiply datasets
-params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
-
-# plot the multiply imputed values for variable "BMPHEAD"
-plot_hist(
-  imputation.list = imputed.data, var.name = "BMPHEAD",
-  original.data = nhanes3
+  original.data = na_nhanes3_newborn
 )
 }

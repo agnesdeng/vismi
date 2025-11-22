@@ -1,0 +1,175 @@
+---
+title: "vismi-vignettes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{vismi-vignettes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  tidy.opts = list(width.cutoff = 60), tidy = TRUE,
+  dpi = 200, fig.asp = 0.5, fig.width = 7, fig.retina = 1,
+  out.width = "95%",
+  warning = FALSE, message = FALSE
+)
+```
+
+```{r setup}
+#devtools::document()
+#devtools::load_all()
+library(mixgb)
+library(vismi)
+
+```
+
+#Overimputation
+
+```{r}
+data(nhanes3_newborn)
+set.seed(2023)
+
+n=nrow(nhanes3_newborn)
+idx=sample(1:n, size = round(0.7*n), replace=FALSE)
+
+trainNA.df=nhanes3_newborn[idx,]
+testNA.df=nhanes3_newborn[-idx,]
+
+```
+
+
+##Overimputation with the entire dataset
+Note that overimputation with training and test set can only be used with "mixgb" and "miae" method.
+```{r}
+#overimpute the whole dataset using mixgb
+mixgb.obj<-overimpute(train.data=nhanes3_newborn,p=0.3,m=2, method = "mixgb")
+```
+
+Methods within "mice" can only use overimputation with the entire dataset.
+
+```{r}
+#overimpute the whole dataset using mice default
+mice.obj<-overimpute(train.data=nhanes3_newborn,p=0.3,m=5, method = "mice")
+```
+
+```{r,eval=FALSE}
+#overimpute the whole dataset using mice cart
+cart.obj<-overimpute(train.data=nhanes3_newborn,p=0.3,m=5, method = "cart")
+```
+```{r,eval=FALSE}
+#overimpute the whole dataset using mice ranger
+rf.obj<-overimpute(train.data=nhanes3_newborn,p=0.3,m=5, method = "rf")
+```
+
+
+## trelliscope: plot all continuous variables
+```{r}
+trelliscope_con(obj=mice.obj,train.data=nhanes3_newborn,type="ridge")
+```
+
+```{r}
+trelliscope_con(obj=mice.obj,train.data=nhanes3_newborn,type="density")
+```
+```{r}
+trelliscope_con(obj=mice.obj,train.data=nhanes3_newborn,type="qq")
+```
+
+## trelliscope: plot all categorical variables
+
+```{r}
+trelliscope_cat(obj=mice.obj,train.data=nhanes3_newborn, type = "identity")
+```
+
+```{r}
+trelliscope_cat(obj=mice.obj,train.data=nhanes3_newborn, type = "dodge")
+```
+
+
+##Overimputation with the training set and test set
+
+
+```{r}
+train_test.obj<-overimpute(train.data=trainNA.df,test.data=testNA.df,p=0.3, m=5, method = "mixgb")
+```
+
+
+## trelliscope: all continuous variables
+```{r}
+trelliscope_con(obj=train_test.obj,train.data=trainNA.df,test.data=testNA.df,type="ridge")
+```
+
+
+```{r}
+trelliscope_con(obj=train_test.obj,train.data=trainNA.df,test.data=testNA.df, type="density")
+```
+
+```{r}
+trelliscope_con(obj=train_test.obj,train.data=trainNA.df,test.data=testNA.df, type = "qq")
+```
+
+## trelliscope: all categorical variables
+```{r}
+trelliscope_cat(obj=train_test.obj,train.data=trainNA.df,test.data=testNA.df, type = "identity")
+```
+## trelliscope: all categorical variables
+```{r}
+trelliscope_cat(obj=train_test.obj,train.data=trainNA.df,test.data=testNA.df, type = "dodge")
+```
+
+
+
+## Plot an individual variable: some randomly selected entries of overimputed values 
+### Actual
+```{r,fig.asp = 1}
+plot1D.entries(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df)
+plot1D.entries(obj=train_test.obj,var.name="HYD1", train.data=trainNA.df,test.data=testNA.df,n.entries=10)
+```
+
+## Plot an individual variable: some randomly selected entries of overimputed values 
+### Error
+```{r}
+plot1D.entriesV2(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df,n.entries=10)
+
+
+plot1D.entriesV2(obj=train_test.obj,var.name="HYD1", train.data=trainNA.df,test.data=testNA.df,n.entries=10)
+```
+
+## Plot an individual variable:  m sets of overimputed values vs true values
+```{r}
+plot1D.imputations(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df)
+plot1D.imputations(obj=train_test.obj,var.name="HYD1", train.data=trainNA.df,test.data=testNA.df)
+```
+## Plot an individual variable:  overlaying density
+```{r}
+plot1D.imputationsV2(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df)
+
+plot1D.imputationsV3(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df)
+
+#plot1D.imputations(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df, type = "qq")
+
+
+
+plot1D.imputationsV4(obj=train_test.obj,var.name="BMPHEAD", train.data=trainNA.df,test.data=testNA.df)
+
+
+plot1D.imputationsV2(obj=train_test.obj,var.name="HYD1", train.data=trainNA.df,test.data=testNA.df)
+#plot1D.imputations(obj=train_test.obj,var.name="HYD1", train.data=trainNA.df,test.data=testNA.df, type = "dodge")
+```
+
+
+## Plot tow variables:  m sets of overimputed values vs true values
+```{r,fig.width = 5,fig.height=8,fig.asp = 1.2}
+plot2D(obj=train_test.obj,var.x="BMPHEAD", var.y="BMPRECUM",train.data=trainNA.df,test.data=testNA.df)
+```
+
+
+## Overimputation with an entire dataset
+When overimputing with an entire dataset, we can also use the above plotting functions without providing the `test.data`.
+### plot an individual variable
+```{r,fig.width = 5,fig.asp = 1, out.width = "50%",fig.retina = 1,dpi=200}
+plot1D.entries(obj=mice.obj,var.name="BMPHEAD", train.data=nhanes3_newborn)
+```

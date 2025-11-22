@@ -1,6 +1,11 @@
+#!/usr/bin/env Rscript
 #' Overimputation using midae
 #' @return an overimpute object
-#' @export
+#' 
+#' overimpute_midae <- function(...) {
+  #stop("`overimpute_midae()` is development-only and has been moved to `dev/overimpute_midae.R`.\n",
+       "To use it locally, source the file from the `dev/` directory.")
+#}
 overimpute_midae <- function(train.data, test.data = NULL, p = 0.2, seed = NULL,
                              m = 5, categorical.encoding = "onehot", device = "cpu",
                              epochs = 100, batch.size = 512,
@@ -58,6 +63,7 @@ overimpute_midae <- function(train.data, test.data = NULL, p = 0.2, seed = NULL,
     colnames(addNA.m) <- colnames(train.data)
     addNA.df[addNA.m] <- NA
   }
+
 
 
   train.obj <- miae::midae(data = addNA.df, m = m,
@@ -127,6 +133,7 @@ overimpute_midae <- function(train.data, test.data = NULL, p = 0.2, seed = NULL,
       colnames(addNA.m2) <- colnames(test.data)
       addNA.df2[addNA.m2] <- NA
     }
+
 
 
 

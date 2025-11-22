@@ -13,3 +13,5 @@
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^notes$
+^dev$
+^dev/

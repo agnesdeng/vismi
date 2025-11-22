@@ -38,14 +38,3 @@ Box plot with jittered data points for a numeric/integer variable; Bar plot for 
 \description{
 Plot observed values versus m sets of imputed values for one numeric variable vs one factor (or integer) variable using \pkg{ggplot2}.
 }
-\examples{
-# obtain m multiply datasets
-library(mixgb)
-imputed.data <- mixgb(data = nhanes3, m = 2)
-
-# plot the multiply imputed values for variables "BMPHEAD" versus "HSSEX"
-plot_1num1fac(
-  imputation.list = imputed.data, var.num = "BMPHEAD", var.fac = "HSSEX",
-  original.data = nhanes3
-)
-}

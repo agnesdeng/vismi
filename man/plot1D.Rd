@@ -36,13 +36,12 @@ plot1D(
 High-level function to plot observed values versus m sets of imputed values for a specified variable
 }
 \examples{
-# obtain m multiply datasets
-params <- list(max_depth = 3, subsample = 0.8, nthread = 2)
-imputed.data <- mixgb(data = nhanes3, m = 3, xgb.params = params, nrounds = 30)
-
+# use precomputed imputed datasets shipped with the package
+data(imp_nhanes3_newborn)
+data(na_nhanes3_newborn)
 # plot the multiply imputed values for variable "BMPHEAD"
 plot1D(
-  imputation.list = imputed.data, var.name = "BMPHEAD",
-  original.data = nhanes3
+  imputation.list = imp_nhanes3_newborn, var.name = "BMPHEAD",
+  original.data = na_nhanes3_newborn
 )
 }

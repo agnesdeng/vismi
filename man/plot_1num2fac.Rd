@@ -41,19 +41,3 @@ Boxplots with overlaying data points
 \description{
 Plot observed values versus m sets of imputed values for one specified numeric variable and two factors using \pkg{ggplot2}.
 }
-\examples{
-\donttest{
-# create some extra missing values in factor variables "HSSEX" and "DMARETHN"
-nhanes3_NA <- createNA(nhanes3, var.names = c("HSSEX", "DMARETHN"), p = 0.1)
-# obtain m multiply datasets
-library(mixgb)
-imputed.data <- mixgb(data = nhanes3_NA, m = 5)
-
-# plot the multiply imputed values for variables "BMPRECUM" versus "HSSEX"
-# conditional on "DMARETHN"
-plot_1num2fac(
-  imputation.list = imputed.data, var.fac = "HSSEX", var.num = "BMPRECUM",
-  con.fac = "DMARETHN", original.data = nhanes3_NA
-)
-}
-}

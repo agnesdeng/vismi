@@ -14,16 +14,7 @@
 #' @importFrom ggplot2 ggplot aes vars geom_point facet_grid labs scale_shape_manual scale_color_manual scale_fill_manual guides theme guide_legend element_text element_rect
 #' @return Scatter plots for two numeric/integer variable
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' library(mixgb)
-#' imputed.data <- mixgb(data = nhanes3, m = 2)
-#'
-#' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
-#' plot2D(
-#'   imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
-#'   original.data = nhanes3
-#' )
+
 plot2D <- function(imputation.list, var.x, var.y, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
 
   Types <- feature_type(imputation.list[[1]])
@@ -67,16 +58,7 @@ plot2D <- function(imputation.list, var.x, var.y, original.data, true.data = NUL
 #' @importFrom ggplot2 ggplot aes vars geom_point facet_grid labs scale_shape_manual scale_color_manual scale_fill_manual guides theme guide_legend element_text element_rect
 #' @return Scatter plots for two numeric/integer variable
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' library(mixgb)
-#' imputed.data <- mixgb(data = nhanes3, m = 2)
-#'
-#' # plot the multiply imputed values for variables "BMPRECUM" versus "BMPHEAD"
-#' plot_2num(
-#'   imputation.list = imputed.data, var.x = "BMPHEAD", var.y = "BMPRECUM",
-#'   original.data = nhanes3
-#' )
+
 plot_2num <- function(imputation.list, var.x, var.y, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
   Types <- feature_type(imputation.list[[1]])
 
@@ -121,7 +103,7 @@ plot_2num <- function(imputation.list, var.x, var.y, original.data, true.data = 
       strip.text = element_text(face = "bold"),
       plot.title = element_text(face = "bold"),
       plot.subtitle = element_text(face = "bold"),
-      legend.background = element_rect(size = 0.5),
+      legend.background = element_rect(linewidth = 0.5),
       legend.title = element_text(color = "black", size = 12, face = "bold"),
       legend.text = element_text(color = "black", size = 10)
     )
@@ -146,16 +128,7 @@ plot_2num <- function(imputation.list, var.x, var.y, original.data, true.data = 
 #' @importFrom ggplot2 ggplot aes vars geom_point geom_jitter position_jitter geom_boxplot facet_grid labs scale_shape_manual scale_color_manual scale_fill_manual guides theme guide_legend element_text element_rect
 #' @return Box plot with jittered data points for a numeric/integer variable; Bar plot for a categorical variable.
 #' @export
-#' @examples
-#' # obtain m multiply datasets
-#' library(mixgb)
-#' imputed.data <- mixgb(data = nhanes3, m = 2)
-#'
-#' # plot the multiply imputed values for variables "BMPHEAD" versus "HSSEX"
-#' plot_1num1fac(
-#'   imputation.list = imputed.data, var.num = "BMPHEAD", var.fac = "HSSEX",
-#'   original.data = nhanes3
-#' )
+
 plot_1num1fac <- function(imputation.list, var.num, var.fac, original.data, true.data = NULL, color.pal = NULL, shape = FALSE, point.size=1.5) {
   Types <- feature_type(imputation.list[[1]])
 
@@ -239,21 +212,7 @@ plot_1num1fac <- function(imputation.list, var.num, var.fac, original.data, true
 #' @importFrom ggplot2 ggplot aes geom_bar facet_grid labs scale_color_manual scale_fill_manual scale_y_continuous guides theme sec_axis element_text
 #' @return Scatter plots for two numeric/integer variable
 #' @export
-#' @examples
-#' \donttest{
-#' #create some extra missing values in factor variables "HSSEX" and "DMARETHN"
-#' nhanes3_NA<-createNA(nhanes3, var.names = c("HSSEX","DMARETHN"), p = 0.1)
-#'
-#' # obtain m multiply datasets
-#' library(mixgb)
-#' imputed.data <- mixgb(data = nhanes3_NA, m = 2)
-#'
-#' # plot the multiply imputed values for variables "HSSEX" versus "DMARETHN"
-#' plot_2fac(
-#'   imputation.list = imputed.data, var.fac1 = "DMARETHN", var.fac2 = "HSSEX",
-#'   original.data = nhanes3_NA
-#' )
-#' }
+
 plot_2fac <- function(imputation.list, var.fac1, var.fac2, original.data, true.data = NULL, color.pal = NULL) {
   Types <- feature_type(imputation.list[[1]])
 
