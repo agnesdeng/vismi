@@ -1,21 +1,30 @@
 #' vismi: Visualisation Tools for Multiple Imputation
 #'
 #' Visual diagnostic tools for assessing multiply imputed datasets created with
-#' 'mixgb' or other imputers. The package emphasises side-by-side
-#' comparisons of observed, imputed, and (optionally) masked-true values
-#' through ggplot2-based displays.
+#' 'mixgb' or other imputers.
 #'
 #' @docType package
 #' @name vismi-package
-#' @aliases vismi
 #' @keywords internal
 #' @importFrom data.table ':=' as.data.table data.table is.data.table melt rbindlist setnames
-#' @importFrom ggplot2 element_blank element_text margin theme
-#' @importFrom grid unit
-#' @importFrom stats median rnorm sd complete.cases na.omit reformulate predict quantile rbinom
-#' @references Deng, Y. (2024). Visual diagnostics for multiply imputed data.
+#' @importFrom plotly plot_ly layout add_histogram add_lines add_trace subplot
+#' @importFrom utils modifyList
+#' @importFrom stats as.formula setNames density
+#' @importFrom dplyr group_by reframe tibble filter ungroup mutate summarise n sym
+#' @importFrom ggplot2 ggplot aes geom_histogram geom_density geom_point geom_bar geom_boxplot geom_jitter position_jitter
+#' @importFrom ggplot2 scale_y_continuous scale_color_manual scale_fill_manual ylab labs guides guide_legend theme element_text element_rect element_line
+#' @importFrom ggplot2 after_stat facet_grid vars labeller ylim coord_cartesian stat_qq stat_qq_line
+#' @importFrom ggridges geom_density_ridges theme_ridges
+#' @importFrom tidyr pivot_longer
+#' @importFrom mixgb mixgb impute_new
+#' @importFrom rlang .data
+#' @importFrom scales hue_pal
+#' @importFrom grDevices nclass.Sturges colorRampPalette
+#' @importFrom gridExtra arrangeGrob
+#' @importFrom grid textGrob gpar
+
+#' @references Deng, Y., & Lumley, T. (2026), vismi: Visualisation Tools for Multiple Imputation, arXiv preprint.
 "_PACKAGE"
 
-## usethis namespace: start
-## usethis namespace: end
+
 NULL

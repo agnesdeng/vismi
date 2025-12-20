@@ -3,28 +3,24 @@
 \docType{package}
 \name{vismi-package}
 \alias{vismi-package}
-\alias{vismi}
 \title{vismi: Visualisation Tools for Multiple Imputation}
 \description{
 Visual diagnostic tools for assessing multiply imputed datasets created with
-'mixgb' or other imputers. The package emphasises side-by-side
-comparisons of observed, imputed, and (optionally) masked-true values
-through ggplot2-based displays.
+'mixgb' or other imputers.
 }
 \references{
-Deng, Y. (2024). Visual diagnostics for multiply imputed data.
+Deng, Y., & Lumley, T. (2026), vismi: Visualisation Tools for Multiple Imputation, arXiv preprint.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://github.com/agnesdeng/vismi}
-  \item \url{https://agnesdeng.github.io/vismi/}
   \item Report bugs at \url{https://github.com/agnesdeng/vismi/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Yongshi Deng \email{yongshi.deng@auckland.ac.nz} (\href{https://orcid.org/0000-0001-5845-859X}{ORCID})
+\strong{Maintainer}: Yongshi Deng \email{agnes.yongshideng@gmail.com} (\href{https://orcid.org/0000-0001-5845-859X}{ORCID})
 
 Other contributors:
 \itemize{

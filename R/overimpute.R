@@ -1,20 +1,23 @@
 #' Overimpute main function
-#' @description overimpute
-#' @param train.data a data frame with training set data
-#' @param test.data a data fram with test set data
+#' @description overimpute wrapper function to call different imputation methods
+#' @param data a data frame with missing values
 #' @param p the extra proportion of missing values
 #' @param m the number of imputation
+#' @param test_ratio the proportion of test set. Default is 0, meaning no test set.
 #' @param method can be one of the following: "mixgb", "midae", "mivae", "mice","cart" or "ranger"
 #' @param ... other arguments to be passed into the overimpute function
 #' @export
-overimpute<-function(train.data,test.data = NULL, p = 0.2, m = 5, method,...){
+overimpute<-function(data, p = 0.2, m = 5, test_ratio = 0, method = "mixgb", seed = NULL, ...){
 
-  overimpute.fn<-paste("overimpute",method,sep="_")
+  overimpute_fun<-paste0("overimpute_",method)
 
-  do.call(overimpute.fn,
-          args=list(train.data = train.data,
-                    test.data = test.data,
-                    p = p, m = m,...))
-
-
+  obj <- do.call(overimpute_fun,
+          args=list(data = data,
+                    p = p,
+                    m = m,
+                    test_ratio = test_ratio,
+                    seed = seed,
+                    ...))
+  class(obj) <- "overimp"
+  obj
 }

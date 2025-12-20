@@ -4,21 +4,29 @@
 \alias{overimpute}
 \title{Overimpute main function}
 \usage{
-overimpute(train.data, test.data = NULL, p = 0.2, m = 5, method, ...)
+overimpute(
+  data,
+  p = 0.2,
+  m = 5,
+  test_ratio = 0,
+  method = "mixgb",
+  seed = NULL,
+  ...
+)
 }
 \arguments{
-\item{train.data}{a data frame with training set data}
-
-\item{test.data}{a data fram with test set data}
+\item{data}{a data frame with missing values}
 
 \item{p}{the extra proportion of missing values}
 
 \item{m}{the number of imputation}
+
+\item{test_ratio}{the proportion of test set. Default is 0, meaning no test set.}
 
 \item{method}{can be one of the following: "mixgb", "midae", "mivae", "mice","cart" or "ranger"}
 
 \item{...}{other arguments to be passed into the overimpute function}
 }
 \description{
-overimpute
+overimpute wrapper function to call different imputation methods
 }

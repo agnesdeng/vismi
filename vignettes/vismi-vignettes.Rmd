@@ -7,7 +7,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -22,19 +21,13 @@ knitr::opts_chunk$set(
 ```{r setup}
 #devtools::document()
 #devtools::load_all()
-library(mixgb)
 library(vismi)
 ```
 
+```{r}
+vismi(data=newborn,imp_list=imp_newborn,x="BMPHEAD",interactive=TRUE)
+```
 
 ```{r}
-data(nhanes3_newborn)
-set.seed(2023)
-
-n=nrow(nhanes3_newborn)
-idx=sample(1:n, size = round(0.7*n), replace=FALSE)
-
-trainNA.df=nhanes3_newborn[idx,]
-testNA.df=nhanes3_newborn[-idx,]
-
+vismi(data=newborn,imp_list=imp_newborn,x="BMPHEAD",interactive=FALSE)
 ```

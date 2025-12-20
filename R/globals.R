@@ -6,7 +6,5 @@
 #' @importFrom grDevices colorRampPalette
 #' @keywords internal
 utils::globalVariables(c(
-	"density", "prop", "Freq", "Var1", "Var3", "m.set", "obs", "NA.condition",
-	"NA.pattern", "Quantiles.Sample1", "Quantiles.Sample2", "Set",
-	"colorset", "dataset", "entry", "everything", "value", "var.name"
+"Group","..vars","row_index","prop", "count", "label_value"
 ))
