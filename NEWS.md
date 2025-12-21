@@ -9,7 +9,7 @@
 
 # vismi 0.8.0 (planned)
 ### Refactoring
-- Refactored all overimputation visualisation functions for 2D & 3D.
+- Refactored all overimputation visualisation functions for 2D.
 
 # vismi 0.7.0
 ### Refactoring

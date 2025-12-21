@@ -27,9 +27,11 @@ vismi(...)
   x = NULL,
   y = NULL,
   z = NULL,
+  integerAsFactor = FALSE,
   num_plot = "qq",
-  int_plot = "ridge",
   fac_plot = "bar",
+  train_color_pal = NULL,
+  test_color_pal = NULL,
   ...
 )
 }
@@ -70,11 +72,11 @@ for the y variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or 
 \item{num_plot}{A character string specifying the type of plot for numeric variables. Options
 are "qq" (default) for QQ plot.}
 
-\item{int_plot}{A character string specifying the type of plot for integer variables. Options
-are "ridge" (default) for ridge plot.}
-
 \item{fac_plot}{A character string specifying the type of plot for categorical variables. Options
 are "bar" (default) for bar plot.}
+
+\item{int_plot}{A character string specifying the type of plot for integer variables. Options
+are "ridge" (default) for ridge plot.}
 }
 \value{
 A plotly or ggplot2 object visualizing the imputed data.

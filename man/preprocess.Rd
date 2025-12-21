@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocess.R
 \name{preprocess}
 \alias{preprocess}
-\title{Preprocess data for plotting}
+\title{Preprocess input of `vismi.data.frame()` for plotting}
 \usage{
 preprocess(data, imp_list, vars, integerAsFactor)
 }
@@ -16,5 +16,5 @@ preprocess(data, imp_list, vars, integerAsFactor)
 \item{integerAsFactor}{Logical, whether to treat integer variables as factors}
 }
 \description{
-Preprocess data for plotting
+Preprocess input of `vismi.data.frame()` for plotting
 }

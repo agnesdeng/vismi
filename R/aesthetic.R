@@ -1,3 +1,39 @@
+vismi_colors<-function(N_imp){
+  color_pal <- c("#666666", hue_pal()(N_imp))
+  #names(color_pal)<-levels(all_dt$Group)
+  color_pal
+}
+
+
+vismi_overimp_colors<-function(N_imp){
+  colors <-c("#666666",hue_pal()(N_imp))
+  colors
+}
+
+
+vismi_overimp_train_colors<-function(N_imp){
+  int_colors = c("#002cb3","#85aeff")
+  colfunc <- grDevices::colorRampPalette(int_colors)
+  colors <-c(colfunc(N_imp), "gray40")
+  colors
+}
+
+
+vismi_overimp_test_colors<-function(N_imp){
+  int_colors = c("#cc7700","#ffd24d")
+  colfunc <- grDevices::colorRampPalette(int_colors)
+  colors <-c(colfunc(N_imp), "gray40")
+  colors
+}
+
+
+
+
+
+
+
+
+
 .ggplot_theme<-function(fig){
   fig+
   #guides(fill = "none", color = "none",shape = guide_legend(override.aes = list(size = 3)))
@@ -35,10 +71,13 @@
 
 }
 
-.ggplot_overimp_theme<-function(fig){
+.ggplot_overimp_theme<-function(fig, showlegend=TRUE){
+
+  if(showlegend==FALSE){
+    fig<-fig+ guides(fill = "none", color = "none", shape = guide_legend(override.aes = list(size = 3)))
+  }
 
   fig+
-    guides(color = guide_legend(override.aes = list(size = 3)))+
     theme(panel.background = element_rect(fill = "gray95", colour = NA),
           panel.grid.major = element_line(colour = "white", linewidth = 0.3),
           panel.grid.minor = element_line(colour = "white", linewidth = 0.2),

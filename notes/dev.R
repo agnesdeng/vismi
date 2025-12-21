@@ -30,25 +30,67 @@ devtools::document()
 
 
 obj<-overimpute(data=newborn,p=0.2,m=5,test_ratio=0.2,method="mixgb")
-obj2<-overimpute(data=newborn,p=0.2,m=5,test_ratio=0,method="mixgb")
-fig<-vismi(obj=obj,x="BMPHEAD",num_plot="qq", point_size=0.5)
-fig<-vismi(obj=obj,x="BMPHEAD",num_plot="density", linewidth=0.5)
+#obj2<-overimpute(data=newborn,p=0.2,m=5,test_ratio=0,method="mixgb")
+my_pal <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b")
+
+fig<-vismi(obj=obj,x="BMPHEAD", y= "BMPRECUM", alpha=1, point_size=0.2, train_color_pal = my_pal, test_color_pal = my_pal)
+fig
+
+fig<-vismi(obj=obj,x="BMPHEAD", y= "BMPRECUM", xlim=c(40,45))
+fig
+
+
+fig<-vismi(obj=obj,x="BMPHEAD", y= "BMPRECUM", ylim=c(50,90))
+fig
+
+fig<-vismi(obj=obj,x="BMPHEAD", y= "HSSEX", alpha=0.5, point_size=0.2, boxpoints="all")
+fig
+
+fig<-vismi(obj=obj,x="HSSEX", y= "BMPHEAD", alpha=0.5, point_size=0.2, boxpoints="all")
+fig
+fig<-vismi(obj=obj,x="HSSEX", y= "BMPHEAD", alpha=0.5, point_size=0.2, boxpoints="all", ylim=c(40,50))
+fig
+
+
+fig<-vismi(obj=obj,x="BMPHEAD", y= "HSSEX")
+fig
+
+fig<-vismi(obj=obj,x="DMARETHN", y= "HSSEX")
+fig
+
+fig<-vismi(obj=obj,x="HYD1", y= "HSSEX" , ylim=c(0,200))
+fig
+fig<-vismi(obj=obj,y="HYD1", x= "HSSEX" , xlim=c(0,200))
+fig
+
+
+fig<-vismi(obj=obj,x="HSAGEIR", y= "DMARETHN", integerAsFactor=TRUE,width=0.9)
+fig
+
+devtools::load_all()
+devtools::document()
+
+fig<-vismi(obj=obj,x="BMPHEAD",num_plot="qq", point_size=0.5,xlim=c(-2,2))
+fig
+fig<-vismi(obj=obj,x="BMPHEAD",num_plot="qqline", point_size=0.5,xlim=c(-2,2))
+fig
+fig<-vismi(obj=obj,x="BMPHEAD",num_plot="density", linewidth=0.5, ylim=c(0,0.4))
 fig
 fig2<-vismi(obj=obj2,x="BMPHEAD",num_plot="qqline",linewidth=1)
 fig2
 fig<-vismi(obj=obj,x="BMPHEAD",num_plot="ridge",alpha=1)
 fig
-fig<-vismi(obj=obj,x="BMPHEAD",num_plot="ridge")
+fig<-vismi(obj=obj,x="BMPHEAD",num_plot="ridge", xlim=c(40,45))
 fig
 fig<-vismi(obj=obj,x="BMPHEAD",num_plot="ridge",alpha=0.8)
 fig
 #1d fac
 fig<-vismi(obj=obj,x="HYD1",fac_plot="dodge",alpha=0.8)
 fig
-fig<-vismi(obj=obj,x="HYD1",fac_plot="dodge")
+fig<-vismi(obj=obj,x="HYD1",fac_plot="dodge", ylim=c(0,180))
 fig
 
-fig<-vismi(obj=obj,x="HYD1",fac_plot="bar")
+fig<-vismi(obj=obj,x="HYD1",fac_plot="bar",ylim=c(0,100))
 fig
 class(fig)
 plot(fig)

@@ -182,7 +182,7 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, interactive
     x = vars[1],
     y = vars[2],
     z = vars[3],
-    integerAsFactor = integerAsFactor,
+    #integerAsFactor = integerAsFactor,
     marginal_x = marginal_x,
     marginal_y = marginal_y,
     color_pal = color_pal,

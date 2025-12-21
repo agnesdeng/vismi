@@ -1,9 +1,10 @@
-#' Preprocess data for plotting
+#' Preprocess input of `vismi.data.frame()` for plotting
 #' @param data Original data frame with missing values
 #' @param imp_list A list of imputed data frames
 #' @param vars A vector of variable names to include in the plot
 #' @param integerAsFactor Logical, whether to treat integer variables as factors
 preprocess <- function(data, imp_list, vars, integerAsFactor) {
+  #.imp_long()
   #vars<- c(x,y,z)
   # Convert everything to data.table but keep original class for slicing
   dt <- as.data.table(data)
@@ -22,7 +23,7 @@ preprocess <- function(data, imp_list, vars, integerAsFactor) {
 
   # Combine, label imputation sets
   N_imp <- length(imp_list)
-  imp_names <- paste0("Imputed set ", seq_len(N_imp))
+  imp_names <- paste0("Imputed set", seq_len(N_imp))
   imp_dt <- rbindlist(imp_list)
   imp_dt[, Group := rep(imp_names, each = N_mis)]
 

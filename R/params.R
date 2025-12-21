@@ -25,7 +25,10 @@
     point_size = 1,
     alpha = 0.9,
     linewidth = 1,
-    ylim = NULL
+    xlim = NULL,
+    ylim = NULL,
+    boxpoints = "outliers",
+    width = 0.9
   )
 }
 
