@@ -28,10 +28,12 @@ Imports:
     ggridges,
     mixgb (>= 2.0.3),
     plotly,
+    purrr,
     rlang,
     stats,
     scales,
-    tidyr
+    tidyr,
+    trelliscopejs
 Suggests: 
     knitr,
     rmarkdown,
