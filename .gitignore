@@ -46,3 +46,7 @@ desktop.ini
 
 # Mac
 .DS_Store
+
+# Private folders
+Notes
+dev
