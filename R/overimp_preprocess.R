@@ -72,9 +72,9 @@ addNA <- function(data, p = 0.2, seed = NULL) {
 
 
 # Return plot data (dt and colors) for overimputation plots
-.overimp_preprocess<- function(obj, vars, integerAsFactor) {
+.overimp_preprocess<- function(obj, vars, m , imp_idx, integerAsFactor) {
 
-  .get_plot_data <- function(imp_list, NA_loc, dt, vars, integerAsFactor) {
+  .get_plot_data <- function(imp_list, NA_loc, dt, vars, m, imp_idx, integerAsFactor) {
 
     #vars=c("BMPHEAD","BMPRECUM")
 
@@ -88,13 +88,43 @@ addNA <- function(data, p = 0.2, seed = NULL) {
     mt_indices <- setdiff(mt_indices, na_indices)
 
 
-
-
+    #subset for plotting
     N_imp <- length(imp_list)
-    imp_names <- paste0("Imputed set", seq_len(N_imp))
+    if(!is.null(imp_idx)){
+      # priority subset by imp_idx
+      .validate_indices(indices=imp_idx, indices_name = "imp_idx", limit = N_imp)
+      imp_list <- imp_list[imp_idx]
+
+
+    }else if(!is.null(m)){
+      # then subset by m
+      .validate_m(m=m, N_imp=N_imp)
+
+      if(m < N_imp){
+        imp_idx <-sort(sample.int(N_imp,m))
+        message(paste0(m, " imputed datasets are randomly selected for plotting.Their indices are: ", paste(imp_idx, collapse = ", ")))
+        imp_list <- imp_list[imp_idx]
+      }else if(m > N_imp){
+        imp_idx <- seq_len(N_imp)
+        warning(paste0("m is larger than the available number of imputed datasets. Using all ", N_imp, " imputed datasets for plotting."))
+      }else{
+        imp_idx <- seq_len(N_imp)
+      }
+
+    }else{
+      # use all
+      imp_idx <- seq_len(N_imp)
+    }
+
+
+    # Extract imputed rows for each imputation
+
+      imp_names <- paste0("Imputed set", imp_idx)
+
+
 
     # Multiply-imputed masked true
-    imp_dt <- rbindlist(lapply(seq_len(N_imp), function(i) {
+    imp_dt <- rbindlist(lapply(seq_along(imp_names), function(i) {
       dt <- imp_list[[i]][mt_indices, ..vars]
       dt[, `:=`(row_index = mt_indices, Group = imp_names[i])]
       dt
@@ -122,20 +152,20 @@ addNA <- function(data, p = 0.2, seed = NULL) {
       }
     }
     # colors
-    color_pal <- vismi_overimp_colors(N_imp = N_imp)
+    color_pal <- .vismi_colors(N_imp = length(imp_names))
     names(color_pal)<-levels(all_dt$Group)
 
     #colfunc <- grDevices::colorRampPalette(int_colors)
     #colors <-c(colfunc(N_imp), "gray40")
-    list(all_dt = all_dt, color_pal = color_pal)
+    list(all_dt = all_dt, color_pal = color_pal, imp_idx = imp_idx)
   }
 
 
 
-  train_out<- .get_plot_data(imp_list= obj$imputed_train, NA_loc = obj$params$trainNA_loc, dt = obj$params$train_data, vars = vars, integerAsFactor = integerAsFactor)
+  train_out<- .get_plot_data(imp_list= obj$imputed_train, NA_loc = obj$params$trainNA_loc, dt = obj$params$train_data, vars = vars, m = m, imp_idx = imp_idx, integerAsFactor = integerAsFactor)
 
   test_out <- if(!is.null(obj$params$test_data)){
-    .get_plot_data(imp_list=obj$imputed_test,  NA_loc =obj$params$testNA_loc, dt = obj$params$test_data,vars = vars, integerAsFactor = integerAsFactor)
+    .get_plot_data(imp_list=obj$imputed_test,  NA_loc =obj$params$testNA_loc, dt = obj$params$test_data,vars = vars,  m = m, imp_idx = train_out$imp_idx, integerAsFactor = integerAsFactor)
   }else{
     NULL
   }

@@ -29,12 +29,33 @@ overimp2D_scatter <- function(plot_data, x, y, comb_title, alpha, point_size, xl
     if(!is.null(ylim)) test_plot <- test_plot + ylim(ylim)
 
 
-    combined <- gridExtra::arrangeGrob(train_plot, test_plot, ncol = 2,
-                                       top = comb_title)
+    combined <- train_plot + test_plot +
+      plot_layout(ncol = 2) +
+      plot_annotation(title = comb_title,
+                      theme = theme(
+                        plot.title = element_text(
+                          size = 14,           # Font size
+                          face = "bold",       # "plain", "italic", "bold", "bold.italic"
+                          family = "sans",    # Font family (e.g., "sans", "serif", "mono")
+                          hjust = 0.5,         # Center the title (0 = left, 1 = right)
+                          color = "black"   # Font color
+                        )))
+
+
 
   } else {
-    combined <- gridExtra::arrangeGrob(train_plot, ncol = 1,
-                                       top = comb_title)
+    combined <- train_plot +
+      plot_layout(ncol = 1) +
+      plot_annotation(title = comb_title,
+                      theme = theme(
+                        plot.title = element_text(
+                          size = 14,           # Font size
+                          face = "bold",       # "plain", "italic", "bold", "bold.italic"
+                          family = "sans",    # Font family (e.g., "sans", "serif", "mono")
+                          hjust = 0.5,         # Center the title (0 = left, 1 = right)
+                          color = "black"   # Font color
+                        )))
+
   }
 
   class(combined)<- c("overimp_plot",class(combined))
@@ -96,12 +117,33 @@ overimp2D_box <- function(plot_data, x, y, comb_title, alpha, point_size, boxpoi
     if(!is.null(ylim)) test_plot <- test_plot + ylim(ylim)
 
 
-    combined <- gridExtra::arrangeGrob(train_plot, test_plot, ncol = 2,
-                                       top = comb_title)
+    combined <- train_plot + test_plot +
+      plot_layout(ncol = 2) +
+      plot_annotation(title = comb_title,
+                      theme = theme(
+                        plot.title = element_text(
+                          size = 14,           # Font size
+                          face = "bold",       # "plain", "italic", "bold", "bold.italic"
+                          family = "sans",    # Font family (e.g., "sans", "serif", "mono")
+                          hjust = 0.5,         # Center the title (0 = left, 1 = right)
+                          color = "black"   # Font color
+                        )))
+
+
 
   } else {
-    combined <- gridExtra::arrangeGrob(train_plot, ncol = 1,
-                                       top = comb_title)
+    combined <- train_plot +
+      plot_layout(ncol = 1) +
+      plot_annotation(title = comb_title,
+                      theme = theme(
+                        plot.title = element_text(
+                          size = 14,           # Font size
+                          face = "bold",       # "plain", "italic", "bold", "bold.italic"
+                          family = "sans",    # Font family (e.g., "sans", "serif", "mono")
+                          hjust = 0.5,         # Center the title (0 = left, 1 = right)
+                          color = "black"   # Font color
+                        )))
+
   }
 
   class(combined)<- c("overimp_plot",class(combined))
@@ -135,18 +177,39 @@ overimp2D_bar <- function(plot_data, x, y, comb_title, width, alpha, ylim, train
       scale_color_manual(values = test_color_pal) +
       scale_fill_manual(values = test_color_pal) +
       labs(title = "Test Data")+
-      guides(fill = "none", color ="none")
+      guides(fill = "none", color ="none",alpha="none")
     test_plot<-.ggplot_overimp_theme(test_plot, showlegend=FALSE)
 
 
     if(!is.null(ylim)) test_plot <- test_plot + ylim(ylim)
 
-    combined <- gridExtra::arrangeGrob(train_plot, test_plot, ncol = 2,
-                                       top = comb_title)
+    combined <- train_plot + test_plot +
+      plot_layout(ncol = 2) +
+      plot_annotation(title = comb_title,
+                      theme = theme(
+                        plot.title = element_text(
+                          size = 14,           # Font size
+                          face = "bold",       # "plain", "italic", "bold", "bold.italic"
+                          family = "sans",    # Font family (e.g., "sans", "serif", "mono")
+                          hjust = 0.5,         # Center the title (0 = left, 1 = right)
+                          color = "black"   # Font color
+                        )))
+
+
 
   } else {
-    combined <- gridExtra::arrangeGrob(train_plot, ncol = 1,
-                                       top = comb_title)
+    combined <- train_plot +
+      plot_layout(ncol = 1) +
+      plot_annotation(title = comb_title,
+                      theme = theme(
+                        plot.title = element_text(
+                          size = 14,           # Font size
+                          face = "bold",       # "plain", "italic", "bold", "bold.italic"
+                          family = "sans",    # Font family (e.g., "sans", "serif", "mono")
+                          hjust = 0.5,         # Center the title (0 = left, 1 = right)
+                          color = "black"   # Font color
+                        )))
+
   }
 
   class(combined)<- c("overimp_plot",class(combined))

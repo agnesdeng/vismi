@@ -1,17 +1,19 @@
 #' Visualise Multiple Imputation via Overimputations
 #' @describeIn vismi Visualise Multiple Imputation via Overimputations
-#' @param obj Overimputation object of class 'overimp' created by the \code{overimpute()} function.
+#' @param obj Overimputation object of class 'overimp' created by the \code{overimp()} function.
 #' @param x A character string specifying the name of the variable to plot on the x
 #' @param y A character string specifying the name of the variable to plot on the y
 #' @param z A character string specifying the name of the variable to plot on the z
-#' @param num_plot A character string specifying the type of plot for numeric variables. Options
-#' are "qq" (default) for QQ plot.
-#' @param int_plot A character string specifying the type of plot for integer variables. Options
-#' are "ridge" (default) for ridge plot.
-#' @param fac_plot A character string specifying the type of plot for categorical variables. Options
-#' are "bar" (default) for bar plot.
+#' @param m A single positive integer specifying the number of imputed datasets to plot. It should be smaller than the total number of imputed datasets in the object.
+#' @param imp_idx A vector of integers specifying the indices of imputed datasets to plot.
+#' @param integerAsFactor A logical indicating whether integer variables should be treated as factors. Default is FALSE (treated as numeric).
+#' @param num_plot A character string specifying the type of plot for numeric variables.
+#' @param fac_plot A character string specifying the type of plot for categorical variables.
+#' @param train_color_pal A vector of colors for the training data. If NULL, default colors will be used.
+#' @param test_color_pal A vector of colors for the test data. If NULL, default colors will be used.
+#' @param ... Additional arguments to customize the plots, such as position, point_size, linewidth, alpha, xlim, ylim, boxpoints, width.
 #' @export
-vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, integerAsFactor = FALSE, num_plot= "qq", fac_plot = "bar",train_color_pal = NULL, test_color_pal = NULL,...) {
+vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, num_plot= "cv", fac_plot = "cv",train_color_pal = NULL, test_color_pal = NULL,stack_y = FALSE, diag_color = NULL,seed=2025,...) {
 
   #checking
   if(!inherits(obj, "overimp")) stop("Object must be of class 'overimp'")
@@ -58,6 +60,7 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, integerAsFactor = FALSE, 
 
 
 
+
   #Types <- obj$params$Types
   types <- sapply(obj$imputed_train[[1]][, ..vars], function(col) {
     if (inherits(col, "ordered")) {
@@ -80,19 +83,22 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, integerAsFactor = FALSE, 
   if(D==1){
 
     x<- vars[1]
-    comb_title <-grid::textGrob(paste("Masked true vs multiply-imputed values:", x),
-                                gp = grid::gpar(fontsize = 14, fontface = "bold"))
+    comb_title <-paste("Masked true vs multiply-imputed values:", x)
+    #comb_title <-grid::textGrob(paste("Masked true vs multiply-imputed values:", x),
+                                #gp = grid::gpar(fontsize = 14, fontface = "bold"))
 
 
 
     plot_map <- list(
       numeric = list(
+        cv = overimp1D_cv_num,
         qq = overimp1D_qq,
         qqline = overimp1D_qqline,
         ridge = overimp1D_ridge,
         density = overimp1D_density
       ),
       factor = list(
+        cv = overimp1D_cv_fac,
         bar = overimp1D_bar,
         dodge = overimp1D_dodge
       )
@@ -113,8 +119,11 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, integerAsFactor = FALSE, 
   }else if(D==2){
     x<- vars[1]
     y<- vars[2]
-    comb_title <-grid::textGrob(paste("Masked true vs multiply-imputed values:", y, "vs", x),
-                                gp = grid::gpar(fontsize = 14, fontface = "bold"))
+
+    comb_title <-paste("Masked true vs multiply-imputed values:", y, "vs", x)
+
+   # comb_title <-grid::textGrob(paste("Masked true vs multiply-imputed values:", y, "vs", x),
+                                #gp = grid::gpar(fontsize = 14, fontface = "bold"))
 
     type_comb <- paste0(sort(types), collapse = "_")
 
@@ -136,10 +145,13 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, integerAsFactor = FALSE, 
       "Masked true vs multiply-imputed values: ", y, " vs ", x,
       "\nFaceted by ", z),
       gp = grid::gpar(fontsize = 14, fontface = "bold"))
+
+    stop("Overimputation plots with 3 variables are not implemented yet.")
   }
 
 
-  plot_data <- .overimp_preprocess(obj=obj, vars=vars, integerAsFactor=integerAsFactor)
+  plot_data <- .overimp_preprocess(obj=obj, vars=vars, m = m, imp_idx = imp_idx, integerAsFactor = integerAsFactor)
+
   if(is.null(train_color_pal)){
     train_color_pal <- plot_data$train$color_pal
   }
@@ -172,7 +184,10 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, integerAsFactor = FALSE, 
     point_size = point_size,
     linewidth = linewidth,
     boxpoints = boxpoints,
-    width = width
+    width = width,
+    stack_y = stack_y,
+    diag_color = diag_color,
+    seed = seed
   )
 
   # Call the plotting function
@@ -183,25 +198,5 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, integerAsFactor = FALSE, 
 
 
 
-
-#' print method for overimp_plot objects
-#' @exportS3Method
-print.overimp_plot <- function(x, ...) {
-  # Check if it's a gtable/grob (from arrangeGrob)
-  if (inherits(x, "gtable") || inherits(x, "grob")) {
-    grid::grid.newpage()  # Clear the plot area
-    grid::grid.draw(x)    # Draw the plot
-  } else if (inherits(x, "ggplot")) {
-    # It's a ggplot object - use ggplot's print method
-    NextMethod("print")  # Call print.ggplot
-  }
-  invisible(x)
-}
-
-#' plot method for overimp_plot objects
-#' @exportS3Method
-plot.overimp_plot <- function(x, ...) {
-  print(x, ...)
-}
 
 

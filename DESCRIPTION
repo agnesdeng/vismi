@@ -1,7 +1,7 @@
 Package: vismi
 Type: Package
 Title: Visualisation Tools for Multiple Imputation
-Version: 0.8.0
+Version: 0.9.0
 Authors@R: c(
     person(given = "Yongshi", family ="Deng", email = "agnes.yongshideng@gmail.com",
            role = c("aut","cre"),comment =c(ORCID = "0000-0001-5845-859X")),
@@ -25,6 +25,7 @@ Imports:
     dplyr,
     ggplot2 (>= 4.0.1),
     gridExtra,
+    ggridges,
     mixgb (>= 2.0.3),
     plotly,
     rlang,

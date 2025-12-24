@@ -3,17 +3,26 @@
 ## Breaking changes version
 - Submit to CRAN
 
-# vismi 0.9.0 (planned)
+
+# vismi 0.9.0
+### Deprecations 
+- Deprecated `trelliscopejs_con()` and `trelliscopejs_cat()`. 
+### New Features
+-  `ts_overimp()` Support showing all overimputation 1D plots for all numeric and factors variables through `trelliscopejs`
+
+
+# vismi 0.8.0
+### New Features
+- subset imputed datasets for plotting via `imp_idx` or `m` argument in `vismi()` function.
+### Bug Fixes
+- Misalignment issue of using plotly subplots in `.plotly_box_facet()`.
 ### Refactoring
 - Refactored other functions.
 
-# vismi 0.8.0 (planned)
-### Refactoring
-- Refactored all overimputation visualisation functions for 2D.
 
 # vismi 0.7.0
 ### Refactoring
-- Refactored all overimputation visualisation functions for 1D.
+- Refactored all overimputation visualisation functions for 1D & 2D.
 
 # vismi 0.6.0
 ### Refactoring

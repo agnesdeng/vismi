@@ -1,4 +1,4 @@
-overimpute_mixgb <- function(data, p = 0.2, m = 5, test_ratio = 0, seed = NULL,
+overimp_mixgb <- function(data, p = 0.2, m = 5, test_ratio = 0, seed = NULL,
                              maxit = 1, ordinalAsInteger = FALSE,
                              pmm.type = NULL, pmm.k = 5, pmm.link = "prob",
                              initial.num = "normal", initial.int = "mode", initial.fac = "mode",

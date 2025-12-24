@@ -325,6 +325,7 @@
         marker = list(size = point_size, opacity = alpha, color = color_pal[group]),
         name=group,
         legendgroup =group,
+        offsetgroup=group,
         showlegend = (z_level == z_levels[1]),
         text = ~paste("Index:", row_index, "<br>",
                       x, ":", get(x), "<br>",
@@ -333,6 +334,7 @@
         hoverinfo = "text"
       )
     }
+
     fig|>
       layout(xaxis=list(title=x),
              yaxis = list(title = y, side = "left")

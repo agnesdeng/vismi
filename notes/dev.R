@@ -29,16 +29,71 @@ devtools::document()
 
 
 
-obj<-overimpute(data=newborn,p=0.2,m=5,test_ratio=0.2,method="mixgb")
-#obj2<-overimpute(data=newborn,p=0.2,m=5,test_ratio=0,method="mixgb")
+obj<-overimp(data=newborn,p=0.2,m=5,test_ratio=0,method="mixgb")
+obj
+
+ts_overimp(obj=obj,stack_y = TRUE)
+
+
+
+
+#obj2<-overimp(data=newborn,p=0.2,m=5,test_ratio=0,method="mixgb")
 my_pal <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b")
 
-fig<-vismi(obj=obj,x="BMPHEAD", y= "BMPRECUM", alpha=1, point_size=0.2, train_color_pal = my_pal, test_color_pal = my_pal)
+
+
+fig<-vismi(obj=obj, z="BMPHEAD")
 fig
 
-fig<-vismi(obj=obj,x="BMPHEAD", y= "BMPRECUM", xlim=c(40,45))
+fig<-vismi(obj=obj, z="DMAETHNR",point_size=0.5)
 fig
 
+fig<-vismi(obj=obj, z="DMAETHNR",stack_y=TRUE,point_size=0.5,diag_color="white")
+fig
+fig<-vismi(obj=obj, z="DMAETHNR",stack_y=TRUE,point_size=0.5)
+fig
+
+fig<-vismi(obj=obj, z="DMAETHNR",stack_y=TRUE)
+fig
+
+fig<-vismi(obj=obj, z="DMARETHN")
+fig
+
+fig<-vismi(obj=obj, z="HSSEX")
+fig
+fig<-vismi(obj=obj, z="BMPHEAD",num_plot="density")
+fig
+
+fig<-vismi(obj=obj, z="HSSEX", fac_plot="dodge")
+fig
+
+fig<-vismi(obj=obj,x="BMPHEAD", y= "BMPRECUM", alpha=1, point_size=0.2, train_color_pal = my_pal, test_color_pal = my_pal, imp_idx=c(1,4,2))
+fig
+
+fig<-vismi(obj=obj,x="BMPHEAD", y= "BMPRECUM", alpha=1, point_size=0.2,  imp_idx=c(1,4,2))
+fig
+
+fig<-vismi(obj=obj,x="BMPHEAD", y= "BMPRECUM", alpha=1, point_size=0.2,  m=2)
+fig
+
+data=newborn
+imp_list = imp_newborn
+y="BMPHEAD"
+x= "HYD1"
+z="HSSEX"
+imp_idx = c(1,3,5)
+
+
+
+
+fig<-vismi(data=newborn,imp_list = imp_newborn, y="BMPHEAD", x= "HYD1", z="HSSEX", imp_idx = c(4,3,5))
+fig
+
+fig<-vismi(data=newborn,imp_list = imp_newborn, y="BMPHEAD", x= "HYD1", z="HSSEX", m=3)
+fig
+
+fig<-vismi(data=newborn,imp_list = imp_newborn, y="BMPHEAD", x= "HYD1", z="HSSEX", interactive=FALSE)
+fig
 
 fig<-vismi(obj=obj,x="BMPHEAD", y= "BMPRECUM", ylim=c(50,90))
 fig
@@ -60,7 +115,10 @@ fig
 
 fig<-vismi(obj=obj,x="HYD1", y= "HSSEX" , ylim=c(0,200))
 fig
-fig<-vismi(obj=obj,y="HYD1", x= "HSSEX" , xlim=c(0,200))
+
+fig<-vismi(obj=obj,x="HYD1", y= "HSSEX")
+fig
+fig<-vismi(obj=obj,y="HYD1", x= "HSSEX")
 fig
 
 
@@ -148,7 +206,9 @@ color_pal=NULL
 marginal_x=NULL
 marginal_y=NULL
 
-
+idx<-sample.int(5,2)
+idx
+imp_newborn[idx]
 
 vismi(data=newborn,imp_list=imp_newborn,x="HSHSIZER",y="BMPRECUM", z="DMARETHN", color_pal=my_pal,interactive=FALSE,integerAsFactor = T)
 

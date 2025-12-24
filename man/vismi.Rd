@@ -14,6 +14,8 @@ vismi(...)
   x = NULL,
   y = NULL,
   z = NULL,
+  m = NULL,
+  imp_idx = NULL,
   interactive = TRUE,
   integerAsFactor = FALSE,
   color_pal = NULL,
@@ -27,16 +29,21 @@ vismi(...)
   x = NULL,
   y = NULL,
   z = NULL,
+  m = NULL,
+  imp_idx = NULL,
   integerAsFactor = FALSE,
-  num_plot = "qq",
-  fac_plot = "bar",
+  num_plot = "cv",
+  fac_plot = "cv",
   train_color_pal = NULL,
   test_color_pal = NULL,
+  stack_y = FALSE,
+  diag_color = NULL,
+  seed = 2025,
   ...
 )
 }
 \arguments{
-\item{...}{Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.}
+\item{...}{Additional arguments to customize the plots, such as position, point_size, linewidth, alpha, xlim, ylim, boxpoints, width.}
 
 \item{data}{A data frame containing the original data with missing values.}
 
@@ -48,11 +55,14 @@ vismi(...)
 
 \item{z}{A character string specifying the name of the variable to plot on the z}
 
+\item{m}{A single positive integer specifying the number of imputed datasets to plot. It should be smaller than the total number of imputed datasets in the object.}
+
+\item{imp_idx}{A vector of integers specifying the indices of imputed datasets to plot.}
+
 \item{interactive}{A logical value indicating whether to create an interactive plotly plot (TRUE
 by default) or a static ggplot2 plot (FALSE).}
 
-\item{integerAsFactor}{A logical value indicating whether to treat integer variables as factors
-(TRUE) or numeric (FALSE). Default is FALSE.}
+\item{integerAsFactor}{A logical indicating whether integer variables should be treated as factors. Default is FALSE (treated as numeric).}
 
 \item{color_pal}{A named vector of colors for different imputation sets. If NULL
 (default), a default color palette is used.}
@@ -67,16 +77,15 @@ for the y variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or 
 (default, no marginal plot) when interactive = TRUE. Options are "box", "rug", "box+rug", or NULL
 (default, no marginal plot) when interactive = FALSE.}
 
-\item{obj}{Overimputation object of class 'overimp' created by the \code{overimpute()} function.}
+\item{obj}{Overimputation object of class 'overimp' created by the \code{overimp()} function.}
 
-\item{num_plot}{A character string specifying the type of plot for numeric variables. Options
-are "qq" (default) for QQ plot.}
+\item{num_plot}{A character string specifying the type of plot for numeric variables.}
 
-\item{fac_plot}{A character string specifying the type of plot for categorical variables. Options
-are "bar" (default) for bar plot.}
+\item{fac_plot}{A character string specifying the type of plot for categorical variables.}
 
-\item{int_plot}{A character string specifying the type of plot for integer variables. Options
-are "ridge" (default) for ridge plot.}
+\item{train_color_pal}{A vector of colors for the training data. If NULL, default colors will be used.}
+
+\item{test_color_pal}{A vector of colors for the test data. If NULL, default colors will be used.}
 }
 \value{
 A plotly or ggplot2 object visualizing the imputed data.

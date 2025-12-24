@@ -16,6 +16,8 @@ vismi <-function(...){
 #' axis. Default is NULL.
 #' @param z A character string specifying the name of the variable to plot on the z
 #' axis. Default is NULL.
+#' @param m An integer specifying the number of imputed datasets to plot. It should be smaller than \code{length(imp_list)}. Default is NULL (plot all).
+#' @param imp_idx A vector of integers specifying the indices of imputed datasets to plot. Default is NULL (plot all).
 #' @param interactive A logical value indicating whether to create an interactive plotly plot (TRUE
 #' by default) or a static ggplot2 plot (FALSE).
 #' @param integerAsFactor A logical value indicating whether to treat integer variables as factors
@@ -33,7 +35,7 @@ vismi <-function(...){
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
 #' @return A plotly or ggplot2 object visualizing the imputed data.
 #' @export
-vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, interactive= TRUE, integerAsFactor = FALSE, color_pal=NULL, marginal_x=NULL, marginal_y=NULL,...){
+vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp_idx=NULL, interactive= TRUE, integerAsFactor = FALSE, color_pal=NULL, marginal_x=NULL, marginal_y=NULL,...){
 
   #check input variables
   if (!is.null(x) && !is.character(x)){
@@ -57,6 +59,10 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, interactive
     stop("Please check your spelling. Variable(s) not found in data: ",
          paste(nonexist_vars, collapse = ", "))
   }
+
+
+
+
 
   #users_params<-list()
   users_params <- list(...)
@@ -161,7 +167,7 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, interactive
   }
 
   # preprocess data
-  pre <- preprocess(data, imp_list, vars = vars, integerAsFactor=integerAsFactor)
+  pre <- preprocess(data, imp_list, m=m, imp_idx=imp_idx, vars = vars, integerAsFactor=integerAsFactor)
   all_dt <- pre$all_dt
   if(is.null(color_pal)){
     color_pal <- pre$color_pal
@@ -199,4 +205,3 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, interactive
 
 
 }
-
