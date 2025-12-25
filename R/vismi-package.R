@@ -10,12 +10,12 @@
 #' @importFrom plotly plot_ly layout add_histogram add_lines add_trace subplot
 #' @importFrom utils modifyList
 #' @importFrom stats as.formula setNames density
-#' @importFrom dplyr group_by reframe tibble filter ungroup mutate summarise n sym
+#' @importFrom dplyr group_by reframe tibble filter select all_of left_join ungroup mutate summarise n sym row_number
 #' @importFrom tidyr pivot_longer
 #' @importFrom purrr map
-#' @importFrom ggplot2 ggplot aes geom_histogram geom_density geom_point geom_bar geom_boxplot geom_jitter position_jitter margin unit
-#' @importFrom ggplot2 scale_y_continuous scale_y_discrete scale_alpha_discrete scale_color_manual scale_fill_manual ylab labs guides guide_legend theme element_text element_rect element_line
-#' @importFrom ggplot2 after_stat facet_grid vars labeller ylim coord_cartesian stat_qq stat_qq_line position_dodge ggplot_build
+#' @importFrom ggplot2 ggplot aes geom_histogram geom_density geom_point geom_bar geom_boxplot geom_jitter position_jitter margin unit geom_rect geom_segment geom_abline
+#' @importFrom ggplot2 scale_y_continuous scale_y_discrete scale_alpha_discrete scale_color_manual scale_fill_manual scale_fill_identity scale_x_continuous ylab labs guides guide_legend theme element_text element_rect element_line
+#' @importFrom ggplot2 after_stat facet_grid vars labeller ylim coord_cartesian stat_qq stat_qq_line position_dodge ggplot_build element_blank
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom mixgb mixgb impute_new
 #' @importFrom rlang .data
@@ -25,6 +25,7 @@
 #' @importFrom gridExtra arrangeGrob
 #' @importFrom grid textGrob gpar
 #' @importFrom ggridges geom_density_ridges
+#' @importFrom patchwork plot_layout plot_annotation
 
 #' @references Deng, Y., & Lumley, T. (2026), vismi: Visualisation Tools for Multiple Imputation, arXiv preprint.
 "_PACKAGE"

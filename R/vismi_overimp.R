@@ -11,6 +11,9 @@
 #' @param fac_plot A character string specifying the type of plot for categorical variables.
 #' @param train_color_pal A vector of colors for the training data. If NULL, default colors will be used.
 #' @param test_color_pal A vector of colors for the test data. If NULL, default colors will be used.
+#' @param stack_y A logical indicating whether to stack y values in certain plots. Default is FALSE.
+#' @param diag_color A character string specifying the color of the diagonal line in scatter plots. Default is NULL.
+#' @param seed An integer specifying the random seed for reproducibility. Default is 2025.
 #' @param ... Additional arguments to customize the plots, such as position, point_size, linewidth, alpha, xlim, ylim, boxpoints, width.
 #' @export
 vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, num_plot= "cv", fac_plot = "cv",train_color_pal = NULL, test_color_pal = NULL,stack_y = FALSE, diag_color = NULL,seed=2025,...) {
@@ -57,24 +60,9 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, m = NULL, imp_idx = NULL,
   width <- params$width
 
 
-
-
-
-
-  #Types <- obj$params$Types
-  types <- sapply(obj$imputed_train[[1]][, ..vars], function(col) {
-    if (inherits(col, "ordered")) {
-      "factor"
-    }else if(is.integer(col)){
-      if(isTRUE(integerAsFactor)){
-        "factor"
-      }else{
-        "numeric"
-      }
-    } else {
-      class(col)
-    }
-  })
+  Types <- obj$params$Types
+  types<-Types[vars]
+  types[types=="integer"] <- if(isTRUE(integerAsFactor)) "factor" else "numeric"
 
 
   #number of variables
@@ -150,7 +138,7 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, m = NULL, imp_idx = NULL,
   }
 
 
-  plot_data <- .overimp_preprocess(obj=obj, vars=vars, m = m, imp_idx = imp_idx, integerAsFactor = integerAsFactor)
+  plot_data <- .overimp_postprocess(obj=obj, vars=vars, m = m, imp_idx = imp_idx, integerAsFactor = integerAsFactor)
 
   if(is.null(train_color_pal)){
     train_color_pal <- plot_data$train$color_pal

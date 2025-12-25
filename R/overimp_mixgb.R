@@ -8,7 +8,7 @@ overimp_mixgb <- function(data, p = 0.2, m = 5, test_ratio = 0, seed = NULL,
                              nrounds = 100, early_stopping_rounds = NULL, print_every_n = 10L, xgboost_verbose = 0, ...) {
 
   # Use internal preprocessing
-  params <- .overimp_split(data, p = p, test_ratio = test_ratio, seed = seed)
+  params <- .overimp_preprocess(data, p = p, test_ratio = test_ratio, seed = seed)
 
   train_data = params$train_data
   test_data = params$test_data

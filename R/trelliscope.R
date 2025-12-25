@@ -1,6 +1,25 @@
-ts_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, num_plot= "cv", fac_plot = "cv",train_color_pal = NULL, test_color_pal = NULL,stack_y = FALSE, diag_color = NULL,seed=2025,...) {
-
+#' Trelliscope Visualisation of Overimputation Diagnostics
+#' @description Generates a Trelliscope display for overimputation diagnostics across all variables.
+#' @param obj An object of class 'overimp' containing imputed datasets and parameters.
+#' @param m A single positive integer specifying the number of imputed datasets to plot. It should be smaller than the total number of imputed datasets in the object. Default is NULL (
+#' plot all).
+#' @param imp_idx A vector of integers specifying the indices of imputed datasets to plot. Default is NULL (plot all).
+#' @param integerAsFactor A logical indicating whether integer variables should be treated as factors. Default is FALSE (treated as numeric).
+#' @param num_plot A character string specifying the type of plot for numeric variables. Options are "cv" (cross-validation), "ridge", or "density". Default is "cv".
+#' @param fac_plot A character string specifying the type of plot for categorical variables. Options are "cv" (cross-validation), "bar", or "dodge". Default is "cv".
+#' @param train_color_pal A vector of colors for the training data. If NULL, default colors will be used.
+#' @param test_color_pal A vector of colors for the test data. If NULL, default colors will be used.
+#' @param stack_y A logical indicating whether to stack y-values in the plots. Default is FALSE.
+#' @param diag_color A color specification for the diagonal line in the plots. Default is NULL.
+#' @param seed An integer seed for reproducibility. Default is 2025.
+#' @param ... Additional arguments to customize the plots, such as point_size, xlim, ylim.
+#' @return A Trelliscope display object visualising overimputation diagnostics for all variables.
+#' @export
+ts_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = NULL, seed = 2025, ...) {
   all_vars <- obj$params$Names
+
+  Types <- obj$params$Types
+  Types[Types == "integer"] <- if (isTRUE(integerAsFactor)) "factor" else "numeric"
 
   users_params <- list(...)
   params <- modifyList(.vismi_overimp_params(), users_params)
@@ -12,47 +31,36 @@ ts_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, n
 
 
   # Create a "Control Table" for Trelliscope. This table has one row per variable
- plot_data_frame<- tibble(variable = all_vars) %>%
-    group_by(variable) %>%
-    mutate(panel = purrr::map(variable, function(v_name) {
-
-      # for each variable
-      plot_data_sub <- .overimp_preprocess(obj = obj, vars = v_name, m=m,imp_idx =imp_idx,
-                                           integerAsFactor = integerAsFactor)
-
-
-      col_sample <- obj$imputed_train[[1]][[v_name]]
-      v_type <- if(inherits(col_sample, "ordered") || (is.integer(col_sample) && integerAsFactor)) {
-        "factor"
-      } else if(is.numeric(col_sample)) {
-        "numeric"
-      } else {
-        "factor"
-      }
-
-
-      plot_which <- if(v_type == "numeric") num_plot else fac_plot
-      plot_fun <- plot_map[[v_type]][[plot_which]]
+  all_vars_df <- tibble(all_vars = all_vars) |>
+    group_by(all_vars) |>
+    mutate(panel = purrr::map(all_vars, function(var) {
+      # for each all_vars
+      var_df <- .overimp_postprocess(
+        obj = obj, vars = var, m = m, imp_idx = imp_idx,
+        integerAsFactor = integerAsFactor
+      )
+      var_vec <- obj$imputed_train[[1]][[var]]
+      var_type <- Types[[var]]
+      plot_which <- if (var_type == "numeric") num_plot else fac_plot
+      plot_fun <- plot_map[[var_type]][[plot_which]]
 
       args_list <- list(
-        plot_data = plot_data_sub,
-        x = v_name,
-        comb_title = paste("Masked true vs impute:", v_name),
-        train_color_pal = if(is.null(train_color_pal)) plot_data_sub$train$color_pal else train_color_pal,
-        test_color_pal = if(is.null(test_color_pal)) plot_data_sub$test$color_pal else test_color_pal,
+        plot_data = var_df,
+        x = var,
+        comb_title = paste("Masked true vs impute:", var),
+        train_color_pal = if (is.null(train_color_pal)) var_df$train$color_pal else train_color_pal,
+        test_color_pal = if (is.null(test_color_pal)) var_df$test$color_pal else test_color_pal,
         point_size = params$point_size,
         xlim = params$xlim,
         ylim = params$ylim,
-        stack_y=stack_y,
+        stack_y = stack_y,
         diag_color = diag_color,
         seed = seed
       )
 
       do.call(plot_fun, args_list[names(args_list) %in% names(formals(plot_fun))])
+    })) |>
+    ungroup()
 
-    }))%>%
-   ungroup()
-
-
-    trelliscopejs::trelliscope(plot_data_frame,name = "Overimputation Diagnostic for all Variables", panel_col = "panel")
+  trelliscopejs::trelliscope(all_vars_df, name = "Overimputation Diagnostic for all variables", panel_col = "panel")
 }

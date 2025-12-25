@@ -86,6 +86,12 @@ for the y variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or 
 \item{train_color_pal}{A vector of colors for the training data. If NULL, default colors will be used.}
 
 \item{test_color_pal}{A vector of colors for the test data. If NULL, default colors will be used.}
+
+\item{stack_y}{A logical indicating whether to stack y values in certain plots. Default is FALSE.}
+
+\item{diag_color}{A character string specifying the color of the diagonal line in scatter plots. Default is NULL.}
+
+\item{seed}{An integer specifying the random seed for reproducibility. Default is 2025.}
 }
 \value{
 A plotly or ggplot2 object visualizing the imputed data.

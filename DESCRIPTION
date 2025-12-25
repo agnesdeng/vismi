@@ -27,6 +27,7 @@ Imports:
     gridExtra,
     ggridges,
     mixgb (>= 2.0.3),
+    patchwork,
     plotly,
     purrr,
     rlang,
