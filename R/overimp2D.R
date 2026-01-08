@@ -4,7 +4,7 @@ overimp2D_scatter <- function(plot_data, x, y, comb_title, alpha, point_size, xl
     geom_point(alpha=alpha, size=point_size) +
     facet_grid(rows=vars(Group))+
     scale_color_manual(values = train_color_pal) +
-    labs(title = "Training Data")+
+    labs(title = "Training Data", x = x, y = y)+
     guides(color="none")
   train_plot<-.ggplot_overimp_theme(train_plot, showlegend=FALSE)
 
@@ -21,7 +21,7 @@ overimp2D_scatter <- function(plot_data, x, y, comb_title, alpha, point_size, xl
       coord_cartesian(xlim = xrange, ylim = yrange) +
       facet_grid(rows=vars(Group))+
       scale_color_manual(values = test_color_pal) +
-      labs(title = "Test Data")+
+      labs(title = "Test Data", x = x, y = y)+
       guides(color="none")
     test_plot<-.ggplot_overimp_theme(test_plot, showlegend=FALSE)
 
@@ -70,7 +70,7 @@ overimp2D_box <- function(plot_data, x, y, comb_title, alpha, point_size, boxpoi
     facet_grid(rows=vars(Group))+
     scale_fill_manual(values = train_color_pal) +
     scale_color_manual(values = train_color_pal) +
-    labs(title = "Training Data")+
+    labs(title = "Training Data", x = x, y = y)+
     guides(fill="none", color="none")
 
   if(isFALSE(boxpoints)){
@@ -98,7 +98,7 @@ overimp2D_box <- function(plot_data, x, y, comb_title, alpha, point_size, boxpoi
       facet_grid(rows=vars(Group))+
       scale_fill_manual(values = test_color_pal) +
       scale_color_manual(values = test_color_pal) +
-      labs(title = "Test Data")+
+      labs(title = "Test Data", x = x, y = y)+
       guides(fill="none", color="none")
     if(isFALSE(boxpoints)){
       test_plot<-  test_plot +
@@ -154,12 +154,12 @@ overimp2D_box <- function(plot_data, x, y, comb_title, alpha, point_size, boxpoi
 # overimp2D_bar ----------------------------------------------------------------
 overimp2D_bar <- function(plot_data, x, y, comb_title, width, alpha, ylim, train_color_pal, test_color_pal) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]], alpha=.data[[y]])) +
-    geom_bar(aes(fill=Group, color=Group), width = width) +
+    geom_bar(aes(fill=Group, color=Group), width = width,position = "dodge2") +
     facet_grid(rows=vars(Group))+
     scale_alpha_discrete(range = c(0.1, 1)) +
     scale_color_manual(values = train_color_pal) +
     scale_fill_manual(values = train_color_pal) +
-    labs(title = "Training Data")+
+    labs(title = "Training Data", x = x, y = y)+
     guides(fill = "none", color ="none")
   train_plot<-.ggplot_overimp_theme(train_plot, showlegend=FALSE)
 
@@ -176,7 +176,7 @@ overimp2D_bar <- function(plot_data, x, y, comb_title, width, alpha, ylim, train
       scale_alpha_discrete(range = c(0.1, 1)) +
       scale_color_manual(values = test_color_pal) +
       scale_fill_manual(values = test_color_pal) +
-      labs(title = "Test Data")+
+      labs(title = "Test Data", x = x, y = y)+
       guides(fill = "none", color ="none",alpha="none")
     test_plot<-.ggplot_overimp_theme(test_plot, showlegend=FALSE)
 

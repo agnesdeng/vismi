@@ -20,8 +20,15 @@ overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
 
 
   train_data <- .transform_data(data = plot_data$train$all_dt, x)
-  min_val <- train_data$min_val
-  max_val <- train_data$max_val
+  if(!is.null(plot_data$test)){
+    test_data <- .transform_data(data = plot_data$test$all_dt, x)
+    min_val <- min(train_data$min_val, test_data$min_val)
+    max_val <- max(train_data$max_val,test_data$max_val)
+  }else{
+    min_val <- train_data$min_val
+    max_val <- train_data$max_val
+  }
+
 
   train_plot <- ggplot(train_data$join_data, aes(x = .data[["Masked true"]], y = .data[[x]], color = Group)) +
     geom_point(size = 0.5) +
@@ -33,7 +40,6 @@ overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
       inherit.aes = FALSE, color = "gray40", linetype = "solid", linewidth = 0.1
     ) +
     geom_abline(slope = 1, intercept = 0, linetype = "solid", color = "gray20") +
-    # coord_fixed(xlim = c(min_val, max_val), ylim = c(min_val, max_val))+
     scale_color_manual(values = train_color_pal) +
     labs(
       title = "Training Data",
@@ -46,7 +52,7 @@ overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
   if (!is.null(ylim)) train_plot <- train_plot + ylim(ylim) else train_plot <- train_plot + ylim(c(min_val, max_val))
 
   if (!is.null(plot_data$test)) {
-    test_data <- .transform_data(data = plot_data$test$all_dt, x)
+
 
     test_plot <- ggplot(test_data$join_data, aes(x = .data[["Masked true"]], y = .data[[x]], color = Group)) +
       geom_point(size = 0.5) +
@@ -58,7 +64,6 @@ overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
         inherit.aes = FALSE, color = "gray40", linetype = "solid", linewidth = 0.1
       ) +
       geom_abline(slope = 1, intercept = 0, linetype = "solid", color = "gray20") +
-      # coord_fixed(xlim = c(min_val, max_val), ylim = c(min_val, max_val))+
       scale_color_manual(values = test_color_pal) +
       labs(
         title = "Test Data",
@@ -466,7 +471,7 @@ overimp1D_ridge <- function(plot_data, x, comb_title, alpha, xlim, train_color_p
     geom_density_ridges(alpha = alpha, aes(y = Group, fill = Group)) +
     scale_fill_manual(values = train_color_pal) +
     scale_y_discrete(limits = rev) +
-    labs(title = "Training Data") +
+    labs(title = "Training Data", x = x) +
     guides(fill = "none")
   train_plot <- .ggplot_overimp_theme(train_plot)
 
@@ -479,7 +484,7 @@ overimp1D_ridge <- function(plot_data, x, comb_title, alpha, xlim, train_color_p
       coord_cartesian(xlim = xrange) +
       scale_fill_manual(values = test_color_pal) +
       scale_y_discrete(limits = rev) +
-      labs(title = "Test Data") +
+      labs(title = "Test Data", x = x) +
       guides(fill = "none")
     test_plot <- .ggplot_overimp_theme(test_plot)
 
@@ -526,7 +531,7 @@ overimp1D_density <- function(plot_data, x, comb_title, alpha, linewidth, xlim, 
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]], color = Group)) +
     geom_density(alpha = alpha, linewidth = linewidth) +
     scale_color_manual(values = train_color_pal) +
-    labs(title = "Training Data")
+    labs(title = "Training Data", x = x)
   train_plot <- .ggplot_overimp_theme(train_plot)
 
   if (!is.null(xlim)) train_plot <- train_plot + xlim(xlim)
@@ -538,7 +543,7 @@ overimp1D_density <- function(plot_data, x, comb_title, alpha, linewidth, xlim, 
       geom_density(alpha = alpha, linewidth = linewidth) +
       coord_cartesian(xlim = xrange) +
       scale_color_manual(values = test_color_pal) +
-      labs(title = "Test Data")
+      labs(title = "Test Data", x = x)
     test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE)
 
     if (!is.null(xlim)) test_plot <- test_plot + xlim(xlim)

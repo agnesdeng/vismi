@@ -1,0 +1,7 @@
+destination: docs
+template:
+  bootstrap: 5
+  bslib:
+  includes:
+    in_header: |
+      <link rel="stylesheet" href="extra.css">

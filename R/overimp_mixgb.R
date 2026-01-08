@@ -10,14 +10,17 @@ overimp_mixgb <- function(data, p = 0.2, m = 5, test_ratio = 0, seed = NULL,
   # Use internal preprocessing
   params <- .overimp_preprocess(data, p = p, test_ratio = test_ratio, seed = seed)
 
+  #print(colSums(is.na(params$trainNA_data)))
+
   train_data = params$train_data
   test_data = params$test_data
-  trainNA_data = params$trainNA_data
+  trainNA_data = data.table::copy(params$trainNA_data)
   trainNA_loc = params$trainNA_loc
-  testNA_data = params$testNA_data
+  testNA_data = data.table::copy(params$testNA_data)
   testNA_loc = params$testNA_loc
   Names <- params$Names
   Types <- params$Types
+
 
 
 
@@ -60,6 +63,8 @@ overimp_mixgb <- function(data, p = 0.2, m = 5, test_ratio = 0, seed = NULL,
   } else {
     imputed_test <- NULL
   }
+
+  #print(colSums(is.na(params$trainNA_data)))
 
   list(
     imputed_train = imputed_train,

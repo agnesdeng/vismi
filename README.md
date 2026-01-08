@@ -3,16 +3,32 @@
 
 # vismi
 
-<!-- badges: start -->
-
+Visualisation Tools for Multiple imputation <!-- badges: start -->
 <!-- badges: end -->
 
-Visualisation Tools for Multiple imputation
+## Overview
 
-## Breaking Changes Notice
+The package has been completely redesigned. Please try the new
+development version on GitHub and I’ll submit to CRAN soon :)
 
-I am refactoring the whole package. The new version will be available in
-January 2026 and I’ll submit to CRAN.
+- `vismi()`: visualise multiply-imputed missing data through
+  distributional characteristics
+
+- `vismi_overimp()`: visualise multiply-imputed missing data through
+  overimputation
+
+- `vismi_converge()`: visualise convergence disgnostics for imputed
+  values of an incomplete variable
+
+With the support of
+[trelliscopejs](https://hafen.github.io/trelliscopejs/), **vismi**
+provides trelliscope displays to inspect all variables at once via
+
+- `trellis_vismi()`
+
+- `trellis_vismi_overimp()`
+
+- `trellis_vismi_converge()`
 
 ## Installation
 

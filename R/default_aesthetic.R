@@ -26,11 +26,6 @@
 
 
 
-
-
-
-
-
 .ggplot_theme<-function(fig){
   fig+
   #guides(fill = "none", color = "none",shape = guide_legend(override.aes = list(size = 3)))
@@ -47,26 +42,21 @@
 
 
 
-
-.plotly_overimp_theme<-function(fig,x,y=NULL,z=NULL){
-
-  if(is.null(y) & is.null(z)){
-    title_text <- paste("Masked true vs multiply-imputed values:", x)
-  }else if(is.null(z)){
-    title_text <- paste("Masked true vs multiply-imputed values:", y, "vs", x)
-  }else{
-    title_text <- paste0(
-      "<span style='font-size:18px; font-weight:600;'>",
-      "Masked true  vs multiply-imputed values: ", y, " vs ", x,
-      "</span><br>",  # <- extra <br> adds space between title and subtitle
-      "<span style='font-size:13px;'>",
-      "Faceted by ", z,
-      "</span>"
-    )
-  }
-
-
+.ggplot_theme_3fac<-function(fig){
+  fig+
+    theme(axis.text.x = element_markdown(),
+          axis.text.y = element_markdown(),
+          panel.background = element_rect(fill = "gray95", colour = NA),
+          panel.grid.major = element_line(colour = "white", linewidth = 0.3),
+          panel.grid.minor = element_line(colour = "white", linewidth = 0.2),
+          plot.title = element_text(size = 14, face = "bold"),
+          plot.subtitle = element_text(size = 12, face = "bold"),
+          legend.position = "bottom")
 }
+
+
+
+
 
 .ggplot_overimp_theme<-function(fig, showlegend=TRUE){
 
@@ -112,42 +102,26 @@
 
 
 
-.plotly_layout_common<- function(fig, x, y=NULL, z=NULL) {
-
-  if(is.null(y) & is.null(z)){
-    title_text <- paste("Observed vs multiply-imputed values:", x)
-  }else if(is.null(z)){
-    title_text <- paste("Observed vs multiply-imputed values:", y, "vs", x)
-  }else{
-    title_text <- paste0(
-      "<span style='font-size:18px; font-weight:600;'>",
-      "Observed vs multiply-imputed values: ", y, " vs ", x,
-      "</span><br>",  # <- extra <br> adds space between title and subtitle
-      "<span style='font-size:13px;'>",
-      "Faceted by ", z,
-      "</span>"
-    )
-
-  }
-
-
+.plotly_layout_common<- function(fig,plot_title) {
 
   fig<-fig |> layout(
     plot_bgcolor="#f2f7fc",
     title = list(
-      text = title_text,
+      text =paste0("<b>", plot_title, "</b>"),
       x = 0.5,          # horizontal position (0 = left, 0.5 = center, 1 = right)
-      y = 0.98,         # vertical position (1 = top, 1 = bottom)
+      y = 0.96,         # vertical position (1 = top, 1 = bottom)
       xanchor = "center", # anchor for x position ("left", "center", "right")
       yanchor = "top",    # anchor for y position ("top", "middle", "bottom")
       font = list(
         size = 18,
-        color = "black"
-        #family = "Arial"
+        color = "black",
+        family = "Arial"
       )),
-    margin = list(r=50, t=50), # increase right and top margin to avoid cutoffs
-    legend = list(x = 0.5,         # x position (0 = left, 1 = right)
-                  y = -0.2,         # y position (0 = bottom, 1 = top)
+    margin = list(l=70,r=70, t=70,b=70), # increase right and top margin to avoid cutoffs
+    legend = list(yref ="container",
+                  xref ="paper",
+                  x = 0.5,         # x position (0 = left, 1 = right)
+                  y = -0.15,         # y position (0 = bottom, 1 = top)
                   xanchor = "center",  # "left", "center", "right"
                   yanchor = "top",    # "top", "middle", "bottom"
                   orientation = "h",  # "v" = vertical, "h" = horizontal
@@ -159,9 +133,9 @@
 
 
 
-.plotly_layout_scatter3d<- function(fig, x, y, z) {
+.plotly_layout_scatter3d<- function(fig, plot_title) {
 
-  title_text <- paste("Observed vs multiply-imputed values:",  y, "vs", x, "vs", z)
+  #title_text <- paste("Observed vs multiply-imputed values:",  y, "vs", x, "vs", z)
 
   fig<-fig |> layout(
     scene = list(
@@ -174,15 +148,15 @@
     paper_bgcolor = "#fff", # the whole paper
     #plot_bgcolor="#f2f7fc", # has no effect here
     title = list(
-      text = title_text,
+      text =paste0("<b>", plot_title, "</b>"),
       x = 0.5,          # horizontal position (0 = left, 0.5 = center, 1 = right)
-      y = 0.98,         # vertical position (1 = top, 1 = bottom)
+      y = 0.96,         # vertical position (1 = top, 1 = bottom)
       xanchor = "center", # anchor for x position ("left", "center", "right")
       yanchor = "top",    # anchor for y position ("top", "middle", "bottom")
       font = list(
         size = 18,
-        color = "black"
-        #family = "Arial"
+        color = "black",
+        family = "Arial"
       )),
     margin = list(r=50, t=50), # increase right and top margin to avoid cutoffs
     legend = list(x = 0.5,         # x position (0 = left, 1 = right)
@@ -197,3 +171,25 @@
 }
 
 
+# unused ------------------------------------------------------------------
+
+
+.plotly_overimp_theme<-function(fig,x,y=NULL,z=NULL){
+
+  if(is.null(y) & is.null(z)){
+    title_text <- paste("Masked true vs multiply-imputed values:", x)
+  }else if(is.null(z)){
+    title_text <- paste("Masked true vs multiply-imputed values:", y, "vs", x)
+  }else{
+    title_text <- paste0(
+      "<span style='font-size:18px; font-weight:600;'>",
+      "Masked true  vs multiply-imputed values: ", y, " vs ", x,
+      "</span><br>",  # <- extra <br> adds space between title and subtitle
+      "<span style='font-size:13px;'>",
+      "Faceted by ", z,
+      "</span>"
+    )
+  }
+
+
+}

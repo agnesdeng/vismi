@@ -1,5 +1,5 @@
-#' Visualise Multiple Imputation via Overimputations
-#' @describeIn vismi Visualise Multiple Imputation via Overimputations
+#' Visualise Multiple Imputation Through Overimputations
+#' @description This function provides visual diagnostic tools for assessing multiply imputed datasets imputed with 'mixgb' or other imputers through overimputations. It supports visualisation for both training and test set.
 #' @param obj Overimputation object of class 'overimp' created by the \code{overimp()} function.
 #' @param x A character string specifying the name of the variable to plot on the x
 #' @param y A character string specifying the name of the variable to plot on the y
@@ -16,7 +16,11 @@
 #' @param seed An integer specifying the random seed for reproducibility. Default is 2025.
 #' @param ... Additional arguments to customize the plots, such as position, point_size, linewidth, alpha, xlim, ylim, boxpoints, width.
 #' @export
-vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, num_plot= "cv", fac_plot = "cv",train_color_pal = NULL, test_color_pal = NULL,stack_y = FALSE, diag_color = NULL,seed=2025,...) {
+vismi_overimp <- function(obj, x=NULL, y=NULL, z=NULL, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, num_plot= "cv", fac_plot = "cv",train_color_pal = NULL, test_color_pal = NULL,stack_y = FALSE, diag_color = NULL,seed=2025,...) {
+
+
+
+
 
   #checking
   if(!inherits(obj, "overimp")) stop("Object must be of class 'overimp'")
@@ -35,6 +39,22 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, m = NULL, imp_idx = NULL,
   vars<-c(x,y,z)
   #remove any NULL
   vars<-vars[!sapply(vars,is.null)]
+
+  p<- obj$params$p
+  extra_vars<-names(p)
+  if(!is.null(extra_vars)){
+    vars_with_p <- paste0(extra_vars, "=", p, collapse = ", ")
+    cli::cli_inform("Extra missing values were added to the following variables before overimputation: {vars_with_p}")
+    cli::rule()
+
+    if(!vars %in% extra_vars){
+      cli::cli_abort(c(
+        "No extra missing values were added to the specified {cli::qty(vars)} variable{?s} ({.var {cli::cli_vec(vars)}}).",
+        "i" = "Please choose from: {cli::cli_vec(extra_vars)}."
+      ))
+    }
+  }
+
 
   #Names <- obj$params$Names
   nonexist_vars <- setdiff(vars, obj$params$Names)
@@ -129,6 +149,7 @@ vismi.overimp <- function(obj, x=NULL, y=NULL, z=NULL, m = NULL, imp_idx = NULL,
     x<- vars[1]
     y<- vars[2]
     z<- vars[3]
+
     comb_title <-grid::textGrob(paste0(
       "Masked true vs multiply-imputed values: ", y, " vs ", x,
       "\nFaceted by ", z),

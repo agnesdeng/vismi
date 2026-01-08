@@ -1,13 +1,5 @@
-#' Visualise Multiple Imputations
-#' @export
-vismi <-function(...){
-  UseMethod("vismi")
-}
-
-
-#' Visualise Multiple Imputations for Distributional Characteristics
-#' @describeIn vismi Visualise Multiple Imputations for Distributional Characteristics
-#' @description This function provides visual diagnostic tools for assessing multiply imputed datasets created with 'mixgb' or other imputers. It supports 1D, 2D, and 3D visualizations for numeric variables.
+#' Visualise Multiple Imputations Through Distributional Characteristics
+#' @description This function provides visual diagnostic tools for assessing multiply imputed datasets created with 'mixgb' or other imputers through inspecting the distributional characteristics of imputed variables. It supports 1D, 2D, and 3D visualisations for numeric and categorical variables using either interactive or static plots.
 #' @param data A data frame containing the original data with missing values.
 #' @param imp_list A list of imputed data frames.
 #' @param x A character string specifying the name of the variable to plot on the x
@@ -32,10 +24,16 @@ vismi <-function(...){
 #' for the y variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or NULL
 #' (default, no marginal plot) when interactive = TRUE. Options are "box", "rug", "box+rug", or NULL
 #' (default, no marginal plot) when interactive = FALSE.
+#' @param verbose A logical value indicating whether to print extra information. Default is TRUE.
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
 #' @return A plotly or ggplot2 object visualizing the imputed data.
 #' @export
-vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp_idx=NULL, interactive= TRUE, integerAsFactor = FALSE, color_pal=NULL, marginal_x=NULL, marginal_y=NULL,...){
+vismi <- function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp_idx=NULL, interactive= TRUE, integerAsFactor = FALSE, color_pal=NULL, marginal_x=NULL, marginal_y=NULL,verbose = TRUE,...){
+
+  #check data
+  out<-.validate_data(data = data, verbose = verbose,integerAsFactor = integerAsFactor, max_levels = 20)
+  data<-out$data
+  Types<-out$Types
 
   #check input variables
   if (!is.null(x) && !is.character(x)){
@@ -53,6 +51,10 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp
   #remove any NULL
   vars<-vars[!sapply(vars,is.null)]
 
+  #type of variables
+  types <- Types[vars]
+
+
 
   nonexist_vars <- setdiff(vars, names(data))
   if (length(nonexist_vars > 0)) {
@@ -65,7 +67,9 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp
 
 
   #users_params<-list()
+
   users_params <- list(...)
+
   if(interactive){
     params <- modifyList(.vismi_interactive_params(), users_params)
   }else{
@@ -78,33 +82,30 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp
   width <- params$width
   boxpoints <- params$boxpoints
 
-
-  #type of variables
-  #types <- sapply(data[ , vars, drop=FALSE], class)
-  sub_data <- as.data.frame(data[, vars, drop = FALSE])
-  types <- sapply(sub_data, function(col) {
-    if (inherits(col, "ordered")) {
-      "factor"
-    }else if(is.integer(col)){
-      if(isTRUE(integerAsFactor)){
-        "factor"
-      }else{
-        "numeric"
-      }
-    } else {
-      class(col)
-    }
-  })
-
-
+  # preprocess data
+  pre <- preprocess(data, imp_list, m=m, imp_idx=imp_idx, vars = vars, integerAsFactor=integerAsFactor, verbose=verbose)
+  all_dt <- pre$all_dt
+  if(is.null(color_pal)){
+    color_pal <- pre$color_pal
+  }
+  no_missing<-pre$no_missing
 
   #number of variables
   D <-length(vars)
 
   if(D==1){
+
+    if(no_missing){
+      plot_title<-paste("Observed values:", x)
+    }else{
+      plot_title <- paste("Observed vs multiply-imputed values:", x)
+    }
+
     if(!is.null(marginal_y)){
       warning("marginal_y is ignored for 1D diganostics plot.")
     }
+
+
 
 
     plot_fun <- switch(
@@ -114,11 +115,20 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp
     )
 
 
+
+
   }
 
 
 
   if(D==2){
+
+    if(no_missing){
+      plot_title<-paste("Observed values:", y, "vs", x)
+    }else{
+      plot_title <- paste("Observed vs multiply-imputed values:", y, "vs", x)
+    }
+
     type_comb <- paste0(sort(types), collapse = "_")
 
     plot_fun <- switch(
@@ -131,7 +141,8 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp
 
 
   if(D==3){
-    #vars<-names(sort(types))
+
+
 
     type_comb <- paste0(sort(types), collapse = "_")
 
@@ -153,11 +164,34 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp
       }
     }
 
+    x <- vars[1]
+    y <- vars[2]
+    z <- vars[3]
+
+
+    # plot_title
+    if(no_missing){
+      plot_title<-paste0(
+        "Observed values: ", y, " vs ", x,
+        "\nFaceted by ", z)
+    }else{
+      if(type_comb=="numeric_numeric_numeric" | type_comb=="factor_factor_factor"){
+        plot_title<-paste0(
+          "Observed vs multiply-imputed values: \n", z, " vs ", y,
+          " vs ", x)
+      }else{
+        plot_title <- paste0(
+          "Observed vs multiply-imputed values: ", y, " vs ", x,
+          "\nFaceted by ", z)
+      }
+
+    }
+
 
 
     plot_fun <- switch(
       type_comb,
-      "numeric_numeric_numeric"   = if(interactive) plotly_3num else stop("3D static plots are not supported yet. Please set interactive = TRUE."),
+      "numeric_numeric_numeric"   = if(interactive) plotly_3num else ggplot_3num,
       "factor_numeric_numeric"    = if(interactive) plotly_1fac2num else ggplot_1fac2num,
       "factor_factor_numeric"     = if(interactive) plotly_2fac1num else ggplot_2fac1num,
       "factor_factor_factor"      = if(interactive) plotly_3fac else ggplot_3fac
@@ -166,12 +200,7 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp
 
   }
 
-  # preprocess data
-  pre <- preprocess(data, imp_list, m=m, imp_idx=imp_idx, vars = vars, integerAsFactor=integerAsFactor)
-  all_dt <- pre$all_dt
-  if(is.null(color_pal)){
-    color_pal <- pre$color_pal
-  }
+
 
 
 
@@ -185,9 +214,10 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp
   args_list <- list(
     all_dt = all_dt,
     imp_list = imp_list,
-    x = vars[1],
-    y = vars[2],
-    z = vars[3],
+    x = x,
+    y = y,
+    z = z,
+    plot_title = plot_title,
     #integerAsFactor = integerAsFactor,
     marginal_x = marginal_x,
     marginal_y = marginal_y,
@@ -200,8 +230,37 @@ vismi.data.frame = function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp
   )
 
   # Call the plotting function
-  call_plot_fun(plot_fun, args_list)
-
+  if(interactive){
+    call_plot_fun(plot_fun, args_list)
+  }else{
+    fig<-call_plot_fun(plot_fun, args_list)
+    class(fig)<-c("vismi", class(fig))
+    fig
+  }
 
 
 }
+
+
+
+
+
+#' print method for vismi objects
+#' @description vismi Print method for vismi objects
+#' @param x An object of class 'vismi' created by the \code{vismi.data.frame()} function.
+#' @param ... Additional arguments (not used).
+#' @exportS3Method
+print.vismi <- function(x, ...) {
+  # Check if it's a gtable/grob (from arrangeGrob)
+  if (inherits(x, "gtable") || inherits(x, "grob")) {
+    grid::grid.newpage()  # Clear the plot area
+    grid::grid.draw(x)    # Draw the plot
+  } else if (inherits(x, "ggplot")) {
+    NextMethod("print")
+  } else if (inherits(x,"ggmatrix") || inherits(x, "GGally:ggmatrix")) {
+    NextMethod("print")
+  }
+  invisible(x)
+}
+
+

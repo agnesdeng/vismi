@@ -1,6 +1,28 @@
-ggplot_1num <- function(all_dt,x,color_pal,point_size, alpha,nbins,marginal_x){
+ggplot_1num <- function(all_dt,x,color_pal,point_size, alpha,nbins,marginal_x,plot_title){
 
-  fig<-.ggplot_histogram_density(all_dt=all_dt, x=x, color_pal=color_pal,nbins=nbins)
+  if(is.null(nbins)){
+    breaks <- pretty(range(all_dt[[x]]),
+                     n = grDevices::nclass.Sturges(all_dt[[x]]),
+                     min.n = 1
+    )
+  }else{
+    breaks = seq(min(all_dt[[x]], na.rm=TRUE),
+                 max(all_dt[[x]], na.rm=TRUE),
+                 length.out = nbins + 1)
+  }
+
+
+  fig<-ggplot(all_dt, aes(x = .data[[x]])) +
+    geom_histogram(aes(y = after_stat(density),fill=Group,color=Group),  # scale histogram to density
+                   linewidth = 0.2, alpha = 0.2, position = "identity", breaks = breaks) +
+    geom_density(aes(y = after_stat(density),color=Group),           # density scaled to match histogram
+                 linewidth = 1, alpha = 1)+
+    facet_grid(~Group)+
+    scale_color_manual(values = color_pal) +
+    scale_fill_manual(values = color_pal) +
+    #paste("Observed vs multiply-imputed values for", x)
+    labs(title = plot_title,
+         x = x, y = "Density")
 
   if(!is.null(marginal_x)){
     if(marginal_x=="box+rug"){
@@ -23,10 +45,16 @@ ggplot_1num <- function(all_dt,x,color_pal,point_size, alpha,nbins,marginal_x){
 
 
 
-ggplot_1fac <- function(all_dt,x,color_pal=NULL,alpha=0.8,width=0.8){
+ggplot_1fac <- function(all_dt,x,color_pal=NULL,alpha=0.8,width=0.8,plot_title){
 
-  fig<-.ggplot_bar(all_dt=all_dt, x=x, color_pal=color_pal,alpha=alpha, width=width)
-
+  fig<-ggplot(all_dt, aes(x = .data[[x]])) +
+    geom_bar(stat = "count", alpha = alpha, width = width, aes(color = Group , fill = Group, y = after_stat(prop), group = Group)) +
+    scale_y_continuous(labels = scales::percent) +
+    ylab("proportion") +
+    facet_grid(cols = vars(Group)) +
+    labs(title = plot_title) +
+    scale_fill_manual(values = color_pal) +
+    scale_color_manual(values = color_pal)
 
   fig<-.ggplot_theme(fig)
   fig

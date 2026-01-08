@@ -1,18 +1,103 @@
-#' Preprocess input of `vismi.data.frame()` for plotting
-#' @param data Original data frame with missing values
-#' @param imp_list A list of imputed data frames
-#' @param m A single positive integer specifying the number of imputed datasets to plot
-#' @param imp_idx A vector of integers specifying the indices of imputed datasets to plot
-#' @param vars A vector of variable names to include in the plot
-#' @param integerAsFactor Logical, whether to treat integer variables as factors
-preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor) {
+# Preprocess input of `vismi.data.frame()` for plotting
+preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor,verbose) {
   #.imp_long()
   #vars<- c(x,y,z)
   # Convert everything to data.table but keep original class for slicing
   dt <- as.data.table(data)
 
-  # Find missing rows for any variable
-  na_indices <- unique(unlist(lapply(vars, function(v) which(is.na(dt[[v]])))))
+  # Find missing indices for each variable
+  na_xyz<-setNames(lapply(vars, function(v) which(is.na(dt[[v]]))), vars)
+  ####
+
+
+
+  ###
+  na_comb <- list()
+  comb_list <- unlist(
+    lapply(1:length(vars), function(k) combn(vars, k, simplify = FALSE)),
+    recursive = FALSE
+  )
+
+  for(comb in comb_list){
+    # Rows missing all variables in comb
+    rows <- Reduce(intersect, na_xyz[comb])
+    # Exclude rows that have extra missing values in other variables
+    other_vars <- setdiff(vars, comb)
+    if (length(other_vars) > 0) {
+      for (v in other_vars) {
+        rows <- setdiff(rows, na_xyz[[v]])
+      }
+    }
+    na_comb[[paste(comb, collapse = ", ")]] <- rows
+
+  }
+  counts <- vapply(na_comb, function(x) length(x), FUN.VALUE = integer(1))
+
+  # Convert to data.frame
+  na_pattern <- data.frame(
+    Variable = names(counts),
+    Count = as.integer(counts),
+    row.names = NULL
+  )
+
+  custom_order <- sapply(comb_list, function(x) paste(x, collapse = ", "))
+
+  # Turn Variable into a factor with this order
+  na_pattern$Variable <- factor(na_pattern$Variable, levels = custom_order)
+
+  # Sort by factor levels
+  na_pattern <- na_pattern[order(na_pattern$Variable), ]
+
+  if(verbose){
+
+    cli::cli_h1("Missing data summary")
+
+    cli::cli_inform(
+      lapply(vars, function(v) {
+        cli::format_inline(
+          "Variable {.var {v}} has {length(na_xyz[[v]])} missing values."
+        )
+      })
+    )
+
+
+    cli::cli_h1("Breakdown of missing data patterns")
+    print(na_pattern)
+
+    cli::cli_h1("Imputed data visualisation")
+
+
+  }
+
+
+  na_indices <- unique(unlist(na_xyz))
+
+  if (length(na_indices) == 0) {
+
+    if(verbose){
+      cli::cli_inform(
+        "No missing values were found in the specified {cli::qty(vars)}variable{?s} ({.var {cli::cli_vec(vars)}}). Only the observed data are shown in the plot."
+      )
+    }
+
+    no_missing  <- TRUE
+  } else {
+
+    if(verbose){
+      if(length(vars==1)){
+        cli::cli_inform(
+          "For each imputed set, a total of {length(na_indices)} observations with missingness in the specified variable {.var {vars}} are shown."
+        )
+      }else{
+        cli::cli_inform(
+          "For each imputed set, a total of {length(na_indices)} observations with at least one missing entry across the specified {cli::qty(vars)}variable{?s} ({.var {cli::cli_vec(vars)}}) are shown."
+        )
+      }
+    }
+
+    no_missing <- FALSE
+  }
+
   N_mis <- length(na_indices)
   N_obs <- nrow(dt) - N_mis
 
@@ -94,7 +179,8 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor) {
        vars = vars,
        na_indices = na_indices,
        obs_indices = obs_indices,
-       color_pal = color_pal)
+       color_pal = color_pal,
+       no_missing = no_missing)
 }
 
 
@@ -127,9 +213,4 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor) {
 
 
 
-.validate_m <-function(m, N_imp){
-  if(length(m)!=1| m <=0 | m!=floor(m)){
-    stop("m must be a single positive integer.")
-  }
 
-}

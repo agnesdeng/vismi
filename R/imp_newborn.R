@@ -8,7 +8,4 @@
 #' @format A list of `m` data.frames (each a completed dataset) created by
 #'   `mixgb::mixgb()` in development.
 #' @source Generated during package development with `mixgb::mixgb()`.
-#' @examples
-#' data(imp_newborn)
-#' str(imp_newborn)
 "imp_newborn"

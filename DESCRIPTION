@@ -10,9 +10,8 @@ Authors@R: c(
   ) 
 Description: A comprehensive suite of visual diagnostic functions for assessing the 
     quality of multiply-imputed data. 'vismi' provides functions for inspecting 
-    distribution characteristics and overimputation diagnostics. Flexible graphics 
-    functions are powered by 'plotly', 'ggplot2', 'ggridges' and 'trelliscopejs'. Details of
-    this work can be found Deng (2024) <https://hdl.handle.net/2292/70308>.
+    distribution characteristics, overimputation and convergence diagnostics. Flexible graphics 
+    functions are powered by 'plotly', 'ggplot2', 'ggridges' and 'trelliscopejs'. 
 URL: https://github.com/agnesdeng/vismi
 BugReports: https://github.com/agnesdeng/vismi/issues
 License: GPL (>= 3)
@@ -21,9 +20,12 @@ Language: en-GB
 LazyData: true
 Depends: R (>= 4.3.0)
 Imports: 
+    cli,
     data.table,
     dplyr,
+    GGally,
     ggplot2 (>= 4.0.1),
+    ggtext,
     gridExtra,
     ggridges,
     mixgb (>= 2.0.3),

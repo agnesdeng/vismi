@@ -1,6 +1,6 @@
 
 plotly_2num<- function(all_dt, imp_list, x, y, color_pal,
-                       point_size, alpha, marginal_x, marginal_y,nbins) {
+                       point_size, alpha, marginal_x, marginal_y,nbins, plot_title) {
 
 
   #set the canva: left 0 right 1 bottom 0 top 1
@@ -17,7 +17,24 @@ plotly_2num<- function(all_dt, imp_list, x, y, color_pal,
   fig <- plot_ly()
 
 
-  fig<-.plotly_scatter(fig=fig, all_dt=all_dt,x=x,y=y,point_size=point_size,alpha=alpha,color_pal=color_pal)
+  fig<-fig |> add_trace(
+    data = all_dt,
+    x = ~get(x),
+    y = ~get(y),
+    color = ~Group,
+    colors = color_pal,
+    type = "scatter",
+    mode = "markers",
+    marker = list(size = point_size, opacity = alpha),
+    legendgroup =~Group,
+    showlegend = TRUE,
+    text = ~paste("Index:", row_index, "<br>",
+                  x, ":", get(x), "<br>",
+                  y, ":", get(y), "<br>",
+                  "Group:", Group),
+    hoverinfo = "text",
+    xaxis = "x", yaxis = "y"
+  )
 
 
   # --- Top marginal boxplots (x variable) ---
@@ -73,21 +90,39 @@ plotly_2num<- function(all_dt, imp_list, x, y, color_pal,
 
   }
 
-  fig<-.plotly_layout_common(fig,x=x,y=y)
+  fig<-.plotly_layout_common(fig, plot_title)
   fig
 }
 
 
 
 plotly_1fac1num<- function(all_dt, imp_list, x, y, color_pal,
-                       point_size, alpha,boxpoints) {
-
-
+                       point_size, alpha,boxpoints, plot_title) {
 
   fig <- plot_ly()
 
-
-  fig<-.plotly_box(fig=fig, all_dt=all_dt,x=x,y=y,point_size=point_size,alpha=alpha,color_pal=color_pal,boxpoints=boxpoints)
+  for (group in levels(all_dt$Group)) {
+    df_group <- all_dt |> filter(Group == group)
+    fig<-fig |> add_trace(
+      data = df_group,
+      x = ~get(x),
+      y = ~get(y),
+      color = ~Group,
+      colors = color_pal,
+      type = "box",
+      boxpoints = boxpoints,
+      marker = list(size = point_size, opacity = alpha, color = color_pal[group]),
+      name=group,
+      legendgroup =group,
+      showlegend = TRUE,
+      text = ~paste("Index:", row_index, "<br>",
+                    x, ":", get(x), "<br>",
+                    y, ":", get(y), "<br>",
+                    "Group:", Group),
+      hoverinfo = "text",
+      xaxis = "x", yaxis = "y"
+    )
+  }
 
   fig<-fig |> layout(
    boxmode = "group",
@@ -95,17 +130,141 @@ plotly_1fac1num<- function(all_dt, imp_list, x, y, color_pal,
     yaxis = list(title = y,showticklabels= TRUE)
   )
 
-  fig <-.plotly_layout_common(fig,x=x,y=y)
+  fig <-.plotly_layout_common(fig, plot_title)
   fig
 }
 
 
 
-plotly_2fac<- function(all_dt,imp_list,x,y,color_pal,alpha) {
+plotly_2fac<- function(all_dt,imp_list,x,y,color_pal,alpha, plot_title) {
 
-  fig <- .plotly_bar_facet1(all_dt=all_dt,x=x,y=y,color_pal=color_pal,alpha=alpha)
+  all_sum <- all_dt |> group_by(Group,.data[[x]], .data[[y]]) |>
+    summarise(count = n(), .groups = "drop")  |>
+    tidyr::complete(
+      Group = unique(all_dt$Group),
+      !!sym(x) := unique(all_dt[[x]]),
+      !!sym(y) := unique(all_dt[[y]]),
+      fill = list(count = 0)
+    ) |>
+    group_by(Group) |>
+    mutate(prop = count / sum(count)) |>
+    ungroup()
 
-  fig <-.plotly_layout_common(fig,x=x,y=y)
+
+  y_levels <- levels(all_sum[[y]])
+
+  plots <- lapply(y_levels, function(y_level) {
+    df_sub <- all_sum |> filter(.data[[y]] == y_level)
+    plot_ly(
+      data = df_sub,
+      x = ~get(x),
+      y = ~prop,
+      color = ~Group,
+      colors = color_pal,
+      type = "bar",
+      opacity = alpha,
+      legendgroup = ~Group,
+      showlegend = ifelse(y_level == y_levels[1], TRUE, FALSE),
+      text = ~paste(x, ":", get(x), "<br>",
+                    y, ":", get(y), "<br>",
+                    "Proportion:", prop, "<br>"),
+      textposition="none",
+      hovertext = ~paste(x, ":", get(x), "<br>",
+                         y, ":", get(y), "<br>",
+                         "Proportion:", prop, "<br>",
+                         "Group:", Group),
+      hoverinfo = "text"
+    )|>
+      #layout(xaxis=list(title=list(text=x,standoff = 10), automargin=FALSE),
+      layout(xaxis=list(title="", automargin=FALSE),
+             yaxis = list(title = "", range = c(0, 1), dtick = 0.1, side = "left")
+      )
+
+  })
+
+
+
+  combine <- subplot(
+    plots,
+    nrows = length(plots),
+    shareX = TRUE,
+    shareY = TRUE,
+    titleY=TRUE,
+    titleX=TRUE
+  )
+  combine <- combine|>layout(
+    barmode = "group")
+
+
+
+
+
+  k <- length(y_levels)
+
+  annotations <- lapply(seq_along(y_levels), function(i) {
+    list(
+      xref = "paper",
+      yref = "paper",
+      x = 1,
+      y = (i - 0.5) / k,
+      text = y_levels[i],
+      #text = paste(y, "=", y_levels[i]),
+      showarrow = FALSE,
+      xanchor = "left",
+      yanchor = "middle",
+      textangle = -90,
+      font = list(size = 12)
+    )
+  })
+
+
+
+  prop_axis_title <- list(
+    text = "Proportion",
+    xref = "paper",
+    yref = "paper",
+    xanchor = "right",
+    yanchor = "middle",
+    x = 0,
+    y = 0.5,
+    xshift = -30,
+    showarrow = FALSE,
+    textangle = -90,
+    font = list(size = 14)
+  )
+
+  y_axis_title <- list(
+    text = y,
+    xref = "paper",
+    yref = "paper",
+    xanchor = "left",
+    yanchor = "middle",
+    x = 1,
+    y = 0.5,
+    xshift = 30,
+    showarrow = FALSE,
+    textangle = -90,
+    font = list(size = 14)
+  )
+
+  x_axis_title <- list(
+    text = x,
+    xref = "paper",
+    yref = "paper",
+    xanchor = "center",
+    yanchor = "top",
+    x = 0.5,
+    y = -0.05,
+    #yshift = -30,
+    showarrow = FALSE,
+    font = list(size = 14)
+  )
+
+
+  combine <-combine |> layout(annotations = c(annotations, list(prop_axis_title, y_axis_title,x_axis_title)))
+
+
+  fig <-.plotly_layout_common(combine, plot_title)
   fig
 }
 
