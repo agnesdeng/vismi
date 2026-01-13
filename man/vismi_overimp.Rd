@@ -12,6 +12,8 @@ vismi_overimp(
   m = NULL,
   imp_idx = NULL,
   integerAsFactor = FALSE,
+  title = "auto",
+  subtitle = "auto",
   num_plot = "cv",
   fac_plot = "cv",
   train_color_pal = NULL,
@@ -36,6 +38,10 @@ vismi_overimp(
 \item{imp_idx}{A vector of integers specifying the indices of imputed datasets to plot.}
 
 \item{integerAsFactor}{A logical indicating whether integer variables should be treated as factors. Default is FALSE (treated as numeric).}
+
+\item{title}{A string specifying the title of the plot. Default is "auto" (automatic title based on \code{x,y,z} input). If NULL, no title is shown.}
+
+\item{subtitle}{A string specifying the subtitle of the plot. Default is "auto" (automatic subtitle based on \code{x,y,z} input). If NULL, no subtitle is shown.}
 
 \item{num_plot}{A character string specifying the type of plot for numeric variables.}
 

@@ -11,7 +11,7 @@
 #' @importFrom dplyr group_by reframe tibble filter select all_of left_join ungroup mutate summarise n sym row_number
 #' @importFrom ggplot2 ggplot aes geom_line geom_histogram geom_density geom_point geom_bar geom_col geom_boxplot geom_jitter position_jitter margin unit geom_rect geom_segment geom_abline
 #' @importFrom ggplot2 scale_y_continuous scale_y_discrete scale_alpha_discrete scale_alpha_manual scale_color_manual scale_fill_manual scale_fill_identity scale_x_continuous ylab labs guides guide_legend
-#' @importFrom ggplot2 theme theme_minimal element_text element_rect element_line
+#' @importFrom ggplot2 xlim ylim theme theme_minimal element_text element_rect element_line
 #' @importFrom ggplot2 after_stat facet_grid vars labeller label_value ylim coord_cartesian stat_qq stat_qq_line position_dodge ggplot_build element_blank
 #' @importFrom ggridges geom_density_ridges theme_ridges
 #' @importFrom ggtext element_markdown

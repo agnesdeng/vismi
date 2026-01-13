@@ -6,5 +6,5 @@
 #' @importFrom grDevices colorRampPalette
 #' @keywords internal
 utils::globalVariables(c(
-"Group","..vars","row_index","prop", "count", "label_value"
+  "Group", "..vars", "row_index", "prop", "count", "label_value"
 ))

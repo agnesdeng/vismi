@@ -12,6 +12,8 @@
 #' @param imp_idx A vector of integers specifying the indices of imputed datasets to plot. Default is NULL (plot all).
 #' @param interactive A logical value indicating whether to create an interactive plotly plot (TRUE
 #' by default) or a static ggplot2 plot (FALSE).
+#' @param title A string specifying the title of the plot. Default is "auto" (automatic title based on \code{x,y,z} input). If NULL, no title is shown.
+#' @param subtitle A string specifying the subtitle of the plot. Default is "auto" (automatic subtitle based on \code{x,y,z} input). If NULL, no subtitle is shown.
 #' @param integerAsFactor A logical value indicating whether to treat integer variables as factors
 #' (TRUE) or numeric (FALSE). Default is FALSE.
 #' @param color_pal A named vector of colors for different imputation sets. If NULL
@@ -24,55 +26,52 @@
 #' for the y variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or NULL
 #' (default, no marginal plot) when interactive = TRUE. Options are "box", "rug", "box+rug", or NULL
 #' (default, no marginal plot) when interactive = FALSE.
-#' @param verbose A logical value indicating whether to print extra information. Default is TRUE.
+#' @param verbose A logical value indicating whether to print extra information. Default is FALSE.
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
 #' @return A plotly or ggplot2 object visualizing the imputed data.
 #' @export
-vismi <- function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp_idx=NULL, interactive= TRUE, integerAsFactor = FALSE, color_pal=NULL, marginal_x=NULL, marginal_y=NULL,verbose = TRUE,...){
+vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx = NULL, interactive = TRUE, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = NULL, marginal_y = NULL, verbose = FALSE, ...) {
+  # check data
+  out <- .validate_data(data = data, verbose = verbose, integerAsFactor = integerAsFactor, max_levels = 20)
+  data <- out$data
+  Types <- out$Types
 
-  #check data
-  out<-.validate_data(data = data, verbose = verbose,integerAsFactor = integerAsFactor, max_levels = 20)
-  data<-out$data
-  Types<-out$Types
-
-  #check input variables
-  if (!is.null(x) && !is.character(x)){
+  # check input variables
+  if (!is.null(x) && !is.character(x)) {
     stop("x must be a variable name in character format.")
   }
-  if (!is.null(y) && !is.character(y)){
+  if (!is.null(y) && !is.character(y)) {
     stop("y must be a variable name in character format.")
   }
-  if (!is.null(z) && !is.character(z)){
+  if (!is.null(z) && !is.character(z)) {
     stop("z must be a variable name in character format.")
   }
 
 
-  vars<-c(x,y,z)
-  #remove any NULL
-  vars<-vars[!sapply(vars,is.null)]
+  vars <- c(x, y, z)
+  # remove any NULL
+  vars <- vars[!sapply(vars, is.null)]
 
-  #type of variables
+  # type of variables
   types <- Types[vars]
-
 
 
   nonexist_vars <- setdiff(vars, names(data))
   if (length(nonexist_vars > 0)) {
-    stop("Please check your spelling. Variable(s) not found in data: ",
-         paste(nonexist_vars, collapse = ", "))
+    stop(
+      "Please check your spelling. Variable(s) not found in data: ",
+      paste(nonexist_vars, collapse = ", ")
+    )
   }
 
 
-
-
-
-  #users_params<-list()
+  # users_params<-list()
 
   users_params <- list(...)
 
-  if(interactive){
+  if (interactive) {
     params <- modifyList(.vismi_interactive_params(), users_params)
-  }else{
+  } else {
     params <- modifyList(.vismi_static_params(), users_params)
   }
 
@@ -83,81 +82,90 @@ vismi <- function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp_idx=NULL,
   boxpoints <- params$boxpoints
 
   # preprocess data
-  pre <- preprocess(data, imp_list, m=m, imp_idx=imp_idx, vars = vars, integerAsFactor=integerAsFactor, verbose=verbose)
+  pre <- preprocess(data, imp_list, m = m, imp_idx = imp_idx, vars = vars, integerAsFactor = integerAsFactor, verbose = verbose)
   all_dt <- pre$all_dt
-  if(is.null(color_pal)){
+  if (is.null(color_pal)) {
     color_pal <- pre$color_pal
   }
-  no_missing<-pre$no_missing
+  no_missing <- pre$no_missing
 
-  #number of variables
-  D <-length(vars)
+  # number of variables
+  D <- length(vars)
 
-  if(D==1){
+  no_NA_title <- "Observed values:"
+  with_NA_title <- "Observed vs multiply-imputed values:"
 
-    if(no_missing){
-      plot_title<-paste("Observed values:", x)
-    }else{
-      plot_title <- paste("Observed vs multiply-imputed values:", x)
+
+  if (D == 1) {
+    if (no_missing) {
+      if (identical(title, "auto")) {
+        title <- no_NA_title
+      }
+      if (identical(subtitle, "auto")) {
+        subtitle <- x
+      }
+    } else {
+      if (identical(title, "auto")) {
+        title <- with_NA_title
+      }
+      if (identical(subtitle, "auto")) {
+        subtitle <- x
+      }
     }
 
-    if(!is.null(marginal_y)){
+    if (!is.null(marginal_y)) {
       warning("marginal_y is ignored for 1D diganostics plot.")
     }
 
-
-
-
-    plot_fun <- switch(
-      types,
-      "numeric"     = if(interactive) plotly_1num else ggplot_1num,
-      "factor"   = if(interactive) plotly_1fac else ggplot_1fac
+    plot_fun <- switch(types,
+      "numeric" = if (interactive) plotly_1num else ggplot_1num,
+      "factor" = if (interactive) plotly_1fac else ggplot_1fac
     )
-
-
-
-
   }
 
 
-
-  if(D==2){
-
-    if(no_missing){
-      plot_title<-paste("Observed values:", y, "vs", x)
-    }else{
-      plot_title <- paste("Observed vs multiply-imputed values:", y, "vs", x)
+  if (D == 2) {
+    if (no_missing) {
+      if (identical(title, "auto")) {
+        title <- no_NA_title
+      }
+      if (identical(subtitle, "auto")) {
+        subtitle <- paste(y, "vs", x)
+      }
+    } else {
+      if (identical(title, "auto")) {
+        title <- with_NA_title
+      }
+      if (identical(subtitle, "auto")) {
+        subtitle <- paste(y, "vs", x)
+      }
     }
 
     type_comb <- paste0(sort(types), collapse = "_")
 
-    plot_fun <- switch(
-      type_comb,
-      "numeric_numeric"   = if(interactive) plotly_2num else ggplot_2num,
-      "factor_numeric"    = if(interactive) plotly_1fac1num else ggplot_1fac1num,
-      "factor_factor"     = if(interactive) plotly_2fac else ggplot_2fac
+    plot_fun <- switch(type_comb,
+      "numeric_numeric"   = if (interactive) plotly_2num else ggplot_2num,
+      "factor_numeric"    = if (interactive) plotly_1fac1num else ggplot_1fac1num,
+      "factor_factor"     = if (interactive) plotly_2fac else ggplot_2fac
     )
   }
 
 
-  if(D==3){
-
-
-
+  if (D == 3) {
     type_comb <- paste0(sort(types), collapse = "_")
 
-    if(type_comb =="factor_numeric_numeric"){
+    if (type_comb == "factor_numeric_numeric") {
       # z: factor
-      fac_idx <- which(types=="factor")
-      if(fac_idx !=3){
+      fac_idx <- which(types == "factor")
+      if (fac_idx != 3) {
         fac <- vars[fac_idx]
         vars[fac_idx] <- vars[3]
         vars[3] <- fac
       }
-    }else if(type_comb=="factor_factor_numeric"){
+    } else if (type_comb == "factor_factor_numeric") {
       # z: factor
-      num_idx <- which(types=="numeric")
-      if(num_idx ==3){
+      num_idx <- which(types == "numeric")
+      if (num_idx == 3) {
         num <- vars[num_idx]
         vars[3] <- vars[2]
         vars[2] <- num
@@ -170,41 +178,42 @@ vismi <- function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp_idx=NULL,
 
 
     # plot_title
-    if(no_missing){
-      plot_title<-paste0(
-        "Observed values: ", y, " vs ", x,
-        "\nFaceted by ", z)
-    }else{
-      if(type_comb=="numeric_numeric_numeric" | type_comb=="factor_factor_factor"){
-        plot_title<-paste0(
-          "Observed vs multiply-imputed values: \n", z, " vs ", y,
-          " vs ", x)
-      }else{
-        plot_title <- paste0(
-          "Observed vs multiply-imputed values: ", y, " vs ", x,
-          "\nFaceted by ", z)
+    if (no_missing) {
+      if (identical(title, "auto")) {
+        title <- no_NA_title
       }
-
+      if (identical(subtitle, "auto")) {
+        subtitle <- paste(y, "vs", x, "faceted by", z)
+      }
+    } else {
+      if (type_comb == "numeric_numeric_numeric" | type_comb == "factor_factor_factor") {
+        if (identical(title, "auto")) {
+          title <- with_NA_title
+        }
+        if (identical(subtitle, "auto")) {
+          subtitle <- paste(z, "vs", y, "vs", x)
+        }
+      } else {
+        if (identical(title, "auto")) {
+          title <- with_NA_title
+        }
+        if (identical(subtitle, "auto")) {
+          subtitle <- paste(y, "vs", x, "faceted by", z)
+        }
+      }
     }
 
 
-
-    plot_fun <- switch(
-      type_comb,
-      "numeric_numeric_numeric"   = if(interactive) plotly_3num else ggplot_3num,
-      "factor_numeric_numeric"    = if(interactive) plotly_1fac2num else ggplot_1fac2num,
-      "factor_factor_numeric"     = if(interactive) plotly_2fac1num else ggplot_2fac1num,
-      "factor_factor_factor"      = if(interactive) plotly_3fac else ggplot_3fac
-
-      )
-
+    plot_fun <- switch(type_comb,
+      "numeric_numeric_numeric"   = if (interactive) plotly_3num else ggplot_3num,
+      "factor_numeric_numeric"    = if (interactive) plotly_1fac2num else ggplot_1fac2num,
+      "factor_factor_numeric"     = if (interactive) plotly_2fac1num else ggplot_2fac1num,
+      "factor_factor_factor"      = if (interactive) plotly_3fac else ggplot_3fac
+    )
   }
 
 
-
-
-
-  call_plot_fun <- function(plot_fun, args_list){
+  call_plot_fun <- function(plot_fun, args_list) {
     fun_args <- names(formals(plot_fun))
     args_list <- args_list[names(args_list) %in% fun_args]
     do.call(plot_fun, args_list)
@@ -217,8 +226,10 @@ vismi <- function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp_idx=NULL,
     x = x,
     y = y,
     z = z,
-    plot_title = plot_title,
-    #integerAsFactor = integerAsFactor,
+    title = title,
+    subtitle = subtitle,
+    # plot_title = plot_title,
+    # integerAsFactor = integerAsFactor,
     marginal_x = marginal_x,
     marginal_y = marginal_y,
     color_pal = color_pal,
@@ -230,19 +241,14 @@ vismi <- function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp_idx=NULL,
   )
 
   # Call the plotting function
-  if(interactive){
+  if (interactive) {
     call_plot_fun(plot_fun, args_list)
-  }else{
-    fig<-call_plot_fun(plot_fun, args_list)
-    class(fig)<-c("vismi", class(fig))
+  } else {
+    fig <- call_plot_fun(plot_fun, args_list)
+    class(fig) <- c("vismi", class(fig))
     fig
   }
-
-
 }
-
-
-
 
 
 #' print method for vismi objects
@@ -253,14 +259,12 @@ vismi <- function(data, imp_list, x=NULL, y= NULL, z=NULL, m=NULL, imp_idx=NULL,
 print.vismi <- function(x, ...) {
   # Check if it's a gtable/grob (from arrangeGrob)
   if (inherits(x, "gtable") || inherits(x, "grob")) {
-    grid::grid.newpage()  # Clear the plot area
-    grid::grid.draw(x)    # Draw the plot
+    grid::grid.newpage() # Clear the plot area
+    grid::grid.draw(x) # Draw the plot
   } else if (inherits(x, "ggplot")) {
     NextMethod("print")
-  } else if (inherits(x,"ggmatrix") || inherits(x, "GGally:ggmatrix")) {
+  } else if (inherits(x, "ggmatrix") || inherits(x, "GGally:ggmatrix")) {
     NextMethod("print")
   }
   invisible(x)
 }
-
-

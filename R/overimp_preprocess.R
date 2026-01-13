@@ -17,9 +17,9 @@
   Types <- sapply(data, function(col) {
     if (inherits(col, "ordered")) {
       "factor"
-    }else if (inherits(col, "logical")){
+    } else if (inherits(col, "logical")) {
       "factor"
-    }else{
+    } else {
       class(col)
     }
   })

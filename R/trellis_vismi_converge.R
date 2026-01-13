@@ -9,26 +9,23 @@
 #' @param ... Additional arguments to customize the Trelliscope display.
 #' @return A Trelliscope display object visualising convergence diagnostics for all variables.
 #' @export
-trellis_vismi_converge<- function(obj, tick_vals = NULL,color_pal=NULL, nrow = 2, ncol=4, path = NULL,...) {
-
-  if(inherits(obj, "mixgb")){
+trellis_vismi_converge <- function(obj, tick_vals = NULL, color_pal = NULL, nrow = 2, ncol = 4, path = NULL, ...) {
+  if (inherits(obj, "mixgb")) {
     mis_vars <- obj$params$missing.vars
-  }else if(inherits(obj, "mids")){
-    mis_vars <- names(obj$nmis)[obj$nmis!=0]
+  } else if (inherits(obj, "mids")) {
+    mis_vars <- names(obj$nmis)[obj$nmis != 0]
   }
 
-  IncompleteVariable<-sort(mis_vars)
+  IncompleteVariable <- sort(mis_vars)
 
   mis_vars_df <- tibble(IncompleteVariable = IncompleteVariable) |>
     group_by(IncompleteVariable) |>
-    mutate(panel = purrr::map(IncompleteVariable, ~vismi_converge(obj, var=.x, tick_vals = tick_vals, color_pal = color_pal)))|>
+    mutate(panel = purrr::map(IncompleteVariable, ~ vismi_converge(obj, var = .x, tick_vals = tick_vals, color_pal = color_pal))) |>
     ungroup()
 
-  if(!is.null(path)){
-    trelliscopejs::trelliscope(mis_vars_df, name = "Convergence diagnostic across all incomplete variables", panel_col = "panel", nrow=nrow, ncol=ncol, path = path)
-  }else{
-    trelliscopejs::trelliscope(mis_vars_df, name = "Convergence diagnostic across all incomplete variables", panel_col = "panel", nrow=nrow, ncol=ncol)
+  if (!is.null(path)) {
+    trelliscopejs::trelliscope(mis_vars_df, name = "Convergence diagnostic across all incomplete variables", panel_col = "panel", nrow = nrow, ncol = ncol, path = path)
+  } else {
+    trelliscopejs::trelliscope(mis_vars_df, name = "Convergence diagnostic across all incomplete variables", panel_col = "panel", nrow = nrow, ncol = ncol)
   }
-
-
 }

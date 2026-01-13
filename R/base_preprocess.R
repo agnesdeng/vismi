@@ -1,14 +1,13 @@
 # Preprocess input of `vismi.data.frame()` for plotting
-preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor,verbose) {
-  #.imp_long()
-  #vars<- c(x,y,z)
+preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor, verbose) {
+  # .imp_long()
+  # vars<- c(x,y,z)
   # Convert everything to data.table but keep original class for slicing
   dt <- as.data.table(data)
 
   # Find missing indices for each variable
-  na_xyz<-setNames(lapply(vars, function(v) which(is.na(dt[[v]]))), vars)
+  na_xyz <- setNames(lapply(vars, function(v) which(is.na(dt[[v]]))), vars)
   ####
-
 
 
   ###
@@ -18,7 +17,7 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor,verbose
     recursive = FALSE
   )
 
-  for(comb in comb_list){
+  for (comb in comb_list) {
     # Rows missing all variables in comb
     rows <- Reduce(intersect, na_xyz[comb])
     # Exclude rows that have extra missing values in other variables
@@ -29,7 +28,6 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor,verbose
       }
     }
     na_comb[[paste(comb, collapse = ", ")]] <- rows
-
   }
   counts <- vapply(na_comb, function(x) length(x), FUN.VALUE = integer(1))
 
@@ -48,8 +46,7 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor,verbose
   # Sort by factor levels
   na_pattern <- na_pattern[order(na_pattern$Variable), ]
 
-  if(verbose){
-
+  if (verbose) {
     cli::cli_h1("Missing data summary")
 
     cli::cli_inform(
@@ -65,30 +62,26 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor,verbose
     print(na_pattern)
 
     cli::cli_h1("Imputed data visualisation")
-
-
   }
 
 
   na_indices <- unique(unlist(na_xyz))
 
   if (length(na_indices) == 0) {
-
-    if(verbose){
+    if (verbose) {
       cli::cli_inform(
         "No missing values were found in the specified {cli::qty(vars)}variable{?s} ({.var {cli::cli_vec(vars)}}). Only the observed data are shown in the plot."
       )
     }
 
-    no_missing  <- TRUE
+    no_missing <- TRUE
   } else {
-
-    if(verbose){
-      if(length(vars==1)){
+    if (verbose) {
+      if (length(vars == 1)) {
         cli::cli_inform(
           "For each imputed set, a total of {length(na_indices)} observations with missingness in the specified variable {.var {vars}} are shown."
         )
-      }else{
+      } else {
         cli::cli_inform(
           "For each imputed set, a total of {length(na_indices)} observations with at least one missing entry across the specified {cli::qty(vars)}variable{?s} ({.var {cli::cli_vec(vars)}}) are shown."
         )
@@ -102,31 +95,27 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor,verbose
   N_obs <- nrow(dt) - N_mis
 
 
-
-  #subset for plotting
+  # subset for plotting
   N_imp <- length(imp_list)
-  if(!is.null(imp_idx)){
+  if (!is.null(imp_idx)) {
     # priority subset by imp_idx
-    .validate_indices(indices=imp_idx, indices_name = "imp_idx", limit = N_imp)
+    .validate_indices(indices = imp_idx, indices_name = "imp_idx", limit = N_imp)
     imp_list <- imp_list[imp_idx]
-
-
-  }else if(!is.null(m)){
+  } else if (!is.null(m)) {
     # then subset by m
-    .validate_m(m=m, N_imp=N_imp)
+    .validate_m(m = m, N_imp = N_imp)
 
-    if(m < N_imp){
-      imp_idx <-sort(sample.int(N_imp,m))
+    if (m < N_imp) {
+      imp_idx <- sort(sample.int(N_imp, m))
       message(paste0(m, " imputed datasets are randomly selected for plotting.Their indices are: ", paste(imp_idx, collapse = ", ")))
       imp_list <- imp_list[imp_idx]
-    }else if(m > N_imp){
+    } else if (m > N_imp) {
       imp_idx <- seq_len(N_imp)
       warning(paste0("m is larger than the available number of imputed datasets. Using all ", N_imp, " imputed datasets for plotting."))
-    }else{
+    } else {
       imp_idx <- seq_len(N_imp)
     }
-
-  }else{
+  } else {
     # use all
     imp_idx <- seq_len(N_imp)
   }
@@ -159,7 +148,7 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor,verbose
 
 
   color_pal <- .vismi_colors(N_imp = length(imp_names))
-  names(color_pal)<-levels(all_dt$Group)
+  names(color_pal) <- levels(all_dt$Group)
 
 
   int <- sapply(all_dt[, ..vars], is.integer)
@@ -175,42 +164,35 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor,verbose
   }
 
 
-  list(all_dt = all_dt,
-       vars = vars,
-       na_indices = na_indices,
-       obs_indices = obs_indices,
-       color_pal = color_pal,
-       no_missing = no_missing)
+  list(
+    all_dt = all_dt,
+    vars = vars,
+    na_indices = na_indices,
+    obs_indices = obs_indices,
+    color_pal = color_pal,
+    no_missing = no_missing
+  )
 }
 
 
-
-
-.validate_indices<-function(indices, indices_name, limit){
-  if(any(indices!= floor(indices))){
+.validate_indices <- function(indices, indices_name, limit) {
+  if (any(indices != floor(indices))) {
     stop(paste(indices_name, "must be integers"))
   }
 
-  if(!is.vector(indices)){
+  if (!is.vector(indices)) {
     stop(paste(indices_name, "must be a vector"))
-
   }
 
-  if(any(indices <= 0)){
+  if (any(indices <= 0)) {
     stop(paste(indices_name, "must be positive"))
   }
 
-  if(any(duplicated(indices))){
+  if (any(duplicated(indices))) {
     warning(paste(indices_name, "contains duplicate values"))
   }
 
-  if(any(indices > limit)){
+  if (any(indices > limit)) {
     stop(paste(indices_name, "must not exceed", limit))
   }
-
-
 }
-
-
-
-

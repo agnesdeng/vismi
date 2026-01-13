@@ -2,8 +2,8 @@
   list(
     point_size = 1,
     alpha = 0.8,
-    width=0.9,
-    nbins=NULL,
+    width = 0.9,
+    nbins = NULL,
     boxpoints = "outliers"
   )
 }
@@ -12,8 +12,8 @@
   list(
     point_size = 4,
     alpha = 0.8,
-    width=0.9,
-    nbins=NULL,
+    width = 0.9,
+    nbins = NULL,
     boxpoints = "outliers"
   )
 }
@@ -31,5 +31,3 @@
     width = 0.9
   )
 }
-
-

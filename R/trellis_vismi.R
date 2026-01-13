@@ -19,25 +19,23 @@
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
 #' @return A Trelliscope display object visualising distributional characteristics for all variables.
 #' @export
-trellis_vismi<- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE,  color_pal = NULL, marginal_x = NULL, verbose = TRUE, nrow = 2, ncol=4, path = NULL,...) {
-
+trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, color_pal = NULL, marginal_x = NULL, verbose = TRUE, nrow = 2, ncol = 4, path = NULL, ...) {
   # current option - can provide more later
-  num_plot = "hist"
-  fac_plot = "bar"
+  num_plot <- "hist"
+  fac_plot <- "bar"
 
-  #check data
-  out<-.validate_data(data = data, verbose = verbose,integerAsFactor = integerAsFactor, max_levels = 20)
-  data<-out$data
-  Types<-out$Types
+  # check data
+  out <- .validate_data(data = data, verbose = verbose, integerAsFactor = integerAsFactor, max_levels = 20)
+  data <- out$data
+  Types <- out$Types
 
   Variable <- colnames(data)
 
-  #Types <- obj$params$Types
-  #Types[Types == "integer"] <- if (isTRUE(integerAsFactor)) "factor" else "numeric"
+  # Types <- obj$params$Types
+  # Types[Types == "integer"] <- if (isTRUE(integerAsFactor)) "factor" else "numeric"
 
   users_params <- list(...)
   params <- modifyList(.vismi_static_params(), users_params)
-
 
 
   point_size <- params$point_size
@@ -59,21 +57,20 @@ trellis_vismi<- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFact
       # for each of the item in Variable
 
       # preprocess data
-      pre <- preprocess(data, imp_list, m=m, imp_idx=imp_idx, vars = var, integerAsFactor=integerAsFactor, verbose=verbose)
+      pre <- preprocess(data, imp_list, m = m, imp_idx = imp_idx, vars = var, integerAsFactor = integerAsFactor, verbose = verbose)
       all_dt <- pre$all_dt
-      if(is.null(color_pal)){
+      if (is.null(color_pal)) {
         color_pal <- pre$color_pal
       }
-      no_missing<-pre$no_missing
-      if(no_missing){
-        plot_title<-paste("Observed values:", var)
-      }else{
+      no_missing <- pre$no_missing
+      if (no_missing) {
+        plot_title <- paste("Observed values:", var)
+      } else {
         plot_title <- paste("Observed vs multiply-imputed values:", var)
       }
 
 
-
-      var_type <-  Types[var]
+      var_type <- Types[var]
       plot_which <- if (var_type == "numeric") num_plot else fac_plot
       plot_fun <- plot_map[[var_type]][[plot_which]]
 
@@ -93,10 +90,9 @@ trellis_vismi<- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFact
       do.call(plot_fun, args_list[names(args_list) %in% names(formals(plot_fun))])
     })) |>
     ungroup()
-  if(!is.null(path)){
-    trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", nrow=nrow, ncol=ncol, path = path)
-  }else{
-    trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", nrow=nrow, ncol=ncol)
+  if (!is.null(path)) {
+    trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", nrow = nrow, ncol = ncol, path = path)
+  } else {
+    trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", nrow = nrow, ncol = ncol)
   }
-
 }

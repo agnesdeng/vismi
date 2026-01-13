@@ -1,0 +1,109 @@
+---
+title: "Inspecting distributional characteristics"
+format:
+  html:
+    toc: true
+    page-layout: full
+    fig-format: svg
+---
+
+## Introduction 
+
+```{r,include=FALSE}
+#| label: setup
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  tidy = TRUE,
+  tidy.opts = list(width.cutoff = 60),
+  dpi = 100,
+  fig.retina = 1,
+  fig.width = 9,
+  fig.height = 3,
+  out.width = "100%"
+)
+```
+
+```{r}
+#| fig-show: hide
+library(vismi)
+vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm", interactive = FALSE, marginal_x = "box+rug", verbose = TRUE)
+```
+
+## 1D visualsation
+
+### 1 numeric variable
+#### Static
+```{r}
+vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm", interactive = FALSE, marginal_x = "box+rug")
+```
+#### Interactive
+```{r, out.height="550px"}
+vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm", interactive = TRUE, marginal_x = "box+rug")
+```
+
+### 1 factor variable
+#### Static
+```{r}
+vismi(data = newborn, imp_list = imp_newborn, x = "smoke", interactive = FALSE)
+```
+#### Interactive
+```{r, out.height="550px"}
+vismi(data = newborn, imp_list = imp_newborn, x = "smoke", interactive = TRUE)
+```
+
+
+## 2D visualisation
+### 2 numeric variables
+#### Static 
+```{r}
+vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm", y = "recumbent_length_cm", interactive = FALSE, marginal_x = "box+rug", , marginal_y = "box+rug")
+```
+
+#### Interactive
+```{r, out.height="550px"}
+vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm", y = "recumbent_length_cm", interactive = TRUE, marginal_x = "box+rug", marginal_y = "box+rug")
+```
+
+
+### 1 factor 1 numeric variable 
+#### Static 
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm", y = "sex", interactive = FALSE)
+```
+
+#### Interactive
+```{r, out.height="550px"}
+vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm", y = "sex", interactive = TRUE)
+```
+
+### 2 factor variables 
+#### Static 
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "smoke", interactive = FALSE)
+```
+
+#### Interactive
+```{r, out.height="550px"}
+vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "smoke", interactive = TRUE)
+```
+
+
+## 3D visualisation
+### 3 numeric variables 
+#### Static 
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm", y = "head_circumference_cm", z = "weight_kg", interactive = FALSE)
+```
+
+#### Interactive
+```{r, out.height="550px"}
+vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm", y = "head_circumference_cm", z = "weight_kg", interactive = TRUE)
+```
+

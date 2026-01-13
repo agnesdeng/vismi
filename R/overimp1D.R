@@ -1,5 +1,5 @@
 # plot imputed vs masked true for a single numeric variable ---------------
-overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, train_color_pal, test_color_pal) {
+overimp1D_cv_num <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, train_color_pal, test_color_pal) {
   .transform_data <- function(data, x) {
     mt_data <- data |>
       filter(Group == "Masked true") |>
@@ -20,11 +20,11 @@ overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
 
 
   train_data <- .transform_data(data = plot_data$train$all_dt, x)
-  if(!is.null(plot_data$test)){
+  if (!is.null(plot_data$test)) {
     test_data <- .transform_data(data = plot_data$test$all_dt, x)
     min_val <- min(train_data$min_val, test_data$min_val)
-    max_val <- max(train_data$max_val,test_data$max_val)
-  }else{
+    max_val <- max(train_data$max_val, test_data$max_val)
+  } else {
     min_val <- train_data$min_val
     max_val <- train_data$max_val
   }
@@ -43,17 +43,16 @@ overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
     scale_color_manual(values = train_color_pal) +
     labs(
       title = "Training Data",
-      x = paste("Masked true:", x), y = paste("Imputed:", x)
+      x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
+      # x = paste("Masked true:", x), y = paste("Imputed:", x)
     )
-  train_plot <- .ggplot_overimp_theme(train_plot, showlegend = TRUE)
+  train_plot <- .ggplot_overimp_theme(train_plot, showlegend = TRUE, markdown_axis_titles = TRUE)
 
 
   if (!is.null(xlim)) train_plot <- train_plot + xlim(xlim) else train_plot <- train_plot + xlim(c(min_val, max_val))
   if (!is.null(ylim)) train_plot <- train_plot + ylim(ylim) else train_plot <- train_plot + ylim(c(min_val, max_val))
 
   if (!is.null(plot_data$test)) {
-
-
     test_plot <- ggplot(test_data$join_data, aes(x = .data[["Masked true"]], y = .data[[x]], color = Group)) +
       geom_point(size = 0.5) +
       geom_segment(
@@ -67,9 +66,10 @@ overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
       scale_color_manual(values = test_color_pal) +
       labs(
         title = "Test Data",
-        x = paste("Masked true:", x), y = paste("Imputed:", x)
+        x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
+        # x = paste("Masked true:", x), y = paste("Imputed:", x)
       )
-    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE)
+    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, markdown_axis_titles = TRUE)
 
     if (!is.null(xlim)) test_plot <- test_plot + xlim(xlim) else test_plot <- test_plot + xlim(c(min_val, max_val))
     if (!is.null(ylim)) test_plot <- test_plot + ylim(ylim) else test_plot <- test_plot + ylim(c(min_val, max_val))
@@ -77,32 +77,19 @@ overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
     combined <- train_plot + test_plot +
       plot_layout(ncol = 2) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   } else {
     combined <- train_plot +
       plot_layout(ncol = 1) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
         )
-      )
+
   }
 
   class(combined) <- c("overimp_plot", class(combined))
@@ -111,7 +98,7 @@ overimp1D_cv_num <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
 
 
 #  plot imputed vs masked true for a single fac variable ------------------
-overimp1D_cv_fac <- function(plot_data, x, comb_title, point_size, xlim, ylim, train_color_pal, test_color_pal, stack_y, diag_color, seed) {
+overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, train_color_pal, test_color_pal, stack_y, diag_color, seed) {
   .transform_data <- function(data, x) {
     mt_data <- data |>
       filter(Group == "Masked true") |>
@@ -198,7 +185,8 @@ overimp1D_cv_fac <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
       scale_color_manual(values = train_color_pal) +
       labs(
         title = "Training Data",
-        x = paste("Masked true:", x), y = paste("Imputed:", x)
+        x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
+        # x = paste("Masked true:", x), y = paste("Imputed:", x)
       ) +
       theme(
         panel.grid.minor = element_blank(),
@@ -217,10 +205,11 @@ overimp1D_cv_fac <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
       scale_color_manual(values = train_color_pal) +
       labs(
         title = "Training Data",
-        x = paste("Masked true:", x), y = paste("Imputed:", x)
+        x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
+        # x = paste("Masked true:", x), y = paste("Imputed:", x)
       )
   }
-  train_plot <- .ggplot_overimp_theme(train_plot, showlegend = TRUE)
+  train_plot <- .ggplot_overimp_theme(train_plot, showlegend = TRUE, markdown_axis_titles = TRUE)
 
 
   if (!is.null(plot_data$test)) {
@@ -283,7 +272,8 @@ overimp1D_cv_fac <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
         scale_color_manual(values = test_color_pal) +
         labs(
           title = "Training Data",
-          x = paste("Masked true:", x), y = paste("Imputed:", x)
+          x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
+          # x = paste("Masked true:", x), y = paste("Imputed:", x)
         ) +
         theme(
           panel.grid.minor = element_blank(),
@@ -302,42 +292,29 @@ overimp1D_cv_fac <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
         scale_color_manual(values = test_color_pal) +
         labs(
           title = "Test Data",
-          x = paste("Masked true:", x), y = paste("Imputed:", x)
+          x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
+          # x = paste("Masked true:", x), y = paste("Imputed:", x)
         )
     }
 
 
-    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE)
+    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, markdown_axis_titles = TRUE)
 
 
     combined <- train_plot + test_plot +
       plot_layout(ncol = 2) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   } else {
     combined <- train_plot +
       plot_layout(ncol = 1) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   }
 
@@ -347,7 +324,7 @@ overimp1D_cv_fac <- function(plot_data, x, comb_title, point_size, xlim, ylim, t
 
 
 # overimp1D_qq ------------------------------------------------------------
-overimp1D_qq <- function(plot_data, x, comb_title, point_size, xlim, ylim, train_color_pal, test_color_pal) {
+overimp1D_qq <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, train_color_pal, test_color_pal) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(sample = .data[[x]], color = Group)) +
     stat_qq(size = point_size) +
     scale_color_manual(values = train_color_pal) +
@@ -372,31 +349,17 @@ overimp1D_qq <- function(plot_data, x, comb_title, point_size, xlim, ylim, train
     combined <- train_plot + test_plot +
       plot_layout(ncol = 2) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   } else {
     combined <- train_plot +
       plot_layout(ncol = 1) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   }
 
@@ -405,7 +368,7 @@ overimp1D_qq <- function(plot_data, x, comb_title, point_size, xlim, ylim, train
 }
 
 # overimp1D_qqline --------------------------------------------------------
-overimp1D_qqline <- function(plot_data, x, comb_title, linewidth, xlim, ylim, train_color_pal, test_color_pal) {
+overimp1D_qqline <- function(plot_data, x, title, subtitle, linewidth, xlim, ylim, train_color_pal, test_color_pal) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(sample = .data[[x]], color = Group)) +
     stat_qq_line(linewidth = linewidth) +
     scale_color_manual(values = train_color_pal) +
@@ -430,31 +393,17 @@ overimp1D_qqline <- function(plot_data, x, comb_title, linewidth, xlim, ylim, tr
     combined <- train_plot + test_plot +
       plot_layout(ncol = 2) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   } else {
     combined <- train_plot +
       plot_layout(ncol = 1) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   }
 
@@ -466,7 +415,7 @@ overimp1D_qqline <- function(plot_data, x, comb_title, linewidth, xlim, ylim, tr
 
 # #overimp1D_ridge --------------------------------------------------------
 
-overimp1D_ridge <- function(plot_data, x, comb_title, alpha, xlim, train_color_pal, test_color_pal) {
+overimp1D_ridge <- function(plot_data, x, title, subtitle, alpha, xlim, train_color_pal, test_color_pal) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]])) +
     geom_density_ridges(alpha = alpha, aes(y = Group, fill = Group)) +
     scale_fill_manual(values = train_color_pal) +
@@ -493,31 +442,17 @@ overimp1D_ridge <- function(plot_data, x, comb_title, alpha, xlim, train_color_p
     combined <- train_plot + test_plot +
       plot_layout(ncol = 2) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   } else {
     combined <- train_plot +
       plot_layout(ncol = 1) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   }
 
@@ -527,7 +462,7 @@ overimp1D_ridge <- function(plot_data, x, comb_title, alpha, xlim, train_color_p
 
 
 # #overimp1D_density --------------------------------------------------------
-overimp1D_density <- function(plot_data, x, comb_title, alpha, linewidth, xlim, ylim, train_color_pal, test_color_pal) {
+overimp1D_density <- function(plot_data, x, title, subtitle, alpha, linewidth, xlim, ylim, train_color_pal, test_color_pal) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]], color = Group)) +
     geom_density(alpha = alpha, linewidth = linewidth) +
     scale_color_manual(values = train_color_pal) +
@@ -552,31 +487,17 @@ overimp1D_density <- function(plot_data, x, comb_title, alpha, linewidth, xlim, 
     combined <- train_plot + test_plot +
       plot_layout(ncol = 2) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   } else {
     combined <- train_plot +
       plot_layout(ncol = 1) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   }
 
@@ -586,7 +507,7 @@ overimp1D_density <- function(plot_data, x, comb_title, alpha, linewidth, xlim, 
 
 
 # overimp1D_bar --------------------------------------------------------
-overimp1D_bar <- function(plot_data, x, comb_title, position, alpha, ylim, train_color_pal, test_color_pal) {
+overimp1D_bar <- function(plot_data, x, title, subtitle, position, alpha, ylim, train_color_pal, test_color_pal) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]])) +
     geom_bar(aes(fill = Group)) +
     facet_grid(vars(Group), switch = "y") +
@@ -611,31 +532,17 @@ overimp1D_bar <- function(plot_data, x, comb_title, position, alpha, ylim, train
     combined <- train_plot + test_plot +
       plot_layout(ncol = 2) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   } else {
     combined <- train_plot +
       plot_layout(ncol = 1) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   }
 
@@ -646,7 +553,7 @@ overimp1D_bar <- function(plot_data, x, comb_title, position, alpha, ylim, train
 
 
 # overimp1D_dodge --------------------------------------------------------
-overimp1D_dodge <- function(plot_data, x, comb_title, position, alpha, ylim, train_color_pal, test_color_pal) {
+overimp1D_dodge <- function(plot_data, x, title, subtitle, position, alpha, ylim, train_color_pal, test_color_pal) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]], fill = Group)) +
     geom_bar(alpha = alpha, position = position) +
     # scale_color_manual(values = train_color_pal) +
@@ -669,31 +576,17 @@ overimp1D_dodge <- function(plot_data, x, comb_title, position, alpha, ylim, tra
     combined <- train_plot + test_plot +
       plot_layout(ncol = 2) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   } else {
     combined <- train_plot +
       plot_layout(ncol = 1) +
       plot_annotation(
-        title = comb_title,
-        theme = theme(
-          plot.title = element_text(
-            size = 14, # Font size
-            face = "bold", # "plain", "italic", "bold", "bold.italic"
-            family = "sans", # Font family (e.g., "sans", "serif", "mono")
-            hjust = 0.5, # Center the title (0 = left, 1 = right)
-            color = "black" # Font color
-          )
-        )
+        title = title,
+        subtitle = subtitle,
+        theme = .vismi_overimp_combine_title()
       )
   }
 

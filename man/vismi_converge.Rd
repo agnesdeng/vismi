@@ -2,32 +2,39 @@
 % Please edit documentation in R/vismi_converge.R
 \name{vismi_converge}
 \alias{vismi_converge}
-\alias{vismi_converge.mixgb}
-\alias{vismi_converge.mids}
 \title{Visualise onvergence diagnostics}
 \usage{
-vismi_converge(obj, var, tick_vals = NULL, color_pal = NULL)
-
-\method{vismi_converge}{mixgb}(obj, var, tick_vals = NULL, color_pal = NULL)
-
-\method{vismi_converge}{mids}(obj, var, tick_vals = NULL, color_pal = NULL)
+vismi_converge(
+  obj,
+  var,
+  title = "auto",
+  subtitle = "auto",
+  tick_vals = NULL,
+  color_pal = NULL,
+  linewidth = 0.8,
+  ...
+)
 }
 \arguments{
 \item{obj}{A 'mixgb' object returned by \code{mixgb()} function or a 'mids' object returned by the \code{mice()} function.}
 
 \item{var}{The name of the variable to plot convergence for.}
 
+\item{title}{A string specifying the title of the plot. If NULL, no title is shown. If "auto", a title will be generated based on the input. Default is "auto".}
+
+\item{subtitle}{A string specifying the subtitle of the plot. If NULL, no subtitle is shown. If "auto", a title will be generated based on the input. Default is "auto".}
+
 \item{tick_vals}{Optional numeric vector specifying x-axis tick values for iterations.}
 
 \item{color_pal}{A vector of m color codes (e.g., hex codes). If NULL, default colors will be used.}
+
+\item{linewidth}{The line width for the plot lines. Default is 0.8.}
+
+\item{...}{Additional arguments.}
 }
 \value{
 A ggplot2 object showing the convergence plot for the specified variable.
 }
 \description{
 Visualise onvergence diagnostics
-
-Visualise onvergence diagnostics for a variable imputed by mixgb
-
-Visualise convergence diagnostics for a variable imputed by MICE
 }

@@ -8,17 +8,19 @@
 #' @param seed random seed
 #' @param ... other arguments to be passed into the overimp function
 #' @export
-overimp<-function(data, p = 0.2, m = 5, test_ratio = 0, method = "mixgb", seed = NULL, ...){
-
-  overimp_fun<-paste0("overimp_",method)
+overimp <- function(data, p = 0.2, m = 5, test_ratio = 0, method = "mixgb", seed = NULL, ...) {
+  overimp_fun <- paste0("overimp_", method)
 
   obj <- do.call(overimp_fun,
-          args=list(data = data,
-                    p = p,
-                    m = m,
-                    test_ratio = test_ratio,
-                    seed = seed,
-                    ...))
+    args = list(
+      data = data,
+      p = p,
+      m = m,
+      test_ratio = test_ratio,
+      seed = seed,
+      ...
+    )
+  )
   class(obj) <- "overimp"
   obj
 }

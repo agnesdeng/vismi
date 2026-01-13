@@ -2,7 +2,7 @@
 
 Visualise onvergence diagnostics
 
-Visualise onvergence diagnostics for a variable imputed by mixgb
+Visualise convergence diagnostics for a variable imputed by mixgb
 
 Visualise convergence diagnostics for a variable imputed by MICE
 

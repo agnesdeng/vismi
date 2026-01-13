@@ -14,10 +14,12 @@ vismi(
   imp_idx = NULL,
   interactive = TRUE,
   integerAsFactor = FALSE,
+  title = "auto",
+  subtitle = "auto",
   color_pal = NULL,
   marginal_x = NULL,
   marginal_y = NULL,
-  verbose = TRUE,
+  verbose = FALSE,
   ...
 )
 }
@@ -45,6 +47,10 @@ by default) or a static ggplot2 plot (FALSE).}
 \item{integerAsFactor}{A logical value indicating whether to treat integer variables as factors
 (TRUE) or numeric (FALSE). Default is FALSE.}
 
+\item{title}{A string specifying the title of the plot. Default is "auto" (automatic title based on \code{x,y,z} input). If NULL, no title is shown.}
+
+\item{subtitle}{A string specifying the subtitle of the plot. Default is "auto" (automatic subtitle based on \code{x,y,z} input). If NULL, no subtitle is shown.}
+
 \item{color_pal}{A named vector of colors for different imputation sets. If NULL
 (default), a default color palette is used.}
 
@@ -58,7 +64,7 @@ for the y variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or 
 (default, no marginal plot) when interactive = TRUE. Options are "box", "rug", "box+rug", or NULL
 (default, no marginal plot) when interactive = FALSE.}
 
-\item{verbose}{A logical value indicating whether to print extra information. Default is TRUE.}
+\item{verbose}{A logical value indicating whether to print extra information. Default is FALSE.}
 
 \item{...}{Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.}
 }

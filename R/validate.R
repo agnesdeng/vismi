@@ -1,12 +1,23 @@
-.validate_data<-function(data, verbose,integerAsFactor, max_levels = 20){
+.validate_incomplete_variable<-function(obj, var){
 
+  if(inherits(obj,"mixgb")){
+    missing_vars <- obj$params$missing.vars
+  }else if(inherits(obj,"mids")){
+    missing_vars <- names(obj$nmis)[obj$nmis>0]
+  }
+  if(!(var %in% missing_vars)){
+    stop(paste0("Variable '", var, "' not found in the imputed object. Please check your spelling. Valid incomplete variables are", paste(missing_vars, collapse = ", "), "."))
+}
+}
+
+.validate_data <- function(data, verbose, integerAsFactor, max_levels = 20) {
   # check if data is data.frame, tibble or data.table -----------------------
-  if(!is.data.frame(data)){
+  if (!is.data.frame(data)) {
     stop("data must be a data.frame, tibble or data.table.")
   }
 
   # abvoid modifying original data in-place
-  if(inherits(data, "data.table")){
+  if (inherits(data, "data.table")) {
     data <- data.table::copy(data)
   }
 
@@ -14,12 +25,13 @@
 
   # check type of variables -------------------------------------------------
 
-  if(verbose){
+  if (verbose) {
     cli::cli_h1("Sanity Check")
   }
 
 
-  Types <- vapply(Names,function(name) {
+  Types <- vapply(
+    Names, function(name) {
       col <- data[[name]]
       if (inherits(col, "ordered")) {
         if (isTRUE(verbose)) {
@@ -28,7 +40,6 @@
           )
         }
         "factor"
-
       } else if (inherits(col, "logical")) {
         if (isTRUE(verbose)) {
           cli::cli_alert_info(
@@ -37,39 +48,33 @@
         }
 
         "factor"
-
       } else if (inherits(col, "integer")) {
-
         if (isTRUE(verbose) & integerAsFactor) {
           cli::cli_alert_info(
             "{.var {name}}: integer variable detected; treated as factor for plotting as `integerAsFactor = TRUE`."
           )
-        }else if (isTRUE(verbose) & integerAsFactor==FALSE){
+        } else if (isTRUE(verbose) & integerAsFactor == FALSE) {
           cli::cli_alert_info(
             "{.var {name}}: integer variable detected; treated as numeric for plotting as `integerAsFactor = FALSE`."
           )
         }
 
         if (isTRUE(integerAsFactor)) {
-          data[[name]]<-as.factor(col)
+          data[[name]] <- as.factor(col)
           "factor"
-        } else{
+        } else {
           "numeric"
         }
-
-
-
-      }else if(inherits(col, "character")){
+      } else if (inherits(col, "character")) {
         if (isTRUE(verbose)) {
           cli::cli_alert_warning(
             "{.var {name}}: character variable detected; treated as factor for plotting."
           )
         }
 
-        data[[name]]<-as.factor(col)
+        data[[name]] <- as.factor(col)
         "factor"
-
-      }else {
+      } else {
         class(col)[1]
       }
     },
@@ -77,11 +82,9 @@
   )
 
 
-
   if (!all(Types %in% c("numeric", "factor"))) {
     stop("Variables need to be of type `numeric`, `integer`, `logical`, `character`, `factor` or `ordinal factor`.")
   }
-
 
 
   # check NaN ---------------------------------------------------------------
@@ -89,7 +92,7 @@
   if (any(nan_num)) {
     col_idx <- unique(which(nan_num, arr.ind = TRUE)[, 2])
     nan_col <- Names[col_idx]
-    if(verbose){
+    if (verbose) {
       cli::cli_alert_warning(c(
         "Numeric {.emph NaN} values detected in {.var {nan_col}}.",
         " They have been converted to {.emph NA}."
@@ -111,7 +114,7 @@
     ))
 
     data[nan_chr] <- NA
-    #drop "NaN" level
+    # drop "NaN" level
     data <- droplevels(data)
   }
 
@@ -144,11 +147,9 @@
     ))
 
     data[inf_chr] <- NA
-    #drop "Inf"/"-Inf" level
+    # drop "Inf"/"-Inf" level
     data <- droplevels(data)
   }
-
-
 
 
   # check single level factor -----------------------------------------------
@@ -158,30 +159,28 @@
     single_col <- names(data)[idx]
 
     if (interactive()) {
-      msg1<-paste("Factor variable(s) with only one level detected in:", single_col)
-      msg2<-paste("Do you want to remove them from the data and proceed?")
-      msg<-paste(msg1,msg2,sep="\n")
+      msg1 <- paste("Factor variable(s) with only one level detected in:", single_col)
+      msg2 <- paste("Do you want to remove them from the data and proceed?")
+      msg <- paste(msg1, msg2, sep = "\n")
       proceed <- askYesNo(msg)
     } else {
-      proceed <- FALSE  # default for non-interactive sessions
+      proceed <- FALSE # default for non-interactive sessions
     }
 
     if (proceed) {
       cli::cli_alert_warning("Removing columns with only one level: {.var {single_col}}")
-      if(inherits(data,"data.table")){
-        data[,(single_col):=NULL]
-      }else{
+      if (inherits(data, "data.table")) {
+        data[, (single_col) := NULL]
+      } else {
         data <- data[, -idx, drop = FALSE]
       }
-
     } else {
       stop("User chose not to proceed. Please check the data")
     }
-
   }
 
 
-  #check factors with too many levels -------------------------------------
+  # check factors with too many levels -------------------------------------
   num_levels <- sapply(data, nlevels)
   num_row <- nrow(data)
 
@@ -191,36 +190,28 @@
 
 
     if (interactive()) {
-      msg1<-paste("Factor variable(s) with more than", max_levels, "levels detected in:", toomany_col)
-      msg2<-paste("Do you want to keep them and proceed?")
-      msg<-paste(msg1,msg2,sep="\n")
+      msg1 <- paste("Factor variable(s) with more than", max_levels, "levels detected in:", toomany_col)
+      msg2 <- paste("Do you want to keep them and proceed?")
+      msg <- paste(msg1, msg2, sep = "\n")
 
       proceed <- askYesNo(msg)
-
     } else {
-      proceed <- FALSE  # default for non-interactive sessions
+      proceed <- FALSE # default for non-interactive sessions
     }
 
-    if(proceed){
+    if (proceed) {
       cli::cli_alert_warning("User chose to keep columns with too many levels: {.var {toomany_col}}")
-    }else{
+    } else {
       cli::cli_abort("User chose not to proceed. Please check variables with too many levels: {.var {toomany_col}}")
     }
-
-
   }
 
-  list(data=data, Types=Types)
-
+  list(data = data, Types = Types)
 }
 
 
-
-
-
-.validate_m <-function(m, N_imp){
-  if(length(m)!=1| m <=0 | m!=floor(m)){
+.validate_m <- function(m, N_imp) {
+  if (length(m) != 1 | m <= 0 | m != floor(m)) {
     stop("m must be a single positive integer.")
   }
-
 }
