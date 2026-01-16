@@ -1,0 +1,113 @@
+---
+title: "Visualisation for Overimputation Diagnostics"
+format:
+  html:
+    toc: true
+    page-layout: full
+    fig-format: svg
+---
+
+```{r,include=FALSE}
+#| label: setup
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  tidy = TRUE,
+  tidy.opts = list(width.cutoff = 60),
+  dpi = 100,
+  fig.retina = 1,
+  fig.width = 9,
+  fig.height = 5,
+  out.width = "100%",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+## Obtain overimputation objects
+
+For demonstration, we use the `newborn` dataset included in the **vismi** package. This is an incomplete dataset with missing values in variables of various types.
+
+We can obtain an overimputation object with 5 multiple imputations (`m = 5`), extra missing values with proprotion 20% (`p = 0.2`) and test set ratio 20% (`test_ratio = 0.2`). Imputation method can be set to `"mixgb"` or `"mice"`, which would call `mixgb()` or `mice` in the backend. Users can also pass additional argument related to `mixgb()` or `mice()` through `overimp()`. 
+
+Under this setting, 20% extra missing values will be introduced and data will be split into training data (80%) and test data (20%). An imputation model would be built using only training data, and it will be used to impute the extra missing values in both the training data and the test data. 
+
+```{r}
+library(vismi)
+obj <- overimp(data = newborn, m = 5, p = 0.2, test_ratio = 0.2, method = "mixgb")
+```
+
+## Visual diagnostic for overimputation
+### 1D visualisation
+#### Numeric variable
+
+```{r}
+vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "cv")
+```
+
+```{r}
+vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "density")
+```
+
+
+```{r}
+vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "ridge")
+```
+
+
+```{r}
+vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "qq")
+```
+
+
+```{r}
+vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "qqline")
+```
+
+
+#### factor variable
+
+```{r}
+vismi_overimp(obj = obj, x = "ethnicity", fac_plot = "cv")
+```
+
+```{r}
+vismi_overimp(obj = obj, x = "ethnicity", fac_plot = "cv", stack_y = TRUE)
+```
+
+```{r}
+vismi_overimp(obj = obj, x = "ethnicity", fac_plot = "cv", stack_y = TRUE, diag_color = "white")
+```
+
+
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+vismi_overimp(obj = obj, x = "health", fac_plot = "bar")
+```
+
+```{r}
+vismi_overimp(obj = obj, x = "health", fac_plot = "dodge")
+```
+
+### 2D visulisation 
+#### 2 numeric variables 
+```{r}
+#| fig-width: 9
+#| fig-height: 7
+vismi_overimp(obj = obj, x = "head_circumference_cm", y = "recumbent_length_cm")
+```
+
+#### 1 factor 1 numeric variables
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+vismi_overimp(obj = obj, y = "sex", x = "head_circumference_cm", alpha = 0.5, point_size = 0.2, boxpoints = "all")
+```
+
+#### 2 factor variables 
+```{r}
+#| fig-width: 9
+#| fig-height: 6
+vismi_overimp(obj = obj, x = "health", y = "sex")
+```

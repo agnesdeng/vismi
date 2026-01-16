@@ -122,8 +122,8 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor, verbos
 
 
   # Extract imputed rows for each imputation
-
-  imp_names <- paste0("Imputed set", imp_idx)
+  imp_names <- paste("Imp set", imp_idx)
+  #imp_names <- paste0("Imputed set", imp_idx)
 
   imp_list <- lapply(imp_list, function(imp_data) {
     dt <- as.data.table(imp_data)[na_indices, ..vars]

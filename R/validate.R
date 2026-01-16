@@ -10,7 +10,7 @@
 }
 }
 
-.validate_data <- function(data, verbose, integerAsFactor, max_levels = 20) {
+.validate_data <- function(data, verbose, integerAsFactor, max_levels = 50) {
   # check if data is data.frame, tibble or data.table -----------------------
   if (!is.data.frame(data)) {
     stop("data must be a data.frame, tibble or data.table.")
@@ -151,6 +151,26 @@
     data <- droplevels(data)
   }
 
+  # check empty cells "" ----------------------------------------------------
+  empty_chr <- data == ""
+  empty_chr[is.na(empty_chr)] <- FALSE
+
+  if (any(empty_chr)) {
+    col_idx <- unique(which(empty_chr, arr.ind = TRUE)[, 2])
+    empty_col <- Names[col_idx]
+
+    cli::cli_alert_warning(c(
+      "Empty string {.emph \"\"} values detected in {.var {empty_col}}.",
+      " They have been converted to {.emph NA}."
+    ))
+
+    # replace empty strings with NA
+    data[empty_chr] <- NA
+
+    # drop empty string level from factors
+    data <- droplevels(data)
+  }
+
 
   # check single level factor -----------------------------------------------
   idx <- which(sapply(data, nlevels) == 1)
@@ -159,10 +179,8 @@
     single_col <- names(data)[idx]
 
     if (interactive()) {
-      msg1 <- paste("Factor variable(s) with only one level detected in:", single_col)
-      msg2 <- paste("Do you want to remove them from the data and proceed?")
-      msg <- paste(msg1, msg2, sep = "\n")
-      proceed <- askYesNo(msg)
+      cat("Factor variable(s) with only one level detected in:", paste(single_col, collapse = ", "), "\n")
+      proceed<-askYesNo("Do you want to remove them from the data and proceed?")
     } else {
       proceed <- FALSE # default for non-interactive sessions
     }
@@ -190,11 +208,9 @@
 
 
     if (interactive()) {
-      msg1 <- paste("Factor variable(s) with more than", max_levels, "levels detected in:", toomany_col)
-      msg2 <- paste("Do you want to keep them and proceed?")
-      msg <- paste(msg1, msg2, sep = "\n")
-
-      proceed <- askYesNo(msg)
+      cat("Factor variable(s) with more than", max_levels, "levels detected in:",
+          paste(toomany_col, collapse = ", "), "\n")
+      proceed<-askYesNo("Do you want to keep them and proceed?")
     } else {
       proceed <- FALSE # default for non-interactive sessions
     }

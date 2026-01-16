@@ -18,19 +18,20 @@
 .vismi_overimp_style <- function() {
   list(
     title_color = "#242429",
-    gg_title_size = 14,
-    gg_title_face = "plain",
+    title_size = 14,
+    title_face = "plain",
     subtitle_color = "#242429",
-    gg_subtitle_size = 14,
-    gg_subtitle_face = "plain",
+    subtitle_size = 14,
+    subtitle_face = "plain",
     axis_title_color = "#35353d",
-    gg_axis_title_size = 10,
-    gg_axis_title_face = "bold",
-    gg_axis_text_size = 9,
+    axis_title_size = 10,
+    axis_title_face = "bold",
+    axis_text_size = 9,
     panel_bg_fill = "gray95",
     panel_bg_color = NA,
     strip_bg_fill = "gray85",
     strip_bg_color = NA,
+    strip_text_size = 8,
     grid_major_color = "white",
     grid_major_linewidth = 0.3,
     grid_minor_color = "white",
@@ -60,25 +61,27 @@
       #plot.subtitle = element_text(size = 10),
       #axis.title.x = element_text(size = 10, margin = margin(t = 10, r = 0, b = 0, l = 0), ),
       #axis.title.y = element_text(size = 10, margin = margin(0, r = 5, 0, l = 0)),
-      plot.title = element_text(size = style$gg_title_size, colour = style$title_color, face = style$gg_title_face),
-      plot.subtitle = element_text(size = style$gg_subtitle_size, colour = style$subtitle_color, face = style$gg_subtitle_face),
-      axis.text.x = element_text(size = style$gg_axis_text_size),
-      axis.text.y = element_text(size = style$gg_axis_text_size),
+      plot.title = element_text(size = style$title_size, colour = style$title_color, face = style$title_face),
+      plot.subtitle = element_text(size = style$subtitle_size, colour = style$subtitle_color, face = style$subtitle_face),
+      axis.text.x = element_text(size = style$axis_text_size),
+      axis.text.y = element_text(size = style$axis_text_size),
       legend.position = "right", # or "bottom", "top", "left", "none"
       legend.title = element_text(size = 12, face = "bold"),
-      legend.text = element_text(size = 8)
+      legend.text = element_text(size = 8),
+      strip.text.x = element_text(size = style$strip_text_size),
+      strip.text.y = element_text(size = style$strip_text_size)
       #strip.text.y.left = element_text(angle = 0)
     )
 
   if(markdown_axis_titles){
     fig+theme(
-      axis.title.x = element_markdown(size = style$gg_axis_title_size, colour = style$axis_title_color),
-      axis.title.y = element_markdown(size = style$gg_axis_title_size, colour = style$axis_title_color),
+      axis.title.x = element_markdown(size = style$axis_title_size, colour = style$axis_title_color),
+      axis.title.y = element_markdown(size = style$axis_title_size, colour = style$axis_title_color),
     )
   }else{
     fig+theme(
-      axis.title.x = element_text(size = style$gg_axis_title_size, colour = style$axis_title_color, face = style$gg_axis_title_face),
-      axis.title.y = element_text(size = style$gg_axis_title_size, colour = style$axis_title_color, face = style$gg_axis_title_face),
+      axis.title.x = element_text(size = style$axis_title_size, colour = style$axis_title_color, face = style$axis_title_face),
+      axis.title.y = element_text(size = style$axis_title_size, colour = style$axis_title_color, face = style$axis_title_face),
     )
   }
 

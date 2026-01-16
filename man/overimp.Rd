@@ -6,8 +6,8 @@
 \usage{
 overimp(
   data,
-  p = 0.2,
   m = 5,
+  p = 0.2,
   test_ratio = 0,
   method = "mixgb",
   seed = NULL,
@@ -17,9 +17,9 @@ overimp(
 \arguments{
 \item{data}{a data frame with missing values}
 
-\item{p}{the extra proportion of missing values}
-
 \item{m}{the number of imputation}
+
+\item{p}{the extra proportion of missing values}
 
 \item{test_ratio}{the proportion of test set. Default is 0, meaning no test set.}
 

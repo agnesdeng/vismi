@@ -137,7 +137,7 @@ overimp2D_bar <- function(plot_data, x, y, title, subtitle, width, alpha, ylim, 
 
   if (!is.null(plot_data$test)) {
     test_plot <- ggplot(plot_data$test$all_dt, aes(x = .data[[x]], alpha = .data[[y]])) +
-      geom_bar(aes(fill = Group, color = Group), width = width) +
+      geom_bar(aes(fill = Group, color = Group), width = width, position = "dodge2") +
       facet_grid(rows = vars(Group)) +
       scale_alpha_discrete(range = c(0.1, 1)) +
       scale_color_manual(values = test_color_pal) +

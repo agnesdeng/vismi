@@ -240,7 +240,7 @@
     x = 0.5,
     y = -0.05,
     showarrow = FALSE,
-    font = list(style$axis_title_size, family = style$axis_title_font, color = style$axis_title_color)
+    font = list(size = style$axis_title_size, family = style$axis_title_font, color = style$axis_title_color)
   )
 
 

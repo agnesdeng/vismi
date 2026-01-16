@@ -39,7 +39,8 @@
 
 
     # Extract imputed rows for each imputation
-    imp_names <- paste0("Imputed set", imp_idx)
+    imp_names <- paste("Imp set", imp_idx)
+    #imp_names <- paste0("Imputed set", imp_idx)
     #imp_names <- paste0("Set", imp_idx)
 
     # Multiply-imputed masked true

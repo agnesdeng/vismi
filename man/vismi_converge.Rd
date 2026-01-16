@@ -7,6 +7,9 @@
 vismi_converge(
   obj,
   var,
+  xlim = NULL,
+  mean_lim = NULL,
+  sd_lim = NULL,
   title = "auto",
   subtitle = "auto",
   tick_vals = NULL,
@@ -19,6 +22,12 @@ vismi_converge(
 \item{obj}{A 'mixgb' object returned by \code{mixgb()} function or a 'mids' object returned by the \code{mice()} function.}
 
 \item{var}{The name of the variable to plot convergence for.}
+
+\item{xlim}{Optional numeric vector of length 2 specifying the x-axis limits for iterations.}
+
+\item{mean_lim}{Optional numeric vector of length 2 specifying the y-axis limits for mean values of the variable.}
+
+\item{sd_lim}{Optional numeric vector of length 2 specifying the y-axis limits for standard deviation values of the variable.}
 
 \item{title}{A string specifying the title of the plot. If NULL, no title is shown. If "auto", a title will be generated based on the input. Default is "auto".}
 

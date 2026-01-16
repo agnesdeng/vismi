@@ -510,7 +510,7 @@ overimp1D_density <- function(plot_data, x, title, subtitle, alpha, linewidth, x
 overimp1D_bar <- function(plot_data, x, title, subtitle, position, alpha, ylim, train_color_pal, test_color_pal) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]])) +
     geom_bar(aes(fill = Group)) +
-    facet_grid(vars(Group), switch = "y") +
+    facet_grid(vars(Group)) +
     scale_fill_manual(values = train_color_pal) +
     labs(title = "Training Data") +
     guides(fill = "none")
@@ -521,7 +521,7 @@ overimp1D_bar <- function(plot_data, x, title, subtitle, position, alpha, ylim, 
   if (!is.null(plot_data$test)) {
     test_plot <- ggplot(plot_data$test$all_dt, aes(x = .data[[x]])) +
       geom_bar(aes(fill = Group)) +
-      facet_grid(vars(Group), switch = "y") +
+      facet_grid(vars(Group)) +
       scale_fill_manual(values = test_color_pal) +
       labs(title = "Test Data") +
       guides(fill = "none")

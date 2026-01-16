@@ -12,7 +12,7 @@ vismi(
   z = NULL,
   m = NULL,
   imp_idx = NULL,
-  interactive = TRUE,
+  interactive = FALSE,
   integerAsFactor = FALSE,
   title = "auto",
   subtitle = "auto",
