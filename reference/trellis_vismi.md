@@ -18,7 +18,7 @@ trellis_vismi(
   marginal_x = "box+rug",
   verbose = FALSE,
   nrow = 2,
-  ncol = 3,
+  ncol = 4,
   path = NULL,
   ...
 )
