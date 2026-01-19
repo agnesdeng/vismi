@@ -24,10 +24,8 @@ vismi_converge(
 
 - obj:
 
-  A 'mixgb' object returned by
-  [`mixgb()`](https://rdrr.io/pkg/mixgb/man/mixgb.html) function or a
-  'mids' object returned by the
-  [`mice()`](https://amices.org/mice/reference/mice.html) function.
+  A 'mixgb' object returned by `mixgb()` function or a 'mids' object
+  returned by the `mice()` function.
 
 - x:
 
