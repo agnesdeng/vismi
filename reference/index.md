@@ -16,7 +16,7 @@
   Visualisation of Overimputation Diagnostics
 - [`vismi()`](vismi.md) : Visualise Multiple Imputations Through
   Distributional Characteristics
-- [`vismi_converge()`](vismi_converge.md) : Visualise onvergence
+- [`vismi_converge()`](vismi_converge.md) : Visualise convergence
   diagnostics
 - [`vismi_overimp()`](vismi_overimp.md) : Visualise Multiple Imputation
-  Through Overimputations
+  Through Overimputation

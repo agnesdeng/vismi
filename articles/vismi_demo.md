@@ -98,7 +98,7 @@ Users need to provide the following inputs to
 - other arguments: users can pass on different plot settings. See the
   documentation of [`vismi()`](../reference/vismi.md) for more details.
 
-## 1D visualsation
+## 1D visualisation
 
 ### 1 numeric variable
 

@@ -1,6 +1,6 @@
-# Visualise onvergence diagnostics
+# Visualise convergence diagnostics
 
-Visualise onvergence diagnostics
+Visualise convergence diagnostics
 
 ## Usage
 
@@ -31,7 +31,7 @@ vismi_converge(
 
 - x:
 
-  The name of the xiable to plot convergence for.
+  The name of the variable to plot convergence for.
 
 - xlim:
 
@@ -41,12 +41,12 @@ vismi_converge(
 - mean_lim:
 
   Optional numeric vector of length 2 specifying the y-axis limits for
-  mean values of the xiable.
+  mean values of the variable.
 
 - sd_lim:
 
   Optional numeric vector of length 2 specifying the y-axis limits for
-  standard deviation values of the xiable.
+  standard deviation values of the variable.
 
 - title:
 
@@ -79,4 +79,5 @@ vismi_converge(
 
 ## Value
 
-A ggplot2 object showing the convergence plot for the specified xiable.
+A ggplot2 object showing the convergence plot for the specified
+variable.

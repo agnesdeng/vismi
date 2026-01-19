@@ -81,7 +81,7 @@
     <section class="level2"><h2 id="obtain-overimputation-objects">Obtain overimputation objects<a class="anchor" aria-label="anchor" href="#obtain-overimputation-objects"></a>
 </h2>
 <p>For demonstration, we use the <code>newborn</code> dataset included in the <strong>vismi</strong> package. This is an incomplete dataset with missing values in variables of various types.</p>
-<p>We can obtain an overimputation object with 5 multiple imputations (<code>m = 5</code>), extra missing values with proprotion 20% (<code>p = 0.2</code>) and test set ratio 20% (<code>test_ratio = 0.2</code>). Imputation method can be set to <code>"mixgb"</code> or <code>"mice"</code>, which would call <code><a href="https://rdrr.io/pkg/mixgb/man/mixgb.html" class="external-link">mixgb()</a></code> or <code>mice</code> in the backend. Users can also pass additional argument related to <code><a href="https://rdrr.io/pkg/mixgb/man/mixgb.html" class="external-link">mixgb()</a></code> or <code><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice()</a></code> through <code><a href="../reference/overimp.html">overimp()</a></code>.</p>
+<p>We can obtain an overimputation object with 5 multiple imputations (<code>m = 5</code>), extra missing values with proportion 20% (<code>p = 0.2</code>) and test set ratio 20% (<code>test_ratio = 0.2</code>). Imputation method can be set to <code>"mixgb"</code> or <code>"mice"</code>, which would call <code><a href="https://rdrr.io/pkg/mixgb/man/mixgb.html" class="external-link">mixgb()</a></code> or <code>mice</code> in the backend. Users can also pass additional argument related to <code><a href="https://rdrr.io/pkg/mixgb/man/mixgb.html" class="external-link">mixgb()</a></code> or <code><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice()</a></code> through <code><a href="../reference/overimp.html">overimp()</a></code>.</p>
 <p>Under this setting, 20% extra missing values will be introduced and data will be split into training data (80%) and test data (20%). An imputation model would be built using only training data, and it will be used to impute the extra missing values in both the training data and the test data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
@@ -200,7 +200,7 @@
 </div>
 </div>
 </div>
-</section></section><section class="level3"><h3 id="d-visulisation">2D visulisation<a class="anchor" aria-label="anchor" href="#d-visulisation"></a>
+</section></section><section class="level3"><h3 id="d-visualisation-1">2D visualisation<a class="anchor" aria-label="anchor" href="#d-visualisation-1"></a>
 </h3>
 <section class="level4"><h4 id="numeric-variables">2 numeric variables<a class="anchor" aria-label="anchor" href="#numeric-variables"></a>
 </h4>
