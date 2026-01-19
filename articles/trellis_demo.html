@@ -97,49 +97,10 @@
 <div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/trellis_vismi.html">trellis_vismi</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">newborn</span>, imp_list <span class="op">=</span> <span class="va">imp_newborn</span>, marginal_x <span class="op">=</span> <span class="st">"box+rug"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<iframe src="trellis/vismi/index.html" width="100%" height="800px" frameborder="0">
+<div class="cell">
+<iframe src="trellis/vismi/index.html" width="100%" height="400px" data-external="1">
 </iframe>
-</section><section class="level2"><h2 id="overimputation-diagnostics-via-trellis_overimp">Overimputation diagnostics via <code>trellis_overimp()</code>
-<a class="anchor" aria-label="anchor" href="#overimputation-diagnostics-via-trellis_overimp"></a>
-</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/overimp.html">overimp</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">newborn</span>, p <span class="op">=</span> <span class="fl">0.2</span>, m <span class="op">=</span> <span class="fl">5</span>, test_ratio <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>    method <span class="op">=</span> <span class="st">"mixgb"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trellis_vismi_overimp.html">trellis_vismi_overimp</a></span><span class="op">(</span>obj <span class="op">=</span> <span class="va">obj</span>, stack_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-</div>
-<iframe src="trellis/overimp/index.html" width="100%" height="800px" frameborder="0">
-</iframe>
-</section><section class="level2"><h2 id="convergence-diagnostics-via-trellis_vismi_converge">Convergence diagnostics via <code>trellis_vismi_converge()</code>
-<a class="anchor" aria-label="anchor" href="#convergence-diagnostics-via-trellis_vismi_converge"></a>
-</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/amices/mice" class="external-link">mice</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2026</span><span class="op">)</span></span>
-<span><span class="va">mice_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">newborn</span>, m <span class="op">=</span> <span class="fl">5</span>, maxit <span class="op">=</span> <span class="fl">5</span>, printFlag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trellis_vismi_converge.html">trellis_vismi_converge</a></span><span class="op">(</span>obj <span class="op">=</span> <span class="va">mice_obj</span><span class="op">)</span></span></code></pre></div>
-</div>
-<iframe src="trellis/converge_mice/index.html" width="100%" height="800px" frameborder="0">
-</iframe>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/agnesdeng/mixgb" class="external-link">mixgb</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2026</span><span class="op">)</span></span>
-<span><span class="va">mixgb_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mixgb/man/mixgb.html" class="external-link">mixgb</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">newborn</span>, m <span class="op">=</span> <span class="fl">5</span>, maxit <span class="op">=</span> <span class="fl">5</span>, save.models <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/trellis_vismi_converge.html">trellis_vismi_converge</a></span><span class="op">(</span>obj <span class="op">=</span> <span class="va">mixgb_obj</span><span class="op">)</span></span></code></pre></div>
-</div>
-<iframe src="trellis/converge_mixgb/index.html" width="100%" height="800px" frameborder="0">
-</iframe>
 </section><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -241,8 +202,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
-    </nav></aside>
+</script></main>
 </div>
 
 
