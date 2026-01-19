@@ -23,12 +23,45 @@ knitr::opts_chunk$set(
 )
 ```
 
+This vignette demonstrates how to use the `vismi()` function from the **vismi** package to visualise and compare the distributional characteristics of observed and imputed data. The `vismi()` function can automatically generate suitable static and interactive visualisations for one, two, or three variables, which can be numeric or factor (categorical) variables. 
 
+When `verbose = TRUE`, `vismi()` will print out the following information in the console: 
+
+- Sanity checks:
+
+  This includes a sanity check for the input data and how different types of variables are treated for plotting. 
+
+- Missing data summary:
+
+  This provides a summary of the number of missing values in each variable of interest (variables specified in `x`, `y`, and `z` arguments).
+
+- Breakdown of missing data patterns
+
+  This summary shows the breakdown of missingness patterns across the variables of interest (`x`, `y`, and `z`). In this example, among     `head_circumference_cm`, `weight_kg`, and `sex`, there are 13 observations missing only `head_circumference_cm`, 6 observations missing only `weight_kg`, and 111 observations missing in both `head_circumference_cm` and `weight_kg`.
+
+- Imputed data visualisation
+
+  This section reports the number of target observations with at least one missing value in the variables of interest (x, y, and z). Only the post-imputed values of these target observations are shown in the `m` imputation panels of the `vismi()` output. We can then compare them with the observed data panel.
+  
 ```{r}
 #| fig-show: hide
 library(vismi)
-vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm", verbose = TRUE)
+vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm", y="weight_kg", z="sex", verbose = TRUE)
 ```
+
+
+Users need to provide the following inputs to `vismi()`:
+
+- `data`: the original incomplete dataset (a data frame or tibble or data table).
+
+- `imp_list`: a list of imputed datasets (a list of data frames or tibbles or data tables). This can be obtained using `mixgb()` from the **mixgb** package, `mice()` from the **mice** package or any imputation method that generates multiple imputed datasets in a list.
+
+- `x`, `y`, `z` : the variable names (as strings) to be visualised. `x` is required, while `y` and `z` are optional. Depending on the number of variables provided, `vismi()` will generate suitable visualisations. 
+
+- `interactive`: a logical argument indicating whether to generate an interactive plot (built with **plotly**) or a static plot (built with **ggplot2**). Default is `FALSE` (static plot).
+
+- other arguments: users can pass on different plot settings. See the documentation of `vismi()` for more details.
+
 
 ## 1D visualsation
 
@@ -154,4 +187,16 @@ vismi(data=newborn,imp_list=imp_newborn,x="sex", y="race", z="smoke")
 #### Interactive
 ```{r, out.height="550px"}
 vismi(data=newborn,imp_list=imp_newborn,x="sex", y="race", z="smoke",interactive = TRUE)
+```
+
+
+
+## trelliscope
+
+With the support of [trelliscopejs][trelliscopejs-url], **vismi** allows use to inspect the distributional characteristics for all variables at once via `trellis_vismi()`
+
+[trelliscopejs-url]: https://hafen.github.io/trelliscopejs/
+
+```{r}
+trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug", path = "trelliscope")
 ```

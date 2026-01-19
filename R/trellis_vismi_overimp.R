@@ -5,6 +5,8 @@
 #' plot all).
 #' @param imp_idx A vector of integers specifying the indices of imputed datasets to plot. Default is NULL (plot all).
 #' @param integerAsFactor A logical indicating whether integer variables should be treated as factors. Default is FALSE (treated as numeric).
+#' @param title A string specifying the title of the plot. Default is "auto" (automatic title). If NULL, no title is shown.
+#' @param subtitle A string specifying the subtitle of the plot. Default is "auto" (automatic subtitle). If NULL, no subtitle is shown.
 #' @param num_plot A character string specifying the type of plot for numeric variables. Options are "cv" (cross-validation), "ridge", or "density". Default is "cv".
 #' @param fac_plot A character string specifying the type of plot for categorical variables. Options are "cv" (cross-validation), "bar", or "dodge". Default is "cv".
 #' @param train_color_pal A vector of colors for the training data. If NULL, default colors will be used.
@@ -18,7 +20,7 @@
 #' @param ... Additional arguments to customize the plots, such as point_size, xlim, ylim.
 #' @return A Trelliscope display object visualising overimputation diagnostics for all variables.
 #' @export
-trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = NULL, seed = 2025, nrow = 2, ncol = 4, path = NULL, ...) {
+trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = "white", seed = 2025, nrow = 2, ncol = 3, path = NULL, ...) {
   Variable <- obj$params$Names
 
   Types <- obj$params$Types
@@ -32,6 +34,8 @@ trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor
     factor  = list(cv = overimp1D_cv_fac, bar = overimp1D_bar, dodge = overimp1D_dodge)
   )
 
+
+  default_title <- "Masked true vs multiply-imputed values:"
 
   # Create a "Control Table" for Trelliscope. This table has one row per variable
   all_vars_df <- tibble(Variable = Variable) |>
@@ -47,10 +51,19 @@ trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor
       plot_which <- if (var_type == "numeric") num_plot else fac_plot
       plot_fun <- plot_map[[var_type]][[plot_which]]
 
+
+      if (identical(title, "auto")) {
+        title <- default_title
+      }
+      if (identical(subtitle, "auto")) {
+        subtitle <- var
+      }
+
       args_list <- list(
         plot_data = var_df,
         x = var,
-        comb_title = paste("Masked true vs impute:", var),
+        title = title,
+        subtitle = subtitle,
         train_color_pal = if (is.null(train_color_pal)) var_df$train$color_pal else train_color_pal,
         test_color_pal = if (is.null(test_color_pal)) var_df$test$color_pal else test_color_pal,
         point_size = params$point_size,

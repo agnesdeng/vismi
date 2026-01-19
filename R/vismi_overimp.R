@@ -195,7 +195,6 @@ vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx =
     z = vars[3],
     train_color_pal = train_color_pal,
     test_color_pal = test_color_pal,
-    #comb_title = comb_title,
     title = title,
     subtitle = subtitle,
     alpha = alpha,

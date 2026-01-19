@@ -11,15 +11,17 @@ trellis_vismi_overimp(
   m = NULL,
   imp_idx = NULL,
   integerAsFactor = FALSE,
+  title = "auto",
+  subtitle = "auto",
   num_plot = "cv",
   fac_plot = "cv",
   train_color_pal = NULL,
   test_color_pal = NULL,
   stack_y = FALSE,
-  diag_color = NULL,
+  diag_color = "white",
   seed = 2025,
   nrow = 2,
-  ncol = 4,
+  ncol = 3,
   path = NULL,
   ...
 )
@@ -47,6 +49,16 @@ trellis_vismi_overimp(
 
   A logical indicating whether integer variables should be treated as
   factors. Default is FALSE (treated as numeric).
+
+- title:
+
+  A string specifying the title of the plot. Default is "auto"
+  (automatic title). If NULL, no title is shown.
+
+- subtitle:
+
+  A string specifying the subtitle of the plot. Default is "auto"
+  (automatic subtitle). If NULL, no subtitle is shown.
 
 - num_plot:
 

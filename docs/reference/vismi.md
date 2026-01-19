@@ -17,12 +17,14 @@ vismi(
   z = NULL,
   m = NULL,
   imp_idx = NULL,
-  interactive = TRUE,
+  interactive = FALSE,
   integerAsFactor = FALSE,
+  title = "auto",
+  subtitle = "auto",
   color_pal = NULL,
-  marginal_x = NULL,
+  marginal_x = "box+rug",
   marginal_y = NULL,
-  verbose = TRUE,
+  verbose = FALSE,
   ...
 )
 ```
@@ -72,6 +74,17 @@ vismi(
   A logical value indicating whether to treat integer variables as
   factors (TRUE) or numeric (FALSE). Default is FALSE.
 
+- title:
+
+  A string specifying the title of the plot. Default is "auto"
+  (automatic title based on `x,y,z` input). If NULL, no title is shown.
+
+- subtitle:
+
+  A string specifying the subtitle of the plot. Default is "auto"
+  (automatic subtitle based on `x,y,z` input). If NULL, no subtitle is
+  shown.
+
 - color_pal:
 
   A named vector of colors for different imputation sets. If NULL
@@ -80,10 +93,9 @@ vismi(
 - marginal_x:
 
   A character string specifying the type of marginal plot to add for the
-  x variable in 2D plots. Options are "hist", "box", "rug", "box+rug",
-  or NULL (default, no marginal plot) when interactive = TRUE. Options
-  are "box", "rug", "box+rug", or NULL (default, no marginal plot) when
-  interactive = FALSE.
+  x variable in 2D plots. Options are "hist", "box", "rug",
+  "box+rug"(default), or NULL when interactive = TRUE. Options are
+  "box", "rug", "box+rug"(default), or NULL when interactive = FALSE.
 
 - marginal_y:
 
@@ -96,7 +108,7 @@ vismi(
 - verbose:
 
   A logical value indicating whether to print extra information. Default
-  is TRUE.
+  is FALSE.
 
 - ...:
 

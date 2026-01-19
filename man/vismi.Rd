@@ -17,7 +17,7 @@ vismi(
   title = "auto",
   subtitle = "auto",
   color_pal = NULL,
-  marginal_x = NULL,
+  marginal_x = "box+rug",
   marginal_y = NULL,
   verbose = FALSE,
   ...
@@ -54,10 +54,9 @@ by default) or a static ggplot2 plot (FALSE).}
 \item{color_pal}{A named vector of colors for different imputation sets. If NULL
 (default), a default color palette is used.}
 
-\item{marginal_x}{A character string specifying the type of marginal plot to add
-for the x variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or NULL
-(default, no marginal plot) when interactive = TRUE. Options are "box", "rug", "box+rug", or NULL
-(default, no marginal plot) when interactive = FALSE.}
+\item{marginal_x}{A character string specifying the type of marginal plot to add for the x variable in 2D plots.
+Options are "hist", "box", "rug", "box+rug"(default), or NULL when interactive = TRUE.
+Options are "box", "rug", "box+rug"(default), or NULL when interactive = FALSE.}
 
 \item{marginal_y}{A character string specifying the type of marginal plot to add
 for the y variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or NULL

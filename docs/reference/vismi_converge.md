@@ -2,20 +2,22 @@
 
 Visualise onvergence diagnostics
 
-Visualise convergence diagnostics for a variable imputed by mixgb
-
-Visualise convergence diagnostics for a variable imputed by MICE
-
 ## Usage
 
 ``` r
-vismi_converge(obj, var, tick_vals = NULL, color_pal = NULL)
-
-# S3 method for class 'mixgb'
-vismi_converge(obj, var, tick_vals = NULL, color_pal = NULL)
-
-# S3 method for class 'mids'
-vismi_converge(obj, var, tick_vals = NULL, color_pal = NULL)
+vismi_converge(
+  obj,
+  x,
+  xlim = NULL,
+  mean_lim = NULL,
+  sd_lim = NULL,
+  title = "auto",
+  subtitle = "auto",
+  tick_vals = NULL,
+  color_pal = NULL,
+  linewidth = 0.8,
+  ...
+)
 ```
 
 ## Arguments
@@ -25,9 +27,36 @@ vismi_converge(obj, var, tick_vals = NULL, color_pal = NULL)
   A 'mixgb' object returned by `mixgb()` function or a 'mids' object
   returned by the `mice()` function.
 
-- var:
+- x:
 
-  The name of the variable to plot convergence for.
+  The name of the xiable to plot convergence for.
+
+- xlim:
+
+  Optional numeric vector of length 2 specifying the x-axis limits for
+  iterations.
+
+- mean_lim:
+
+  Optional numeric vector of length 2 specifying the y-axis limits for
+  mean values of the xiable.
+
+- sd_lim:
+
+  Optional numeric vector of length 2 specifying the y-axis limits for
+  standard deviation values of the xiable.
+
+- title:
+
+  A string specifying the title of the plot. If NULL, no title is shown.
+  If "auto", a title will be generated based on the input. Default is
+  "auto".
+
+- subtitle:
+
+  A string specifying the subtitle of the plot. If NULL, no subtitle is
+  shown. If "auto", a title will be generated based on the input.
+  Default is "auto".
 
 - tick_vals:
 
@@ -38,7 +67,14 @@ vismi_converge(obj, var, tick_vals = NULL, color_pal = NULL)
   A vector of m color codes (e.g., hex codes). If NULL, default colors
   will be used.
 
+- linewidth:
+
+  The line width for the plot lines. Default is 0.8.
+
+- ...:
+
+  Additional arguments.
+
 ## Value
 
-A ggplot2 object showing the convergence plot for the specified
-variable.
+A ggplot2 object showing the convergence plot for the specified xiable.

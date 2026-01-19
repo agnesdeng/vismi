@@ -9,15 +9,17 @@ trellis_vismi_overimp(
   m = NULL,
   imp_idx = NULL,
   integerAsFactor = FALSE,
+  title = "auto",
+  subtitle = "auto",
   num_plot = "cv",
   fac_plot = "cv",
   train_color_pal = NULL,
   test_color_pal = NULL,
   stack_y = FALSE,
-  diag_color = NULL,
+  diag_color = "white",
   seed = 2025,
   nrow = 2,
-  ncol = 4,
+  ncol = 3,
   path = NULL,
   ...
 )
@@ -31,6 +33,10 @@ plot all).}
 \item{imp_idx}{A vector of integers specifying the indices of imputed datasets to plot. Default is NULL (plot all).}
 
 \item{integerAsFactor}{A logical indicating whether integer variables should be treated as factors. Default is FALSE (treated as numeric).}
+
+\item{title}{A string specifying the title of the plot. Default is "auto" (automatic title). If NULL, no title is shown.}
+
+\item{subtitle}{A string specifying the subtitle of the plot. Default is "auto" (automatic subtitle). If NULL, no subtitle is shown.}
 
 \item{num_plot}{A character string specifying the type of plot for numeric variables. Options are "cv" (cross-validation), "ridge", or "density". Default is "cv".}
 

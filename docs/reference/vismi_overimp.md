@@ -16,6 +16,8 @@ vismi_overimp(
   m = NULL,
   imp_idx = NULL,
   integerAsFactor = FALSE,
+  title = "auto",
+  subtitle = "auto",
   num_plot = "cv",
   fac_plot = "cv",
   train_color_pal = NULL,
@@ -64,6 +66,17 @@ vismi_overimp(
 
   A logical indicating whether integer variables should be treated as
   factors. Default is FALSE (treated as numeric).
+
+- title:
+
+  A string specifying the title of the plot. Default is "auto"
+  (automatic title based on `x,y,z` input). If NULL, no title is shown.
+
+- subtitle:
+
+  A string specifying the subtitle of the plot. Default is "auto"
+  (automatic subtitle based on `x,y,z` input). If NULL, no subtitle is
+  shown.
 
 - num_plot:
 

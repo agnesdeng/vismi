@@ -24,7 +24,7 @@ vismi_converge <- function(obj, x, xlim = NULL, mean_lim = NULL, sd_lim = NULL,t
 vismi_converge.mixgb <- function(obj, x, xlim = NULL, mean_lim = NULL, sd_lim = NULL, title = "auto", subtitle = "auto", tick_vals = NULL, color_pal = NULL, linewidth = 0.8, ...) {
   if (!inherits(obj, "mixgb")) stop("obj must be a mixgb object returned by mixgb() with `save.models` set to TRUE.")
 
-  .validate_incomplete_xiable(obj = obj, x = x)
+  .validate_incomplete_variable(obj = obj, x = x)
 
 
   mean_mat <- obj$IMP.MEAN[, x, , drop = TRUE]
@@ -54,7 +54,7 @@ vismi_converge.mixgb <- function(obj, x, xlim = NULL, mean_lim = NULL, sd_lim = 
 vismi_converge.mids <- function(obj, x, xlim = NULL, mean_lim = NULL, sd_lim = NULL, title = "auto", subtitle = "auto", tick_vals = NULL, color_pal = NULL, linewidth = 0.8, ...) {
   if (!inherits(obj, "mids")) stop("obj must be a mids object returned by mice().")
 
-  .validate_incomplete_xiable(obj = obj, x = x)
+  .validate_incomplete_variable(obj = obj, x = x)
 
 
   mean_mat <- obj$chainMean[x, , , drop = TRUE]

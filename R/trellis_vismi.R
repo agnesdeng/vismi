@@ -6,6 +6,8 @@
 #' @param imp_idx A vector of integers specifying the indices of imputed datasets to plot. Default is NULL (plot all).
 #' @param integerAsFactor A logical value indicating whether to treat integer variables as factors
 #' (TRUE) or numeric (FALSE). Default is FALSE.
+#' @param title A string specifying the title of the plot. Default is "auto" (automatic title based on \code{x,y,z} input). If NULL, no title is shown.
+#' @param subtitle A string specifying the subtitle of the plot. Default is "auto" (automatic subtitle based on \code{x,y,z} input). If NULL, no subtitle is shown.
 #' @param color_pal A named vector of colors for different imputation sets. If NULL
 #' (default), a default color palette is used.
 #' @param marginal_x A character string specifying the type of marginal plot to add
@@ -19,15 +21,18 @@
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
 #' @return A Trelliscope display object visualising distributional characteristics for all variables.
 #' @export
-trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, color_pal = NULL, marginal_x = NULL, verbose = TRUE, nrow = 2, ncol = 4, path = NULL, ...) {
+trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug", verbose = FALSE, nrow = 2, ncol = 3, path = NULL, ...) {
   # current option - can provide more later
   num_plot <- "hist"
   fac_plot <- "bar"
 
   # check data
-  out <- .validate_data(data = data, verbose = verbose, integerAsFactor = integerAsFactor, max_levels = 20)
-  data <- out$data
-  Types <- out$Types
+  data <- .validate_data(data = data, verbose = verbose, integerAsFactor = integerAsFactor, max_levels = 20)
+  #data <- out$data
+  #Types <- out$Types
+
+  Types <- attr(data, "Types")
+  attr(data, "Types") <- NULL
 
   Variable <- colnames(data)
 
@@ -59,16 +64,31 @@ trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFac
       # preprocess data
       pre <- preprocess(data, imp_list, m = m, imp_idx = imp_idx, vars = var, integerAsFactor = integerAsFactor, verbose = verbose)
       all_dt <- pre$all_dt
+
       if (is.null(color_pal)) {
         color_pal <- pre$color_pal
       }
-      no_missing <- pre$no_missing
-      if (no_missing) {
-        plot_title <- paste("Observed values:", var)
-      } else {
-        plot_title <- paste("Observed vs multiply-imputed values:", var)
-      }
 
+      no_missing <- pre$no_missing
+
+      no_NA_title <- "Observed values:"
+      with_NA_title <- "Observed vs multiply-imputed values:"
+
+      if (no_missing) {
+        if (identical(title, "auto")) {
+          title <- no_NA_title
+        }
+        if (identical(subtitle, "auto")) {
+          subtitle <- var
+        }
+      } else {
+        if (identical(title, "auto")) {
+          title <- with_NA_title
+        }
+        if (identical(subtitle, "auto")) {
+          subtitle <- var
+        }
+      }
 
       var_type <- Types[var]
       plot_which <- if (var_type == "numeric") num_plot else fac_plot
@@ -77,7 +97,8 @@ trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFac
       args_list <- list(
         all_dt = all_dt,
         x = var,
-        plot_title = plot_title,
+        title = title,
+        subtitle = subtitle,
         marginal_x = marginal_x,
         color_pal = color_pal,
         point_size = point_size,
@@ -90,6 +111,7 @@ trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFac
       do.call(plot_fun, args_list[names(args_list) %in% names(formals(plot_fun))])
     })) |>
     ungroup()
+
   if (!is.null(path)) {
     trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", nrow = nrow, ncol = ncol, path = path)
   } else {

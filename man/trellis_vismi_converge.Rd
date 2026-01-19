@@ -8,8 +8,10 @@ trellis_vismi_converge(
   obj,
   tick_vals = NULL,
   color_pal = NULL,
+  title = "auto",
+  subtitle = "auto",
   nrow = 2,
-  ncol = 4,
+  ncol = 3,
   path = NULL,
   ...
 )
@@ -20,6 +22,10 @@ trellis_vismi_converge(
 \item{tick_vals}{A numeric vector specifying the tick values for the x-axis (iterations). If NULL, default tick values will be used.}
 
 \item{color_pal}{A vector of colors to use for the imputation lines. If NULL, default colors will be used.}
+
+\item{title}{A string specifying the title of the plot. If NULL, no title is shown. If "auto", a title will be generated based on the input. Default is "auto".}
+
+\item{subtitle}{A string specifying the subtitle of the plot. If NULL, no subtitle is shown. If "auto", a title will be generated based on the input. Default is "auto".}
 
 \item{nrow}{Number of rows in the Trelliscope display. Default is 2.}
 

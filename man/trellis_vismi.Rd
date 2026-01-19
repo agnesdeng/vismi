@@ -10,11 +10,13 @@ trellis_vismi(
   m = NULL,
   imp_idx = NULL,
   integerAsFactor = FALSE,
+  title = "auto",
+  subtitle = "auto",
   color_pal = NULL,
-  marginal_x = NULL,
-  verbose = TRUE,
+  marginal_x = "box+rug",
+  verbose = FALSE,
   nrow = 2,
-  ncol = 4,
+  ncol = 3,
   path = NULL,
   ...
 )
@@ -30,6 +32,10 @@ trellis_vismi(
 
 \item{integerAsFactor}{A logical value indicating whether to treat integer variables as factors
 (TRUE) or numeric (FALSE). Default is FALSE.}
+
+\item{title}{A string specifying the title of the plot. Default is "auto" (automatic title based on \code{x,y,z} input). If NULL, no title is shown.}
+
+\item{subtitle}{A string specifying the subtitle of the plot. Default is "auto" (automatic subtitle based on \code{x,y,z} input). If NULL, no subtitle is shown.}
 
 \item{color_pal}{A named vector of colors for different imputation sets. If NULL
 (default), a default color palette is used.}

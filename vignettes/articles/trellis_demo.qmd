@@ -1,0 +1,107 @@
+---
+title: "Inspect all variables at once with trelliscopejs"
+format:
+  html:
+    toc: true
+    page-layout: full
+    fig-format: svg
+---
+
+```{r,include=FALSE}
+#| label: setup
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  tidy = TRUE,
+  tidy.opts = list(width.cutoff = 60),
+  dpi = 100,
+  fig.retina = 1,
+  fig.width = 9,
+  fig.height = 5,
+  out.width = "100%",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+With the support of [trelliscopejs][trelliscopejs-url], **vismi** provides trelliscope displays to inspect all variables at once via
+
+- `trellis_vismi()`
+
+- `trellis_vismi_overimp()`
+
+- `trellis_vismi_converge()`
+
+
+[trelliscopejs-url]: https://hafen.github.io/trelliscopejs/
+
+```{r}
+library(vismi)
+library(mice)
+library(mixgb)
+```
+
+
+## Distributional characteristics via `trellis_vismi()`
+
+
+```{r, eval = FALSE}
+trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug")
+```
+
+
+```{r, echo = FALSE}
+trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug", path = "trellis/vismi")
+```
+
+
+
+
+## Overimputation diagnostics via `trellis_overimp()`
+
+```{r}
+obj <- overimp(data = newborn, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
+```
+
+```{r, eval = FALSE}
+trellis_vismi_overimp(obj = obj, stack_y = TRUE)
+```
+
+
+```{r, echo = FALSE}
+trellis_vismi_overimp(obj = obj, stack_y = TRUE, path = "trellis/overimp")
+```
+
+
+
+## Convergence diagnostics via `trellis_vismi_converge()` 
+
+```{r}
+library(mice)
+set.seed(2026)
+mice_obj <- mice(data = newborn, m = 5,  maxit = 5, printFlag = FALSE)
+```
+
+```{r, eval = FALSE}
+trellis_vismi_converge(obj = mice_obj)
+```
+
+```{r, echo = FALSE}
+trellis_vismi_converge(obj = mice_obj, path = "trellis/converge_mice")
+```
+
+```{r}
+library(mixgb)
+set.seed(2026)
+mixgb_obj<- mixgb(data = newborn, m = 5, maxit=5, save.models = TRUE)
+```
+
+```{r, eval = FALSE}
+trellis_vismi_converge(obj = mixgb_obj)
+```
+
+```{r, echo = FALSE}
+trellis_vismi_converge(obj = mixgb_obj, path = "trellis/converge_mixgb")
+```
+
+
