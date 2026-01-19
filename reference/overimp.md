@@ -7,8 +7,8 @@ overimp wrapper function to call different imputation methods
 ``` r
 overimp(
   data,
-  p = 0.2,
   m = 5,
+  p = 0.2,
   test_ratio = 0,
   method = "mixgb",
   seed = NULL,
@@ -22,13 +22,13 @@ overimp(
 
   a data frame with missing values
 
-- p:
-
-  the extra proportion of missing values
-
 - m:
 
   the number of imputation
+
+- p:
+
+  the extra proportion of missing values
 
 - test_ratio:
 

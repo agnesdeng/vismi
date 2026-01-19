@@ -10,8 +10,10 @@ trellis_vismi_converge(
   obj,
   tick_vals = NULL,
   color_pal = NULL,
+  title = "auto",
+  subtitle = "auto",
   nrow = 2,
-  ncol = 4,
+  ncol = 3,
   path = NULL,
   ...
 )
@@ -33,6 +35,18 @@ trellis_vismi_converge(
 
   A vector of colors to use for the imputation lines. If NULL, default
   colors will be used.
+
+- title:
+
+  A string specifying the title of the plot. If NULL, no title is shown.
+  If "auto", a title will be generated based on the input. Default is
+  "auto".
+
+- subtitle:
+
+  A string specifying the subtitle of the plot. If NULL, no subtitle is
+  shown. If "auto", a title will be generated based on the input.
+  Default is "auto".
 
 - nrow:
 

@@ -1,5 +1,34 @@
 # Changelog
 
+## vismi 0.9.2
+
+#### Improvements
+
+- Provide customisable title and subtitle via `title` and `subtitle`
+  arguments in all main functions. By default, uses automatic titles
+  based on selected variables. Can be set to `NULL` to remove titles.
+- Apply default aesthetics settings globally to all visualisations for
+  consistent appearance.
+
+## vismi 0.9.1
+
+#### Bug Fixes
+
+- Resolved issue with overlapping x-axis titles in interactive
+  visualisations.
+- Fixed missing legends when certain imputed sets contained no data
+  points.
+
+#### Improvements
+
+- Adjusted title alignment in interactive visualisations using `plotly`
+  to match static version with `ggplot2` style.
+- Ensure display factor levels in a consistent manner
+- Moved all axis titles font size and colour settings to the
+  default_aesthetics function to simplify future customisation and
+  maintenance.
+- Change default color palette to `vismi_palette`.
+
 ## vismi 0.9.0
 
 #### New Features

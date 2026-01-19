@@ -12,78 +12,96 @@ data(newborn)
 
 ## Format
 
-A data frame of 2107 rows and 16 variables. Nine variables have missing
-values.
+A data frame of 2107 rows and 16 variables, adapted from the NHANES III
+dataset. Nine variables contain missing values. Variable names and
+factor levels have been renamed for clarity and easier interpretation.
 
-- HSHSIZER:
+- household_size:
 
-  Household size. An integer variable from 1 to 10.
+  Household size. An integer variable ranging from 1 to 10. The original
+  variable name in the NHANES III dataset is `HSHSIZER`.
 
-- HSAGEIR:
+- age_months:
 
-  Age at interview (screener) - qty (months). An integer variable from 2
-  to 11.
+  Age at interview (screener), in months. An integer variable ranging
+  from 2 to 11. The original variable name in the NHANES III dataset is
+  `HSAGEIR`.
 
-- HSSEX:
+- sex:
 
-  Sex. A factor variable with levels 1 (Male) and 2 (Female).
+  Sex of the subject. A factor variable with levels `Male` and `Female`.
+  The original variable name in the NHANES III dataset is `HSSEX`.
 
-- DMARACER:
+- race:
 
-  Race. A factor variable with levels 1 (White), 2 (Black) and 3
-  (Other).
+  Race of the subject. A factor variable with levels `White`, `Black`,
+  and `Other`. The original variable name in the NHANES III dataset is
+  `DMARACER`.
 
-- DMAETHNR:
+- ethnicity:
 
-  Ethnicity. A factor variable with levels 1 (Mexican-American), 2
-  (Other Hispanic) and 3 (Not Hispanic).
+  Ethnicity of the subject. A factor variable with levels
+  `Mexican-American`, `Other Hispanic`, and `Not Hispanic`. The original
+  variable name in the NHANES III dataset is `DMAETHNR`.
 
-- DMARETHN:
+- race_ethinicity:
 
-  Race-ethnicity. A factor variable with levels 1 (Non-Hispanic white),
-  2 (Non-Hispanic black), 3 (Mexican-American) and 4 (Other).
+  Combined race–ethnicity classification. A factor variable with levels
+  `Non-Hispanic White`, `Non-Hispanic Black`, `Mexican-American`, and
+  `Other`. The original variable name in the NHANES III dataset is
+  `DMARETHN`.
 
-- BMPHEAD:
+- head_circumference_cm:
 
-  Head circumference (cm). Numeric.
+  Head circumference, in centimetres. Numeric. The original variable
+  name in the NHANES III dataset is `BMPHEAD`.
 
-- BMPRECUM:
+- recumbent_length_cm:
 
-  Recumbent length (cm). Numeric.
+  Recumbent length, in centimetres. Numeric. The original variable name
+  in the NHANES III dataset is `BMPRECUM`.
 
-- BMPSB1:
+- first_subscapular_skinfold_mm:
 
-  First subscapular skinfold (mm). Numeric.
+  First subscapular skinfold thickness, in millimetres. Numeric. The
+  original variable name in the NHANES III dataset is `BMPSB1`.
 
-- BMPSB2:
+- second_subscapular_skinfold_mm:
 
-  Second subscapular skinfold (mm). Numeric.
+  Second subscapular skinfold thickness, in millimetres. Numeric. The
+  original variable name in the NHANES III dataset is `BMPSB2`.
 
-- BMPTR1:
+- first_triceps_skinfold_mm:
 
-  First triceps skinfold (mm). Numeric.
+  First triceps skinfold thickness, in millimetres. Numeric. The
+  original variable name in the NHANES III dataset is `BMPTR1`.
 
-- BMPTR2:
+- second_triceps_skinfold_mm:
 
-  Second triceps skinfold (mm). Numeric.
+  Second triceps skinfold thickness, in millimetres. Numeric. The
+  original variable name in the NHANES III dataset is `BMPTR2`.
 
-- BMPWT:
+- weight_kg:
 
-  Weight (kg). Numeric.
+  Body weight, in kilograms. Numeric. The original variable name in the
+  NHANES III dataset is `BMPWT`.
 
-- DMPPIR:
+- poverty_income_ratio:
 
-  Poverty income ratio. Numeric.
+  Poverty income ratio. Numeric. The original variable name in the
+  NHANES III dataset is `DMPPIR`.
 
-- HFF1:
+- smoke:
 
-  Does anyone who lives here smoke cigarettes in the home? A factor
-  variable with levels 1 (Yes) and 2 (No).
+  Whether anyone living in the household smokes cigarettes inside the
+  home. A factor variable with levels `Yes` and `No`. The original
+  variable name in the NHANES III dataset is `HFF1`.
 
-- HYD1:
+- health:
 
-  How is the health of subject person in general? An ordinal factor with
-  levels 1 (Excellent), 2 (Very good), 3 (Good), 4 (Fair) and 5 (Poor).
+  General health status of the subject. An ordered factor with levels
+  `Excellent`, `Very Good`, `Good`, `Fair`, and `Poor`. The original
+  variable name in the NHANES III dataset is `HYD1`.
 
 ## Source
 
