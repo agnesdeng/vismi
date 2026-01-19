@@ -7,7 +7,7 @@ For demonstration, we use the `newborn` dataset included in the
 variables of various types.
 
 We can obtain an overimputation object with 5 multiple imputations
-(`m = 5`), extra missing values with proprotion 20% (`p = 0.2`) and test
+(`m = 5`), extra missing values with proportion 20% (`p = 0.2`) and test
 set ratio 20% (`test_ratio = 0.2`). Imputation method can be set to
 `"mixgb"` or `"mice"`, which would call
 [`mixgb()`](https://rdrr.io/pkg/mixgb/man/mixgb.html) or `mice` in the
@@ -102,7 +102,7 @@ vismi_overimp(obj = obj, x = "health", fac_plot = "dodge")
 
 ![](vismi_overimp_demo_files/figure-html/unnamed-chunk-11-1.svg)
 
-### 2D visulisation
+### 2D visualisation
 
 #### 2 numeric variables
 

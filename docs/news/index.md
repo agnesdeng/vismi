@@ -41,7 +41,7 @@
 
 #### Bug Fixes
 
-- Fixed overlapping issues in interative visualisation:
+- Fixed overlapping issues in interactive visualisation:
   - x-axis title with legend items
   - left and right axis titles in subplots
 
@@ -117,5 +117,5 @@
 
 #### Initial Release
 
-- First development version releases on Github.
+- First development version releases on GitHub.
 - As illustrated in my PhD thesis.

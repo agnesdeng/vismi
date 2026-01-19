@@ -36,8 +36,7 @@ overimp(
 
 - method:
 
-  can be one of the following: "mixgb", "midae", "mivae", "mice","cart"
-  or "ranger"
+  can be one of the following: "mixgb","mice", and more in the future.
 
 - seed:
 

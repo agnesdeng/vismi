@@ -5,3 +5,4 @@ template:
   includes:
     in_header: |
       <link rel="stylesheet" href="extra.css">
+

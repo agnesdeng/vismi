@@ -25,7 +25,7 @@ section for more details.
 - `vismi_overimp()`: visualise multiply-imputed missing data through
   overimputation
 
-- `vismi_converge()`: visualise convergence disgnostics for imputed
+- `vismi_converge()`: visualise convergence diagnostics for imputed
   values of an incomplete variable
 
 With the support of

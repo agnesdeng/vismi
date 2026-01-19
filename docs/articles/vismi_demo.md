@@ -98,7 +98,7 @@ Users need to provide the following inputs to
 - other arguments: users can pass on different plot settings. See the
   documentation of [`vismi()`](../reference/vismi.md) for more details.
 
-## 1D visualsation
+## 1D visualisation
 
 ### 1 numeric variable
 
@@ -264,16 +264,4 @@ vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "race",
 ``` r
 vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "race",
     z = "smoke", interactive = TRUE)
-```
-
-## trelliscope
-
-With the support of
-[trelliscopejs](https://hafen.github.io/trelliscopejs/), **vismi**
-allows use to inspect the distributional characteristics for all
-variables at once via [`trellis_vismi()`](../reference/trellis_vismi.md)
-
-``` r
-trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug",
-    path = "trelliscope")
 ```

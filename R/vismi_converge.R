@@ -1,16 +1,16 @@
-#' Visualise onvergence diagnostics
+#' Visualise convergence diagnostics
 #' @param obj A 'mixgb' object returned by \code{mixgb()} function or a 'mids' object returned by the \code{mice()} function.
-#' @param x The name of the xiable to plot convergence for.
+#' @param x The name of the variable to plot convergence for.
 #' @param xlim Optional numeric vector of length 2 specifying the x-axis limits for iterations.
-#' @param mean_lim Optional numeric vector of length 2 specifying the y-axis limits for mean values of the xiable.
-#' @param sd_lim Optional numeric vector of length 2 specifying the y-axis limits for standard deviation values of the xiable.
+#' @param mean_lim Optional numeric vector of length 2 specifying the y-axis limits for mean values of the variable.
+#' @param sd_lim Optional numeric vector of length 2 specifying the y-axis limits for standard deviation values of the variable.
 #' @param title A string specifying the title of the plot. If NULL, no title is shown. If "auto", a title will be generated based on the input. Default is "auto".
 #' @param subtitle A string specifying the subtitle of the plot. If NULL, no subtitle is shown. If "auto", a title will be generated based on the input. Default is "auto".
 #' @param tick_vals Optional numeric vector specifying x-axis tick values for iterations.
 #' @param color_pal A vector of m color codes (e.g., hex codes). If NULL, default colors will be used.
 #' @param linewidth The line width for the plot lines. Default is 0.8.
 #' @param ... Additional arguments.
-#' @return A ggplot2 object showing the convergence plot for the specified xiable.
+#' @return A ggplot2 object showing the convergence plot for the specified variable.
 #' @export
 vismi_converge <- function(obj, x, xlim = NULL, mean_lim = NULL, sd_lim = NULL,title = "auto", subtitle = "auto", tick_vals = NULL, color_pal = NULL, linewidth = 0.8, ...) {
   UseMethod("vismi_converge")

@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 
 For demonstration, we use the `newborn` dataset included in the **vismi** package. This is an incomplete dataset with missing values in variables of various types.
 
-We can obtain an overimputation object with 5 multiple imputations (`m = 5`), extra missing values with proprotion 20% (`p = 0.2`) and test set ratio 20% (`test_ratio = 0.2`). Imputation method can be set to `"mixgb"` or `"mice"`, which would call `mixgb()` or `mice` in the backend. Users can also pass additional argument related to `mixgb()` or `mice()` through `overimp()`. 
+We can obtain an overimputation object with 5 multiple imputations (`m = 5`), extra missing values with proportion 20% (`p = 0.2`) and test set ratio 20% (`test_ratio = 0.2`). Imputation method can be set to `"mixgb"` or `"mice"`, which would call `mixgb()` or `mice` in the backend. Users can also pass additional argument related to `mixgb()` or `mice()` through `overimp()`. 
 
 Under this setting, 20% extra missing values will be introduced and data will be split into training data (80%) and test data (20%). An imputation model would be built using only training data, and it will be used to impute the extra missing values in both the training data and the test data. 
 
@@ -94,7 +94,7 @@ vismi_overimp(obj = obj, x = "health", fac_plot = "bar")
 vismi_overimp(obj = obj, x = "health", fac_plot = "dodge")
 ```
 
-### 2D visulisation 
+### 2D visualisation 
 #### 2 numeric variables 
 ```{r}
 #| fig-width: 9

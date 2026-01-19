@@ -1,5 +1,5 @@
-#' Visualise Multiple Imputation Through Overimputations
-#' @description This function provides visual diagnostic tools for assessing multiply imputed datasets imputed with 'mixgb' or other imputers through overimputations. It supports visualisation for both training and test set.
+#' Visualise Multiple Imputation Through Overimputation
+#' @description This function provides visual diagnostic tools for assessing multiply imputed datasets imputed with 'mixgb' or other imputers through overimputation. It supports visualisation for both training and test set.
 #' @param obj Overimputation object of class 'overimp' created by the \code{overimp()} function.
 #' @param x A character string specifying the name of the variable to plot on the x
 #' @param y A character string specifying the name of the variable to plot on the y

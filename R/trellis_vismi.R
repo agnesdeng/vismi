@@ -21,7 +21,7 @@
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
 #' @return A Trelliscope display object visualising distributional characteristics for all variables.
 #' @export
-trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug", verbose = FALSE, nrow = 2, ncol = 3, path = NULL, ...) {
+trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug", verbose = FALSE, nrow = 2, ncol = 4, path = NULL, ...) {
   # current option - can provide more later
   num_plot <- "hist"
   fac_plot <- "bar"
@@ -113,8 +113,8 @@ trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFac
     ungroup()
 
   if (!is.null(path)) {
-    trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", nrow = nrow, ncol = ncol, path = path)
+    trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", self_contained = FALSE, nrow = nrow, ncol = ncol, path = path)
   } else {
-    trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", nrow = nrow, ncol = ncol)
+    trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", self_contained = FALSE,nrow = nrow, ncol = ncol)
   }
 }

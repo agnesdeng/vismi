@@ -13,7 +13,7 @@ trellis_vismi_converge(
   title = "auto",
   subtitle = "auto",
   nrow = 2,
-  ncol = 3,
+  ncol = 4,
   path = NULL,
   ...
 )

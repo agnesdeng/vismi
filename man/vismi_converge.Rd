@@ -2,7 +2,7 @@
 % Please edit documentation in R/vismi_converge.R
 \name{vismi_converge}
 \alias{vismi_converge}
-\title{Visualise onvergence diagnostics}
+\title{Visualise convergence diagnostics}
 \usage{
 vismi_converge(
   obj,
@@ -21,13 +21,13 @@ vismi_converge(
 \arguments{
 \item{obj}{A 'mixgb' object returned by \code{mixgb()} function or a 'mids' object returned by the \code{mice()} function.}
 
-\item{x}{The name of the xiable to plot convergence for.}
+\item{x}{The name of the variable to plot convergence for.}
 
 \item{xlim}{Optional numeric vector of length 2 specifying the x-axis limits for iterations.}
 
-\item{mean_lim}{Optional numeric vector of length 2 specifying the y-axis limits for mean values of the xiable.}
+\item{mean_lim}{Optional numeric vector of length 2 specifying the y-axis limits for mean values of the variable.}
 
-\item{sd_lim}{Optional numeric vector of length 2 specifying the y-axis limits for standard deviation values of the xiable.}
+\item{sd_lim}{Optional numeric vector of length 2 specifying the y-axis limits for standard deviation values of the variable.}
 
 \item{title}{A string specifying the title of the plot. If NULL, no title is shown. If "auto", a title will be generated based on the input. Default is "auto".}
 
@@ -42,8 +42,8 @@ vismi_converge(
 \item{...}{Additional arguments.}
 }
 \value{
-A ggplot2 object showing the convergence plot for the specified xiable.
+A ggplot2 object showing the convergence plot for the specified variable.
 }
 \description{
-Visualise onvergence diagnostics
+Visualise convergence diagnostics
 }

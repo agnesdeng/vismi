@@ -19,7 +19,7 @@ section for more details.
   multiply-imputed missing data through overimputation
 
 - [`vismi_converge()`](reference/vismi_converge.md): visualise
-  convergence disgnostics for imputed values of an incomplete variable
+  convergence diagnostics for imputed values of an incomplete variable
 
 With the support of
 [trelliscopejs](https://hafen.github.io/trelliscopejs/), **vismi**

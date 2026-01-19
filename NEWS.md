@@ -26,7 +26,7 @@
 
 # vismi 0.8.1
 ### Bug Fixes
-- Fixed overlapping issues in interative visualisation:
+- Fixed overlapping issues in interactive visualisation:
   - x-axis title with legend items 
   - left and right axis titles in subplots
 
@@ -83,7 +83,7 @@
 
 # vismi 0.1.0
 ### Initial Release
-- First development version releases on Github.
+- First development version releases on GitHub.
 - As illustrated in my PhD thesis.
 
 

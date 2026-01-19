@@ -4,7 +4,7 @@
 #' @param m the number of imputation
 #' @param p the extra proportion of missing values
 #' @param test_ratio the proportion of test set. Default is 0, meaning no test set.
-#' @param method can be one of the following: "mixgb", "midae", "mivae", "mice","cart" or "ranger"
+#' @param method can be one of the following: "mixgb","mice", and more in the future.
 #' @param seed random seed
 #' @param ... other arguments to be passed into the overimp function
 #' @export

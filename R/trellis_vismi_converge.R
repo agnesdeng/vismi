@@ -11,7 +11,7 @@
 #' @param ... Additional arguments to customize the Trelliscope display.
 #' @return A Trelliscope display object visualising convergence diagnostics for all variables.
 #' @export
-trellis_vismi_converge <- function(obj, tick_vals = NULL, color_pal = NULL, title = "auto", subtitle = "auto", nrow = 2, ncol = 3, path = NULL, ...) {
+trellis_vismi_converge <- function(obj, tick_vals = NULL, color_pal = NULL, title = "auto", subtitle = "auto", nrow = 2, ncol = 4, path = NULL, ...) {
   if (inherits(obj, "mixgb")) {
     mis_vars <- obj$params$missing.vars
   } else if (inherits(obj, "mids")) {
@@ -26,8 +26,8 @@ trellis_vismi_converge <- function(obj, tick_vals = NULL, color_pal = NULL, titl
     ungroup()
 
   if (!is.null(path)) {
-    trelliscopejs::trelliscope(mis_vars_df, name = "Convergence diagnostic across all incomplete variables", panel_col = "panel", nrow = nrow, ncol = ncol, path = path)
+    trelliscopejs::trelliscope(mis_vars_df, name = "Convergence diagnostic across all incomplete variables", panel_col = "panel", self_contained = FALSE, nrow = nrow, ncol = ncol, path = path)
   } else {
-    trelliscopejs::trelliscope(mis_vars_df, name = "Convergence diagnostic across all incomplete variables", panel_col = "panel", nrow = nrow, ncol = ncol)
+    trelliscopejs::trelliscope(mis_vars_df, name = "Convergence diagnostic across all incomplete variables", panel_col = "panel", self_contained = FALSE, nrow = nrow, ncol = ncol)
   }
 }

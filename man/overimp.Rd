@@ -23,7 +23,7 @@ overimp(
 
 \item{test_ratio}{the proportion of test set. Default is 0, meaning no test set.}
 
-\item{method}{can be one of the following: "mixgb", "midae", "mivae", "mice","cart" or "ranger"}
+\item{method}{can be one of the following: "mixgb","mice", and more in the future.}
 
 \item{seed}{random seed}
 

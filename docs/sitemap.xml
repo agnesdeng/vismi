@@ -2,6 +2,7 @@
 <url><loc>/404.html</loc></url>
 <url><loc>/LICENSE.html</loc></url>
 <url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/trellis/vismi/index.html</loc></url>
 <url><loc>/articles/trellis_demo.html</loc></url>
 <url><loc>/articles/vismi_convergence_demo.html</loc></url>
 <url><loc>/articles/vismi_demo.html</loc></url>
@@ -24,5 +25,9 @@
 <url><loc>/reference/vismi_converge.html</loc></url>
 <url><loc>/reference/vismi_overimp.html</loc></url>
 <url><loc>/reference/vismi_trelliscope.html</loc></url>
+<url><loc>/trellis/converge_mice/index.html</loc></url>
+<url><loc>/trellis/converge_mixgb/index.html</loc></url>
+<url><loc>/trellis/overimp/index.html</loc></url>
+<url><loc>/trellis/vismi/index.html</loc></url>
 </urlset>
 

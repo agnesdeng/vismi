@@ -20,7 +20,7 @@
 #' @param ... Additional arguments to customize the plots, such as point_size, xlim, ylim.
 #' @return A Trelliscope display object visualising overimputation diagnostics for all variables.
 #' @export
-trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = "white", seed = 2025, nrow = 2, ncol = 3, path = NULL, ...) {
+trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = "white", seed = 2025, nrow = 2, ncol = 4, path = NULL, ...) {
   Variable <- obj$params$Names
 
   Types <- obj$params$Types
@@ -78,8 +78,8 @@ trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor
     })) |>
     ungroup()
   if (!is.null(path)) {
-    trelliscopejs::trelliscope(all_vars_df, name = "Overimputation diagnostic across all variables", panel_col = "panel", nrow = nrow, ncol = ncol, path = path)
+    trelliscopejs::trelliscope(all_vars_df, name = "Overimputation diagnostic across all variables", panel_col = "panel", self_contained = FALSE, nrow = nrow, ncol = ncol, path = path)
   } else {
-    trelliscopejs::trelliscope(all_vars_df, name = "Overimputation diagnostic across all variables", panel_col = "panel", nrow = nrow, ncol = ncol)
+    trelliscopejs::trelliscope(all_vars_df, name = "Overimputation diagnostic across all variables", panel_col = "panel", self_contained = FALSE, nrow = nrow, ncol = ncol)
   }
 }

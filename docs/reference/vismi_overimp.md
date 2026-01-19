@@ -1,8 +1,8 @@
-# Visualise Multiple Imputation Through Overimputations
+# Visualise Multiple Imputation Through Overimputation
 
 This function provides visual diagnostic tools for assessing multiply
 imputed datasets imputed with 'mixgb' or other imputers through
-overimputations. It supports visualisation for both training and test
+overimputation. It supports visualisation for both training and test
 set.
 
 ## Usage

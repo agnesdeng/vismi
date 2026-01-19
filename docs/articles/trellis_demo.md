@@ -36,16 +36,6 @@ trellis_vismi_overimp(obj = obj, stack_y = TRUE)
 ## Convergence diagnostics via `trellis_vismi_converge()`
 
 ``` r
-library(mice)
-set.seed(2026)
-mice_obj <- mice(data = newborn, m = 5, maxit = 5, printFlag = FALSE)
-```
-
-``` r
-trellis_vismi_converge(obj = mice_obj)
-```
-
-``` r
 library(mixgb)
 set.seed(2026)
 mixgb_obj <- mixgb(data = newborn, m = 5, maxit = 5, save.models = TRUE)
@@ -53,4 +43,14 @@ mixgb_obj <- mixgb(data = newborn, m = 5, maxit = 5, save.models = TRUE)
 
 ``` r
 trellis_vismi_converge(obj = mixgb_obj)
+```
+
+``` r
+library(mice)
+set.seed(2026)
+mice_obj <- mice(data = newborn, m = 5, maxit = 5, printFlag = FALSE)
+```
+
+``` r
+trellis_vismi_converge(obj = mice_obj)
 ```

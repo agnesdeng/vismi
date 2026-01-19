@@ -19,7 +19,7 @@ trellis_vismi_overimp(
   diag_color = "white",
   seed = 2025,
   nrow = 2,
-  ncol = 3,
+  ncol = 4,
   path = NULL,
   ...
 )

@@ -2,7 +2,7 @@
 % Please edit documentation in R/vismi_overimp.R
 \name{vismi_overimp}
 \alias{vismi_overimp}
-\title{Visualise Multiple Imputation Through Overimputations}
+\title{Visualise Multiple Imputation Through Overimputation}
 \usage{
 vismi_overimp(
   obj,
@@ -60,5 +60,5 @@ vismi_overimp(
 \item{...}{Additional arguments to customize the plots, such as position, point_size, linewidth, alpha, xlim, ylim, boxpoints, width.}
 }
 \description{
-This function provides visual diagnostic tools for assessing multiply imputed datasets imputed with 'mixgb' or other imputers through overimputations. It supports visualisation for both training and test set.
+This function provides visual diagnostic tools for assessing multiply imputed datasets imputed with 'mixgb' or other imputers through overimputation. It supports visualisation for both training and test set.
 }
