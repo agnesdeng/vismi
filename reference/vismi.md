@@ -118,3 +118,10 @@ vismi(
 ## Value
 
 A plotly or ggplot2 object visualizing the imputed data.
+
+## Examples
+
+``` r
+vismi(data = newborn, imp_list = imp_newborn, x = "weight_kg")
+
+```

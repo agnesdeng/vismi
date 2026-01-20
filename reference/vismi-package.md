@@ -12,7 +12,7 @@ Imputation, arXiv preprint.
 
 Useful links:
 
-- <https://github.com/agnesdeng/vismi>
+- <https://agnesdeng.github.io/vismi/>
 
 - Report bugs at <https://github.com/agnesdeng/vismi/issues>
 
