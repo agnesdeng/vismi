@@ -47,3 +47,11 @@ A ggplot2 object showing the convergence plot for the specified variable.
 \description{
 Visualise convergence diagnostics
 }
+\examples{
+\dontrun{
+library(mixgb)
+set.seed(2026)
+mixgb_obj <- mixgb(data = newborn, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
+vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm")
+}
+}

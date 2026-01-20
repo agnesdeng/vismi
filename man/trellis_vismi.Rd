@@ -61,3 +61,8 @@ A Trelliscope display object visualising distributional characteristics for all 
 \description{
 Generates a Trelliscope display for distributional characteristics across all variables.
 }
+\examples{
+\dontrun{
+trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug")
+}
+}

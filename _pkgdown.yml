@@ -5,4 +5,26 @@ template:
   includes:
     in_header: |
       <link rel="stylesheet" href="extra.css">
-
+navbar:
+  structure:
+    left:  [reference, articles, news]
+    right: [other_pkgs, search, github]
+  components:
+    other_pkgs:
+      text: Other packages
+      menu:
+      - text: mixgb
+        href: https://agnesdeng.github.io/mixgb/
+      - text: miae
+        href: https://agnesdeng.github.io/miae/
+    articles:
+      text: Articles
+      menu:
+      - text: Distributional characteristics
+        href: articles/vismi_demo.html
+      - text: Overimputation diagnostics
+        href: articles/vismi_overimp_demo.html
+      - text: Convergence diagnostics
+        href: articles/vismi_converge_demo.html     
+      - text: Trelliscopejs display
+        href: articles/trellis_demo.html

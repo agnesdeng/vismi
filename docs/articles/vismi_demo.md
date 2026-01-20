@@ -1,4 +1,4 @@
-# Inspecting distributional characteristics
+# Distributional Characteristics for Multiple Imputation
 
 ## Introduction
 

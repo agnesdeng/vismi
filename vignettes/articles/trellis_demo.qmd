@@ -1,5 +1,5 @@
 ---
-title: "Inspect all variables at once with trelliscopejs"
+title: "Trelliscopejs Display for Multiple Imputation Diagnostics"
 format:
   html:
     toc: true

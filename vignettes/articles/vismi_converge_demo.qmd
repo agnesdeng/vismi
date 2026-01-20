@@ -1,5 +1,5 @@
 ---
-title: "Visualisation for Convergence Diagnostics"
+title: "Convergence Diagnostics for Multiple Imputation"
 format:
   html:
     toc: true

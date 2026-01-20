@@ -19,6 +19,7 @@
 ^notes/
 ^dev$
 ^dev/
+^vignettes$
 ^vignettes/web$
 ^vignettes/articles/\.quarto$
 ^vignettes/articles/*_files$

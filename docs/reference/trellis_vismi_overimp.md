@@ -118,3 +118,12 @@ trellis_vismi_overimp(
 
 A Trelliscope display object visualising overimputation diagnostics for
 all variables.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+obj <- overimp(data = newborn, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
+trellis_vismi_overimp(obj = obj, stack_y = TRUE)
+} # }
+```

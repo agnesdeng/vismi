@@ -1,9 +1,7 @@
-
 # vismi 0.9.2
 ### Improvements
 - Provide customisable title and subtitle via `title` and `subtitle` arguments in all main functions. By default, uses automatic titles based on selected variables. Can be set to `NULL` to remove titles.
 - Apply default aesthetics settings globally to all visualisations for consistent appearance.
-
 
 # vismi 0.9.1
 ### Bug Fixes
@@ -16,20 +14,16 @@
 - Moved all axis titles font size and colour settings to the default_aesthetics function to simplify future customisation and maintenance.
 - Change default color palette to `vismi_palette`.
 
-
-
 # vismi 0.9.0
 ### New Features
 - Convergence diagnostics visualisation through `converge()` function. 
 - Convergence diagnostics with trelliscope display through `converge_trelliscope()` function.
-
 
 # vismi 0.8.1
 ### Bug Fixes
 - Fixed overlapping issues in interactive visualisation:
   - x-axis title with legend items 
   - left and right axis titles in subplots
-
 
 # vismi 0.8.0
 ### New Features
@@ -40,13 +34,11 @@
 - Validation checks
 - Aesthetics for panel labels and titles
 
-
 # vismi 0.7.0
 ### Deprecations 
 - Deprecated `trelliscopejs_con()` and `trelliscopejs_cat()`. 
 ### New Features
 -  `ts_overimp()` Support showing all overimputation 1D plots for all numeric and factors variables through `trelliscopejs`
-
 
 # vismi 0.6.0
 ### New Features
@@ -55,7 +47,6 @@
 - Misalignment issue of using plotly subplots in `.plotly_box_facet()`.
 ### Refactoring
 - Refactored other functions.
-
 
 # vismi 0.5.0
 ### Refactoring
@@ -85,5 +76,3 @@
 ### Initial Release
 - First development version releases on GitHub.
 - As illustrated in my PhD thesis.
-
-

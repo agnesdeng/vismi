@@ -1,4 +1,4 @@
-# Inspect all variables at once with trelliscopejs
+# Trelliscopejs Display for Multiple Imputation Diagnostics
 
 With the support of
 [trelliscopejs](https://hafen.github.io/trelliscopejs/), **vismi**

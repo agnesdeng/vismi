@@ -14,7 +14,7 @@ Deng, Y., & Lumley, T. (2026), vismi: Visualisation Tools for Multiple Imputatio
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/agnesdeng/vismi}
+  \item \url{https://agnesdeng.github.io/vismi/}
   \item Report bugs at \url{https://github.com/agnesdeng/vismi/issues}
 }
 

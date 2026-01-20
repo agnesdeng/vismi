@@ -1,5 +1,5 @@
 ---
-title: "Visualisation for Overimputation Diagnostics"
+title: "Overimputation Diagnostics for Multiple Imputation"
 format:
   html:
     toc: true
@@ -34,7 +34,7 @@ Under this setting, 20% extra missing values will be introduced and data will be
 
 ```{r}
 library(vismi)
-obj <- overimp(data = newborn, m = 5, p = 0.2, test_ratio = 0.2, method = "mixgb")
+obj <- overimp(data = newborn, m = 5, p = 0.2, test_ratio = 0.2, method = "mixgb", pmm.type = "auto")
 ```
 
 ## Visual diagnostic for overimputation

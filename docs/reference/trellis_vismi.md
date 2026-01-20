@@ -100,3 +100,11 @@ trellis_vismi(
 
 A Trelliscope display object visualising distributional characteristics
 for all variables.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug")
+} # }
+```

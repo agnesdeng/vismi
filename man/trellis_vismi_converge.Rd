@@ -41,3 +41,11 @@ A Trelliscope display object visualising convergence diagnostics for all variabl
 \description{
 Generates a Trelliscope display for convergence diagnostics across all variables.
 }
+\examples{
+\dontrun{
+library(mixgb)
+set.seed(2026)
+mixgb_obj <- mixgb(data = newborn, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
+trellis_vismi_converge(obj = mixgb_obj)
+}
+}

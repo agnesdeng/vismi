@@ -1,4 +1,4 @@
-# Visualisation for Overimputation Diagnostics
+# Overimputation Diagnostics for Multiple Imputation
 
 ## Obtain overimputation objects
 
@@ -25,7 +25,7 @@ the test data.
 ``` r
 library(vismi)
 obj <- overimp(data = newborn, m = 5, p = 0.2, test_ratio = 0.2,
-    method = "mixgb")
+    method = "mixgb", pmm.type = "auto")
 ```
 
 ## Visual diagnostic for overimputation

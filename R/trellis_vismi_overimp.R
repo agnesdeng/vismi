@@ -20,6 +20,11 @@
 #' @param ... Additional arguments to customize the plots, such as point_size, xlim, ylim.
 #' @return A Trelliscope display object visualising overimputation diagnostics for all variables.
 #' @export
+#' @examples
+#' \dontrun{
+#' obj <- overimp(data = newborn, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
+#' trellis_vismi_overimp(obj = obj, stack_y = TRUE)
+#' }
 trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = "white", seed = 2025, nrow = 2, ncol = 4, path = NULL, ...) {
   Variable <- obj$params$Names
 

@@ -21,6 +21,10 @@
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
 #' @return A Trelliscope display object visualising distributional characteristics for all variables.
 #' @export
+#' @examples
+#' \dontrun{
+#' trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug")
+#' }
 trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug", verbose = FALSE, nrow = 2, ncol = 4, path = NULL, ...) {
   # current option - can provide more later
   num_plot <- "hist"

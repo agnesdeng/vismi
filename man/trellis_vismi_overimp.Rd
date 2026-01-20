@@ -66,3 +66,9 @@ A Trelliscope display object visualising overimputation diagnostics for all vari
 \description{
 Generates a Trelliscope display for overimputation diagnostics across all variables.
 }
+\examples{
+\dontrun{
+obj <- overimp(data = newborn, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
+trellis_vismi_overimp(obj = obj, stack_y = TRUE)
+}
+}

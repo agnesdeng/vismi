@@ -12,7 +12,7 @@ Description: A comprehensive suite of visual diagnostic functions for assessing 
     quality of multiply-imputed data. 'vismi' provides functions for inspecting 
     distribution characteristics, overimputation and convergence diagnostics. Flexible graphics 
     functions are powered by 'plotly', 'ggplot2', and 'trelliscopejs'. 
-URL: https://github.com/agnesdeng/vismi
+URL: https://agnesdeng.github.io/vismi/
 BugReports: https://github.com/agnesdeng/vismi/issues
 License: GPL (>= 3)
 Encoding: UTF-8

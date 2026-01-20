@@ -73,3 +73,7 @@ A plotly or ggplot2 object visualizing the imputed data.
 \description{
 This function provides visual diagnostic tools for assessing multiply imputed datasets created with 'mixgb' or other imputers through inspecting the distributional characteristics of imputed variables. It supports 1D, 2D, and 3D visualisations for numeric and categorical variables using either interactive or static plots.
 }
+\examples{
+vismi(data = newborn, imp_list = imp_newborn, x = "weight_kg")
+
+}

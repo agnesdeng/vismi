@@ -29,6 +29,9 @@
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
 #' @return A plotly or ggplot2 object visualizing the imputed data.
 #' @export
+#' @examples
+#' vismi(data = newborn, imp_list = imp_newborn, x = "weight_kg")
+#'
 vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx = NULL, interactive = FALSE, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug", marginal_y = NULL, verbose = FALSE, ...) {
   # check data
   data <- .validate_data(data = data, integerAsFactor = integerAsFactor, max_levels = round(0.5 * nrow(data)),verbose = verbose)
