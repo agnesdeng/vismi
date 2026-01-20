@@ -1,12 +1,16 @@
-# vismi: Visualisation Tools for Multiple Imputation
+# vismi: Visual Diagnostics for Multiple Imputation
 
-Visual diagnostic tools for assessing multiply imputed datasets created
-with 'mixgb' or other imputers.
+A comprehensive suite of static and interactive visual diagnostics for
+assessing the quality of multiply-imputed data obtained from packages
+such as 'mixgb' and 'mice'. The package supports inspection of
+distributional characteristics, diagnostics based on masking observed
+values and comparing them with re-imputed values, and convergence
+diagnostics.
 
 ## References
 
-Deng, Y., & Lumley, T. (2026), vismi: Visualisation Tools for Multiple
-Imputation, arXiv preprint.
+Yongshi Deng, Thomas Lumley. (2026), vismi: Visual Diagnostics for
+Multiple Imputation, R package version 0.9.3
 
 ## See also
 
