@@ -3,13 +3,14 @@
 \docType{package}
 \name{vismi-package}
 \alias{vismi-package}
-\title{vismi: Visualisation Tools for Multiple Imputation}
+\title{vismi: Visual Diagnostics for Multiple Imputation}
 \description{
-Visual diagnostic tools for assessing multiply imputed datasets created with
-'mixgb' or other imputers.
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+A comprehensive suite of visual diagnostic functions for assessing the quality of multiply-imputed data. 'vismi' provides functions for inspecting distribution characteristics, overimputation and convergence diagnostics. Flexible graphics functions are powered by 'plotly', 'ggplot2', and 'trelliscopejs'.
 }
 \references{
-Deng, Y., & Lumley, T. (2026), vismi: Visualisation Tools for Multiple Imputation, arXiv preprint.
+Yongshi Deng, Thomas Lumley. (2026), vismi: Visual Diagnostics for Multiple Imputation, R package version 0.9.2,
 }
 \seealso{
 Useful links:

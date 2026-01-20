@@ -1,10 +1,5 @@
-#' vismi: Visualisation Tools for Multiple Imputation
+#' vismi: Visual Diagnostics for Multiple Imputation
 #'
-#' Visual diagnostic tools for assessing multiply imputed datasets created with
-#' 'mixgb' or other imputers.
-#'
-#' @docType package
-#' @name vismi-package
 #' @keywords internal
 #' @importFrom cli cli_h1 cli_alert_info cli_alert_warning cli_inform qty cli_vec
 #' @importFrom data.table ':=' as.data.table data.table is.data.table melt rbindlist setnames
@@ -29,10 +24,5 @@
 #' @importFrom tidyr pivot_longer starts_with
 #' @importFrom trelliscopejs trelliscope
 #' @importFrom utils combn modifyList askYesNo
-
-
-#' @references Deng, Y., & Lumley, T. (2026), vismi: Visualisation Tools for Multiple Imputation, arXiv preprint.
+#' @references Yongshi Deng, Thomas Lumley. (2026), vismi: Visual Diagnostics for Multiple Imputation, R package version 0.9.2,
 "_PACKAGE"
-
-
-NULL
