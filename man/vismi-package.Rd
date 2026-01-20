@@ -7,10 +7,11 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-A comprehensive suite of visual diagnostic functions for assessing the quality of multiply-imputed data. 'vismi' provides functions for inspecting distribution characteristics, overimputation and convergence diagnostics. Flexible graphics functions are powered by 'plotly', 'ggplot2', and 'trelliscopejs'.
+A comprehensive suite of static and interactive visual diagnostics for assessing the quality of multiply-imputed data obtained from packages such as 'mixgb' and 'mice'. The package supports inspection of distributional characteristics, diagnostics based on masking observed values and comparing them with re-imputed values, and convergence diagnostics.
 }
 \references{
-Yongshi Deng, Thomas Lumley. (2026), vismi: Visual Diagnostics for Multiple Imputation, R package version 0.9.2,
+Yongshi Deng, Thomas Lumley. (2026), vismi: Visual Diagnostics for Multiple Imputation,
+R package version 0.9.3
 }
 \seealso{
 Useful links:

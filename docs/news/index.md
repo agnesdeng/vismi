@@ -1,5 +1,13 @@
 # Changelog
 
+## vismi 0.9.3
+
+#### Improvements
+
+- Edited Description file to pass CRAN submission checks.
+- Edited examples in order to reduce running time to pass CRAN
+  submission checks.
+
 ## vismi 0.9.2
 
 #### Improvements

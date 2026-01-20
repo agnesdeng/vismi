@@ -24,5 +24,6 @@
 #' @importFrom tidyr pivot_longer starts_with
 #' @importFrom trelliscopejs trelliscope
 #' @importFrom utils combn modifyList askYesNo
-#' @references Yongshi Deng, Thomas Lumley. (2026), vismi: Visual Diagnostics for Multiple Imputation, R package version 0.9.2,
+#' @references Yongshi Deng, Thomas Lumley. (2026), vismi: Visual Diagnostics for Multiple Imputation,
+#' R package version 0.9.3
 "_PACKAGE"

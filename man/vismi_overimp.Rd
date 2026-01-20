@@ -63,7 +63,8 @@ vismi_overimp(
 This function provides visual diagnostic tools for assessing multiply imputed datasets imputed with 'mixgb' or other imputers through overimputation. It supports visualisation for both training and test set.
 }
 \examples{
-obj <- overimp(data = newborn, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+\dontrun{
+obj <- overimp(data = newborn, m = 5, p = 0.2, test_ratio = 0.2, method = "mixgb")
 vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "cv")
-
+}
 }

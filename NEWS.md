@@ -1,3 +1,8 @@
+# vismi 0.9.3
+### Improvements
+- Edited Description file to pass CRAN submission checks.
+- Edited examples in order to reduce running time to pass CRAN submission checks.
+
 # vismi 0.9.2
 ### Improvements
 - Provide customisable title and subtitle via `title` and `subtitle` arguments in all main functions. By default, uses automatic titles based on selected variables. Can be set to `NULL` to remove titles.
