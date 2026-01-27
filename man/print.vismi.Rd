@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments (not used).}
 }
+\value{
+A \code{vismi} object, returned invisibly.
+}
 \description{
 vismi Print method for vismi objects
 }

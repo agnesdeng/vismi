@@ -8,17 +8,16 @@
 #' @param nrow Number of rows in the Trelliscope display. Default is 2.
 #' @param ncol Number of columns in the Trelliscope display. Default is 4.
 #' @param path Optional path to save the Trelliscope display. If NULL, the display will not be saved to disk.
+#' @param verbose A logical value indicating whether to print extra information. Default is FALSE.
 #' @param ... Additional arguments to customize the Trelliscope display.
 #' @return A Trelliscope display object visualising convergence diagnostics for all variables.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(mixgb)
 #' set.seed(2026)
-#' mixgb_obj <- mixgb(data = newborn, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
+#' mixgb_obj <- mixgb(data = nhanes3, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
 #' trellis_vismi_converge(obj = mixgb_obj)
-#' }
-trellis_vismi_converge <- function(obj, tick_vals = NULL, color_pal = NULL, title = "auto", subtitle = "auto", nrow = 2, ncol = 4, path = NULL, ...) {
+trellis_vismi_converge <- function(obj, tick_vals = NULL, color_pal = NULL, title = "auto", subtitle = "auto", nrow = 2, ncol = 4, path = NULL, verbose = FALSE, ...) {
   if (inherits(obj, "mixgb")) {
     mis_vars <- obj$params$missing.vars
   } else if (inherits(obj, "mids")) {
@@ -31,6 +30,18 @@ trellis_vismi_converge <- function(obj, tick_vals = NULL, color_pal = NULL, titl
     group_by(IncompleteVariable) |>
     mutate(panel = purrr::map(IncompleteVariable, ~ vismi_converge(obj, x = .x, title = title, subtitle = subtitle, tick_vals = tick_vals, color_pal = color_pal))) |>
     ungroup()
+
+  old_opt <- getOption("progress_enabled")
+
+  on.exit(
+    options(progress_enabled = old_opt),
+    add = TRUE
+  )
+
+  if (isFALSE(verbose)) {
+    options(progress_enabled = FALSE)
+  }
+
 
   if (!is.null(path)) {
     trelliscopejs::trelliscope(mis_vars_df, name = "Convergence diagnostic across all incomplete variables", panel_col = "panel", self_contained = FALSE, nrow = nrow, ncol = ncol, path = path)

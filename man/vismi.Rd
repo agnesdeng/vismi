@@ -37,7 +37,7 @@ axis. Default is NULL.}
 \item{z}{A character string specifying the name of the variable to plot on the z
 axis. Default is NULL.}
 
-\item{m}{An integer specifying the number of imputed datasets to plot. It should be smaller than \code{length(imp_list)}. Default is NULL (plot all).}
+\item{m}{An integer specifying the number of imputed datasets used for visualisation. It should be smaller than \code{length(imp_list)}. Default is NULL (plot all).}
 
 \item{imp_idx}{A vector of integers specifying the indices of imputed datasets to plot. Default is NULL (plot all).}
 
@@ -68,12 +68,14 @@ for the y variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or 
 \item{...}{Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.}
 }
 \value{
-A plotly or ggplot2 object visualizing the imputed data.
+A plotly or ggplot2 object visualising the multiply-imputed data.
 }
 \description{
 This function provides visual diagnostic tools for assessing multiply imputed datasets created with 'mixgb' or other imputers through inspecting the distributional characteristics of imputed variables. It supports 1D, 2D, and 3D visualisations for numeric and categorical variables using either interactive or static plots.
 }
 \examples{
-vismi(data = newborn, imp_list = imp_newborn, x = "weight_kg")
-
+library(mixgb)
+set.seed(2026)
+imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
+vismi(data = nhanes3, imp_list = imp_nhanes3, x = "weight_kg", y = "head_circumference_cm", z="sex")
 }

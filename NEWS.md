@@ -1,3 +1,8 @@
+# vismi 0.9.4
+### Improvements
+- Edited documentation to pass CRAN submission checks.
+- Added verbosity option to trelliscope functions.
+
 # vismi 0.9.3
 ### Improvements
 - Edited Description file to pass CRAN submission checks.

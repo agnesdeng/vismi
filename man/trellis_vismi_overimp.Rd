@@ -21,6 +21,7 @@ trellis_vismi_overimp(
   nrow = 2,
   ncol = 4,
   path = NULL,
+  verbose = FALSE,
   ...
 )
 }
@@ -58,6 +59,8 @@ plot all).}
 
 \item{path}{Optional path to save the Trelliscope display. If NULL, the display will not be saved to disk.}
 
+\item{verbose}{A logical value indicating whether to print extra information. Default is FALSE.}
+
 \item{...}{Additional arguments to customize the plots, such as point_size, xlim, ylim.}
 }
 \value{
@@ -67,8 +70,6 @@ A Trelliscope display object visualising overimputation diagnostics for all vari
 Generates a Trelliscope display for overimputation diagnostics across all variables.
 }
 \examples{
-\dontrun{
-obj <- overimp(data = newborn, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
+obj <- overimp(data = nhanes3, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
 trellis_vismi_overimp(obj = obj, stack_y = TRUE)
-}
 }

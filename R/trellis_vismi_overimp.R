@@ -17,15 +17,14 @@
 #' @param nrow Number of rows in the Trelliscope display. Default is 2.
 #' @param ncol Number of columns in the Trelliscope display. Default is 4.
 #' @param path Optional path to save the Trelliscope display. If NULL, the display will not be saved to disk.
+#' @param verbose A logical value indicating whether to print extra information. Default is FALSE.
 #' @param ... Additional arguments to customize the plots, such as point_size, xlim, ylim.
 #' @return A Trelliscope display object visualising overimputation diagnostics for all variables.
 #' @export
 #' @examples
-#' \dontrun{
-#' obj <- overimp(data = newborn, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
+#' obj <- overimp(data = nhanes3, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
 #' trellis_vismi_overimp(obj = obj, stack_y = TRUE)
-#' }
-trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = "white", seed = 2025, nrow = 2, ncol = 4, path = NULL, ...) {
+trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = "white", seed = 2025, nrow = 2, ncol = 4, path = NULL, verbose = FALSE, ...) {
   Variable <- obj$params$Names
 
   Types <- obj$params$Types
@@ -82,6 +81,19 @@ trellis_vismi_overimp <- function(obj, m = NULL, imp_idx = NULL, integerAsFactor
       do.call(plot_fun, args_list[names(args_list) %in% names(formals(plot_fun))])
     })) |>
     ungroup()
+
+
+  old_opt <- getOption("progress_enabled")
+
+  on.exit(
+    options(progress_enabled = old_opt),
+    add = TRUE
+  )
+
+  if (isFALSE(verbose)) {
+    options(progress_enabled = FALSE)
+  }
+
   if (!is.null(path)) {
     trelliscopejs::trelliscope(all_vars_df, name = "Overimputation diagnostic across all variables", panel_col = "panel", self_contained = FALSE, nrow = nrow, ncol = ncol, path = path)
   } else {

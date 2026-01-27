@@ -13,6 +13,7 @@ trellis_vismi_converge(
   nrow = 2,
   ncol = 4,
   path = NULL,
+  verbose = FALSE,
   ...
 )
 }
@@ -33,6 +34,8 @@ trellis_vismi_converge(
 
 \item{path}{Optional path to save the Trelliscope display. If NULL, the display will not be saved to disk.}
 
+\item{verbose}{A logical value indicating whether to print extra information. Default is FALSE.}
+
 \item{...}{Additional arguments to customize the Trelliscope display.}
 }
 \value{
@@ -42,10 +45,8 @@ A Trelliscope display object visualising convergence diagnostics for all variabl
 Generates a Trelliscope display for convergence diagnostics across all variables.
 }
 \examples{
-\dontrun{
 library(mixgb)
 set.seed(2026)
-mixgb_obj <- mixgb(data = newborn, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
+mixgb_obj <- mixgb(data = nhanes3, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
 trellis_vismi_converge(obj = mixgb_obj)
-}
 }

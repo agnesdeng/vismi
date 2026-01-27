@@ -15,20 +15,27 @@ overimp(
 )
 }
 \arguments{
-\item{data}{a data frame with missing values}
+\item{data}{A data frame with missing values.}
 
-\item{m}{the number of imputation}
+\item{m}{The number of imputation.}
 
-\item{p}{the extra proportion of missing values}
+\item{p}{The extra proportion of missing values.}
 
-\item{test_ratio}{the proportion of test set. Default is 0, meaning no test set.}
+\item{test_ratio}{The proportion of test set. Default is 0, meaning no test set.}
 
-\item{method}{can be one of the following: "mixgb","mice", and more in the future.}
+\item{method}{Can be one of the following: "mixgb","mice", and more in the future.}
 
-\item{seed}{random seed}
+\item{seed}{Random seed.}
 
-\item{...}{other arguments to be passed into the overimp function}
+\item{...}{Other arguments to be passed into the overimp function.}
+}
+\value{
+An \code{overimp} object containing imputed training, test data (if applicable) and essential parameters required for plotting.
 }
 \description{
-overimp wrapper function to call different imputation methods
+Overimp main function to call different imputation methods.
+}
+\examples{
+obj <- overimp(data = nhanes3, m = 5, p = 0.2, test_ratio = 0.2, method = "mixgb")
+
 }

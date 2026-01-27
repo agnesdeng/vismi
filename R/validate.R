@@ -1,6 +1,137 @@
+.data_summary<-function(pre, plot_idx_msg){
+
+  vars <- pre$vars
+  na_xyz <- pre$na_xyz
+  na_pattern <- pre$na_pattern
+  na_indices <- pre$na_indices
+
+
+  cli::cli_h1("Missing data summary")
+
+  cli::cli_inform(
+    lapply(vars, function(v) {
+      n_mis<-length(na_xyz[[v]])
+      cli::format_inline(
+        "Variable {.var {v}} has {n_mis} missing values."
+      )
+    })
+  )
+
+
+  cli::cli_h1("Breakdown of missing data patterns")
+  print(na_pattern)
+
+  cli::cli_h1("Imputed data used for plotting")
+
+  if (length(na_indices) == 0) {
+      cli::cli_inform(
+        "No missing values were found in the specified {cli::qty(vars)}variable{?s} ({.var {cli::cli_vec(vars)}}). Only the observed data are shown in the plot."
+      )
+  } else {
+    # only one variable
+      if (length(vars == 1)) {
+        cli::cli_inform(
+          "For each imputed set, a total of {length(na_indices)} observations with missingness in the specified variable {.var {vars}} are shown."
+        )
+      } else {
+    # 2 or 3 variables
+        cli::cli_inform(
+          "For each imputed set, a total of {length(na_indices)} observations with at least one missing entry across the specified {cli::qty(vars)}variable{?s} ({.var {cli::cli_vec(vars)}}) are shown."
+        )
+      }
+
+  }
+
+ #info for plotting subset panels
+  cli::cli_h1("Imputed sets selected for plotting")
+  cli::cli_inform(plot_idx_msg)
+
+}
+
+
+
+.validate_m_imp_idx<-function(imp_list, m, imp_idx) {
+  # subset for plotting
+  N_imp <- length(imp_list)
+
+  if(is.null(m) & is.null(imp_idx)) {
+    # plot all imputed set
+    imp_idx_final <- seq_len(N_imp)
+    plot_idx_msg <-cli::format_inline("Both 'm' and 'imp_idx' are NULL. Using all {N_imp} imputed datasets for plotting.")
+  }
+
+  if(is.null(m) & !is.null(imp_idx)){
+    # only imp_idx is provided
+    .validate_indices(indices = imp_idx, indices_name = "imp_idx", limit = N_imp)
+    imp_idx_final <- imp_idx
+    plot_idx_msg <- cli::format_inline("Using the provided indices in 'imp_idx' for plotting: {cli::cli_vec(imp_idx)}")
+  }
+
+  if(!is.null(m) & !is.null(imp_idx)){
+    # both m and imp_idx are provided
+    if(length(imp_idx) != m){
+      stop(paste("The length of 'imp_idx' does not equal 'm'. Please check your inputs."))
+    }
+
+    .validate_indices(indices = imp_idx, indices_name = "imp_idx", limit = N_imp)
+    imp_idx_final <- imp_idx
+    plot_idx_msg <- cli::format_inline("Using the provided indices in 'imp_idx' for plotting: {cli::cli_vec(imp_idx)}")
+  }
+
+  if(!is.null(m) & is.null(imp_idx)){
+    # only m is provided
+    .validate_m(m = m, N_imp = N_imp)
+
+    if(m < N_imp) {
+      imp_idx_final <- sort(sample.int(N_imp, m))
+      plot_idx_msg <-cli::format_inline("{m} imputed datasets are randomly selected for plotting. Their indices are: {cli::cli_vec(imp_idx_final)}")
+    }
+
+    if(m == N_imp){
+      imp_idx_final <- seq_len(N_imp)
+      plot_idx_msg <-cli::format_inline("{m} is the same as the available number of imputed datasets. Using all {N_imp} imputed datasets for plotting.")
+    }
+  }
+
+
+
+  out <- list(
+    imp_idx = imp_idx_final,
+    plot_idx_msg = plot_idx_msg
+  )
+  out
+
+  }
+
+.validate_indices <- function(indices, indices_name, limit) {
+  if (any(indices != floor(indices))) {
+    stop(paste(indices_name, "must be integers"))
+  }
+
+  if (!is.vector(indices)) {
+    stop(paste(indices_name, "must be a vector"))
+  }
+
+  if (any(indices <= 0)) {
+    stop(paste(indices_name, "must be positive"))
+  }
+
+  if (any(duplicated(indices))) {
+    stop(paste(indices_name, "contains duplicate values"))
+  }
+
+  if (any(indices > limit)) {
+    stop(paste(indices_name, "must not exceed", limit))
+  }
+}
+
+
 .validate_m <- function(m, N_imp) {
   if (length(m) != 1 | m <= 0 | m != floor(m)) {
     stop("m must be a single positive integer.")
+  }
+  if (m > N_imp){
+    stop(paste0("m cannot be larger than the total number of imputed datasets (", N_imp, ")."))
   }
 }
 
@@ -274,7 +405,7 @@ resolve_column_types <- function(data, integerAsFactor, verbose) {
     else {
       return(class(col)[1])
     }
-  }, character(1))
+  }, FUN.VALUE = character(1))
 
   invalid_idx <- !col_types %in% c("numeric", "factor")
 

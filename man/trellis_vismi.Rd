@@ -14,10 +14,10 @@ trellis_vismi(
   subtitle = "auto",
   color_pal = NULL,
   marginal_x = "box+rug",
-  verbose = FALSE,
   nrow = 2,
   ncol = 4,
   path = NULL,
+  verbose = FALSE,
   ...
 )
 }
@@ -45,13 +45,13 @@ for the x variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or 
 (default, no marginal plot) when interactive = TRUE. Options are "box", "rug", "box+rug", or NULL
 (default, no marginal plot) when interactive = FALSE.}
 
-\item{verbose}{A logical value indicating whether to print extra information. Default is TRUE.}
-
 \item{nrow}{Number of rows in the Trelliscope display. Default is 2.}
 
 \item{ncol}{Number of columns in the Trelliscope display. Default is 4.}
 
 \item{path}{Optional path to save the Trelliscope display. If NULL, the display will not be saved to disk.}
+
+\item{verbose}{A logical value indicating whether to print extra information. Default is FALSE.}
 
 \item{...}{Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.}
 }
@@ -62,7 +62,8 @@ A Trelliscope display object visualising distributional characteristics for all 
 Generates a Trelliscope display for distributional characteristics across all variables.
 }
 \examples{
-\dontrun{
-trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug")
-}
+library(mixgb)
+set.seed(2026)
+imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
+trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box+rug")
 }

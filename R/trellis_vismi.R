@@ -14,18 +14,19 @@
 #' for the x variable in 2D plots. Options are "hist", "box", "rug", "box+rug", or NULL
 #' (default, no marginal plot) when interactive = TRUE. Options are "box", "rug", "box+rug", or NULL
 #' (default, no marginal plot) when interactive = FALSE.
-#' @param verbose A logical value indicating whether to print extra information. Default is TRUE.
 #' @param nrow Number of rows in the Trelliscope display. Default is 2.
 #' @param ncol Number of columns in the Trelliscope display. Default is 4.
 #' @param path Optional path to save the Trelliscope display. If NULL, the display will not be saved to disk.
+#' @param verbose A logical value indicating whether to print extra information. Default is FALSE.
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
 #' @return A Trelliscope display object visualising distributional characteristics for all variables.
 #' @export
 #' @examples
-#' \dontrun{
-#' trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug")
-#' }
-trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug", verbose = FALSE, nrow = 2, ncol = 4, path = NULL, ...) {
+#' library(mixgb)
+#' set.seed(2026)
+#' imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
+#' trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box+rug")
+trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug",  nrow = 2, ncol = 4, path = NULL, verbose = FALSE, ...) {
   # current option - can provide more later
   num_plot <- "hist"
   fac_plot <- "bar"
@@ -40,8 +41,9 @@ trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFac
 
   Variable <- colnames(data)
 
-  # Types <- obj$params$Types
-  # Types[Types == "integer"] <- if (isTRUE(integerAsFactor)) "factor" else "numeric"
+  out<-.validate_m_imp_idx(imp_list = imp_list, m = m, imp_idx = imp_idx)
+  imp_idx <- out$imp_idx
+  plot_idx_msg<- out$plot_idx_msg
 
   users_params <- list(...)
   params <- modifyList(.vismi_static_params(), users_params)
@@ -66,7 +68,7 @@ trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFac
       # for each of the item in Variable
 
       # preprocess data
-      pre <- preprocess(data, imp_list, m = m, imp_idx = imp_idx, vars = var, integerAsFactor = integerAsFactor, verbose = verbose)
+      pre <- preprocess(data, imp_list, imp_idx = imp_idx, vars = var, integerAsFactor = integerAsFactor)
       all_dt <- pre$all_dt
 
       if (is.null(color_pal)) {
@@ -115,6 +117,18 @@ trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFac
       do.call(plot_fun, args_list[names(args_list) %in% names(formals(plot_fun))])
     })) |>
     ungroup()
+
+  old_opt <- getOption("progress_enabled")
+
+  on.exit(
+    options(progress_enabled = old_opt),
+    add = TRUE
+  )
+
+  if (isFALSE(verbose)) {
+    options(progress_enabled = FALSE)
+  }
+
 
   if (!is.null(path)) {
     trelliscopejs::trelliscope(all_vars_df, name = "Distributional characteristics for multiply-imputed values across all variables", panel_col = "panel", self_contained = FALSE, nrow = nrow, ncol = ncol, path = path)

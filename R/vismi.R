@@ -8,7 +8,7 @@
 #' axis. Default is NULL.
 #' @param z A character string specifying the name of the variable to plot on the z
 #' axis. Default is NULL.
-#' @param m An integer specifying the number of imputed datasets to plot. It should be smaller than \code{length(imp_list)}. Default is NULL (plot all).
+#' @param m An integer specifying the number of imputed datasets used for visualisation. It should be smaller than \code{length(imp_list)}. Default is NULL (plot all).
 #' @param imp_idx A vector of integers specifying the indices of imputed datasets to plot. Default is NULL (plot all).
 #' @param interactive A logical value indicating whether to create an interactive plotly plot (TRUE
 #' by default) or a static ggplot2 plot (FALSE).
@@ -27,11 +27,13 @@
 #' (default, no marginal plot) when interactive = FALSE.
 #' @param verbose A logical value indicating whether to print extra information. Default is FALSE.
 #' @param ... Additional arguments passed to the underlying plotting functions, such as point_size, alpha, nbins, width, and boxpoints.
-#' @return A plotly or ggplot2 object visualizing the imputed data.
+#' @return A plotly or ggplot2 object visualising the multiply-imputed data.
 #' @export
 #' @examples
-#' vismi(data = newborn, imp_list = imp_newborn, x = "weight_kg")
-#'
+#' library(mixgb)
+#' set.seed(2026)
+#' imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
+#' vismi(data = nhanes3, imp_list = imp_nhanes3, x = "weight_kg", y = "head_circumference_cm", z="sex")
 vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx = NULL, interactive = FALSE, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug", marginal_y = NULL, verbose = FALSE, ...) {
   # check data
   data <- .validate_data(data = data, integerAsFactor = integerAsFactor, max_levels = round(0.5 * nrow(data)),verbose = verbose)
@@ -70,6 +72,9 @@ vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_id
     )
   }
 
+  out<-.validate_m_imp_idx(imp_list = imp_list, m = m, imp_idx = imp_idx)
+  imp_idx <- out$imp_idx
+  plot_idx_msg<- out$plot_idx_msg
 
   # users_params<-list()
 
@@ -88,12 +93,17 @@ vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_id
   boxpoints <- params$boxpoints
 
   # preprocess data
-  pre <- preprocess(data, imp_list, m = m, imp_idx = imp_idx, vars = vars, integerAsFactor = integerAsFactor, verbose = verbose)
+  pre <- preprocess(data = data, imp_list = imp_list, imp_idx = imp_idx, vars = vars, integerAsFactor = integerAsFactor)
   all_dt <- pre$all_dt
   if (is.null(color_pal)) {
     color_pal <- pre$color_pal
   }
   no_missing <- pre$no_missing
+
+  # only print out data summary if verbose = TRUE
+  if(isTRUE(verbose)){
+    .data_summary(pre = pre, plot_idx_msg = plot_idx_msg)
+  }
 
   # number of variables
   D <- length(vars)
@@ -261,6 +271,7 @@ vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_id
 #' @description vismi Print method for vismi objects
 #' @param x An object of class 'vismi' created by the \code{vismi.data.frame()} function.
 #' @param ... Additional arguments (not used).
+#' @return A \code{vismi} object, returned invisibly.
 #' @exportS3Method
 print.vismi <- function(x, ...) {
   # Check if it's a gtable/grob (from arrangeGrob)

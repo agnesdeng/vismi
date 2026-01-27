@@ -67,9 +67,11 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 #> 6                        weight_kg, sex     0
 #> 7 head_circumference_cm, weight_kg, sex     0
 #> 
-#> ── Imputed data visualisation ──────────────────────────────────────────────────
+#> ── Imputed data used for plotting ──────────────────────────────────────────────
 #> For each imputed set, a total of 130 observations with missingness in the
 #> specified variable `head_circumference_cm`, `weight_kg`, and `sex` are shown.
+#> ── Imputed sets selected for plotting ──────────────────────────────────────────
+#> Both 'm' and 'imp_idx' are NULL. Using all 5 imputed datasets for plotting.
 ```
 
 Users need to provide the following inputs to
@@ -80,8 +82,8 @@ Users need to provide the following inputs to
 
 - `imp_list`: a list of imputed datasets (a list of data frames or
   tibbles or data tables). This can be obtained using
-  [`mixgb()`](https://rdrr.io/pkg/mixgb/man/mixgb.html) from the
-  **mixgb** package,
+  [`mixgb()`](https://agnesdeng.github.io/mixgb/reference/mixgb.html)
+  from the **mixgb** package,
   [`mice()`](https://amices.org/mice/reference/mice.html) from the
   **mice** package or any imputation method that generates multiple
   imputed datasets in a list.

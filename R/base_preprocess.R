@@ -1,16 +1,12 @@
 # Preprocess input of `vismi.data.frame()` for plotting
-preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor, verbose) {
-  # .imp_long()
+preprocess <- function(data, imp_list, imp_idx, vars, integerAsFactor) {
   # vars<- c(x,y,z)
   # Convert everything to data.table but keep original class for slicing
   dt <- as.data.table(data)
 
   # Find missing indices for each variable
   na_xyz <- setNames(lapply(vars, function(v) which(is.na(dt[[v]]))), vars)
-  ####
 
-
-  ###
   na_comb <- list()
   comb_list <- unlist(
     lapply(1:length(vars), function(k) combn(vars, k, simplify = FALSE)),
@@ -46,50 +42,9 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor, verbos
   # Sort by factor levels
   na_pattern <- na_pattern[order(na_pattern$Variable), ]
 
-  if (verbose) {
-    cli::cli_h1("Missing data summary")
-
-    cli::cli_inform(
-      lapply(vars, function(v) {
-        cli::format_inline(
-          "Variable {.var {v}} has {length(na_xyz[[v]])} missing values."
-        )
-      })
-    )
-
-
-    cli::cli_h1("Breakdown of missing data patterns")
-    print(na_pattern)
-
-    cli::cli_h1("Imputed data visualisation")
-  }
-
-
   na_indices <- unique(unlist(na_xyz))
 
-  if (length(na_indices) == 0) {
-    if (verbose) {
-      cli::cli_inform(
-        "No missing values were found in the specified {cli::qty(vars)}variable{?s} ({.var {cli::cli_vec(vars)}}). Only the observed data are shown in the plot."
-      )
-    }
-
-    no_missing <- TRUE
-  } else {
-    if (verbose) {
-      if (length(vars == 1)) {
-        cli::cli_inform(
-          "For each imputed set, a total of {length(na_indices)} observations with missingness in the specified variable {.var {vars}} are shown."
-        )
-      } else {
-        cli::cli_inform(
-          "For each imputed set, a total of {length(na_indices)} observations with at least one missing entry across the specified {cli::qty(vars)}variable{?s} ({.var {cli::cli_vec(vars)}}) are shown."
-        )
-      }
-    }
-
-    no_missing <- FALSE
-  }
+  no_missing <- ifelse(length(na_indices) == 0, TRUE, FALSE)
 
   N_mis <- length(na_indices)
   N_obs <- nrow(dt) - N_mis
@@ -97,29 +52,8 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor, verbos
 
   # subset for plotting
   N_imp <- length(imp_list)
-  if (!is.null(imp_idx)) {
-    # priority subset by imp_idx
-    .validate_indices(indices = imp_idx, indices_name = "imp_idx", limit = N_imp)
-    imp_list <- imp_list[imp_idx]
-  } else if (!is.null(m)) {
-    # then subset by m
-    .validate_m(m = m, N_imp = N_imp)
 
-    if (m < N_imp) {
-      imp_idx <- sort(sample.int(N_imp, m))
-      message(paste0(m, " imputed datasets are randomly selected for plotting.Their indices are: ", paste(imp_idx, collapse = ", ")))
-      imp_list <- imp_list[imp_idx]
-    } else if (m > N_imp) {
-      imp_idx <- seq_len(N_imp)
-      warning(paste0("m is larger than the available number of imputed datasets. Using all ", N_imp, " imputed datasets for plotting."))
-    } else {
-      imp_idx <- seq_len(N_imp)
-    }
-  } else {
-    # use all
-    imp_idx <- seq_len(N_imp)
-  }
-
+  imp_list <- imp_list[imp_idx]
 
   # Extract imputed rows for each imputation
   imp_names <- paste("Imp set", imp_idx)
@@ -167,6 +101,8 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor, verbos
   list(
     all_dt = all_dt,
     vars = vars,
+    na_xyz = na_xyz,
+    na_pattern = na_pattern,
     na_indices = na_indices,
     obs_indices = obs_indices,
     color_pal = color_pal,
@@ -175,24 +111,3 @@ preprocess <- function(data, imp_list, m, imp_idx, vars, integerAsFactor, verbos
 }
 
 
-.validate_indices <- function(indices, indices_name, limit) {
-  if (any(indices != floor(indices))) {
-    stop(paste(indices_name, "must be integers"))
-  }
-
-  if (!is.vector(indices)) {
-    stop(paste(indices_name, "must be a vector"))
-  }
-
-  if (any(indices <= 0)) {
-    stop(paste(indices_name, "must be positive"))
-  }
-
-  if (any(duplicated(indices))) {
-    warning(paste(indices_name, "contains duplicate values"))
-  }
-
-  if (any(indices > limit)) {
-    stop(paste(indices_name, "must not exceed", limit))
-  }
-}
