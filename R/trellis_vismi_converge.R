@@ -15,7 +15,7 @@
 #' @examples
 #' library(mixgb)
 #' set.seed(2026)
-#' mixgb_obj <- mixgb(data = nhanes3, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
+#' mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 4, pmm.type = "auto", save.models = TRUE)
 #' trellis_vismi_converge(obj = mixgb_obj)
 trellis_vismi_converge <- function(obj, tick_vals = NULL, color_pal = NULL, title = "auto", subtitle = "auto", nrow = 2, ncol = 4, path = NULL, verbose = FALSE, ...) {
   if (inherits(obj, "mixgb")) {

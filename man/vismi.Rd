@@ -74,8 +74,5 @@ A plotly or ggplot2 object visualising the multiply-imputed data.
 This function provides visual diagnostic tools for assessing multiply imputed datasets created with 'mixgb' or other imputers through inspecting the distributional characteristics of imputed variables. It supports 1D, 2D, and 3D visualisations for numeric and categorical variables using either interactive or static plots.
 }
 \examples{
-library(mixgb)
-set.seed(2026)
-imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
 vismi(data = nhanes3, imp_list = imp_nhanes3, x = "weight_kg", y = "head_circumference_cm", z="sex")
 }

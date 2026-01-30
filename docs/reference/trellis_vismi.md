@@ -104,10 +104,7 @@ for all variables.
 ## Examples
 
 ``` r
-library(mixgb)
-set.seed(2026)
-imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
 trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box+rug")
 
-{"x":{"id":"662b6e36","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Distributional_characteristics_for_multiply_imputed_values_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
+{"x":{"id":"419f563c","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Distributional_characteristics_for_multiply_imputed_values_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
 ```

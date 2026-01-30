@@ -36,6 +36,5 @@ An \code{overimp} object containing imputed training, test data (if applicable) 
 Overimp main function to call different imputation methods.
 }
 \examples{
-obj <- overimp(data = nhanes3, m = 5, p = 0.2, test_ratio = 0.2, method = "mixgb")
-
+obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
 }

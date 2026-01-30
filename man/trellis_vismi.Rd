@@ -62,8 +62,5 @@ A Trelliscope display object visualising distributional characteristics for all 
 Generates a Trelliscope display for distributional characteristics across all variables.
 }
 \examples{
-library(mixgb)
-set.seed(2026)
-imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
-trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box+rug")
+trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box")
 }

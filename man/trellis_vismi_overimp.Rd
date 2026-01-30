@@ -70,6 +70,6 @@ A Trelliscope display object visualising overimputation diagnostics for all vari
 Generates a Trelliscope display for overimputation diagnostics across all variables.
 }
 \examples{
-obj <- overimp(data = nhanes3, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
+obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0, method = "mixgb")
 trellis_vismi_overimp(obj = obj, stack_y = TRUE)
 }

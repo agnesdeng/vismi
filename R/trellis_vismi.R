@@ -22,10 +22,7 @@
 #' @return A Trelliscope display object visualising distributional characteristics for all variables.
 #' @export
 #' @examples
-#' library(mixgb)
-#' set.seed(2026)
-#' imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
-#' trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box+rug")
+#' trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box")
 trellis_vismi <- function(data, imp_list, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug",  nrow = 2, ncol = 4, path = NULL, verbose = FALSE, ...) {
   # current option - can provide more later
   num_plot <- "hist"

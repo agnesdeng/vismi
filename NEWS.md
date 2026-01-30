@@ -1,3 +1,7 @@
+# vismi 0.9.5
+### Improvements
+- Edited examples to reduce running time to pass CRAN submission checks.
+
 # vismi 0.9.4
 ### Improvements
 - Edited documentation to pass CRAN submission checks.

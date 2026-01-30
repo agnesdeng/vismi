@@ -81,8 +81,8 @@ variables.
 ``` r
 library(mixgb)
 set.seed(2026)
-mixgb_obj <- mixgb(data = nhanes3, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
+mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 4, pmm.type = "auto", save.models = TRUE)
 trellis_vismi_converge(obj = mixgb_obj)
 
-{"x":{"id":"17c9192c","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Convergence_diagnostic_across_all_incomplete_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
+{"x":{"id":"7ca26a82","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Convergence_diagnostic_across_all_incomplete_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
 ```

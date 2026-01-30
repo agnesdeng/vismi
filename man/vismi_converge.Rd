@@ -50,6 +50,6 @@ This function generates convergence diagnostic plots showing the mean and standa
 \examples{
 library(mixgb)
 set.seed(2026)
-mixgb_obj <- mixgb(data = nhanes3, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
+mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 4, pmm.type = "auto", save.models = TRUE)
 vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm")
 }

@@ -30,9 +30,6 @@
 #' @return A plotly or ggplot2 object visualising the multiply-imputed data.
 #' @export
 #' @examples
-#' library(mixgb)
-#' set.seed(2026)
-#' imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
 #' vismi(data = nhanes3, imp_list = imp_nhanes3, x = "weight_kg", y = "head_circumference_cm", z="sex")
 vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx = NULL, interactive = FALSE, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug", marginal_y = NULL, verbose = FALSE, ...) {
   # check data

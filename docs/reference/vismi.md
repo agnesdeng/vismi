@@ -123,8 +123,5 @@ A plotly or ggplot2 object visualising the multiply-imputed data.
 ## Examples
 
 ``` r
-library(mixgb)
-set.seed(2026)
-imp_nhanes3<-mixgb(data = nhanes3, m = 5, maxit = 3, pmm.type = "auto", save.models = FALSE)
 vismi(data = nhanes3, imp_list = imp_nhanes3, x = "weight_kg", y = "head_circumference_cm", z="sex")
 ```
