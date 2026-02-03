@@ -55,6 +55,6 @@ vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm", tick_vals = NULL,
 >
 > To use [`vismi_converge()`](../reference/vismi_converge.md) for
 > **mixgb** object, users are required to set `save.models = TRUE` in
-> [`mixgb()`](https://rdrr.io/pkg/mixgb/man/mixgb.html) so that
-> intermediate summary statistics for imputations would be saved at each
-> iteration for plotting convergence diagnostics.
+> [`mixgb()`](https://agnesdeng.github.io/mixgb/reference/mixgb.html) so
+> that intermediate summary statistics for imputations would be saved at
+> each iteration for plotting convergence diagnostics.

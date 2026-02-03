@@ -1,5 +1,20 @@
 # Changelog
 
+## vismi 0.9.5
+
+CRAN release: 2026-02-03
+
+#### Improvements
+
+- Edited examples to reduce running time to pass CRAN submission checks.
+
+## vismi 0.9.4
+
+#### Improvements
+
+- Edited documentation to pass CRAN submission checks.
+- Added verbosity option to trelliscope functions.
+
 ## vismi 0.9.3
 
 #### Improvements

@@ -16,10 +16,10 @@ trellis_vismi(
   subtitle = "auto",
   color_pal = NULL,
   marginal_x = "box+rug",
-  verbose = FALSE,
   nrow = 2,
   ncol = 4,
   path = NULL,
+  verbose = FALSE,
   ...
 )
 ```
@@ -73,11 +73,6 @@ trellis_vismi(
   are "box", "rug", "box+rug", or NULL (default, no marginal plot) when
   interactive = FALSE.
 
-- verbose:
-
-  A logical value indicating whether to print extra information. Default
-  is TRUE.
-
 - nrow:
 
   Number of rows in the Trelliscope display. Default is 2.
@@ -90,6 +85,11 @@ trellis_vismi(
 
   Optional path to save the Trelliscope display. If NULL, the display
   will not be saved to disk.
+
+- verbose:
+
+  A logical value indicating whether to print extra information. Default
+  is FALSE.
 
 - ...:
 
@@ -104,7 +104,7 @@ for all variables.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-trellis_vismi(data = newborn, imp_list = imp_newborn, marginal_x = "box+rug")
-} # }
+trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box")
+
+{"x":{"id":"a2c128eb","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Distributional_characteristics_for_multiply_imputed_values_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
 ```

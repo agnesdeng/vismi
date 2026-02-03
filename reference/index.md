@@ -4,7 +4,11 @@
 
 - [`imp_newborn`](imp_newborn.md) : Precomputed mixgb imputed datasets
   for \`newborn\`
+- [`imp_nhanes3`](imp_nhanes3.md) : Precomputed mixgb imputed datasets
+  for \`nhanes3\`
 - [`newborn`](newborn.md) : NHANES III (1988-1994) newborn data
+- [`nhanes3`](nhanes3.md) : A small subset of the NHANES III (1988-1994)
+  newborn data
 - [`overimp()`](overimp.md) : Overimpute main function
 - [`print(`*`<vismi>`*`)`](print.vismi.md) : print method for vismi
   objects

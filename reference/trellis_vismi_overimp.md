@@ -23,6 +23,7 @@ trellis_vismi_overimp(
   nrow = 2,
   ncol = 4,
   path = NULL,
+  verbose = FALSE,
   ...
 )
 ```
@@ -109,6 +110,11 @@ trellis_vismi_overimp(
   Optional path to save the Trelliscope display. If NULL, the display
   will not be saved to disk.
 
+- verbose:
+
+  A logical value indicating whether to print extra information. Default
+  is FALSE.
+
 - ...:
 
   Additional arguments to customize the plots, such as point_size, xlim,
@@ -122,8 +128,8 @@ all variables.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-obj <- overimp(data = newborn, p = 0.2, m = 5, test_ratio = 0.2, method = "mixgb")
+obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0, method = "mixgb")
 trellis_vismi_overimp(obj = obj, stack_y = TRUE)
-} # }
+
+{"x":{"id":"5afaf3e4","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Overimputation_diagnostic_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
 ```

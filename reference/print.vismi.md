@@ -19,3 +19,7 @@ print(x, ...)
 - ...:
 
   Additional arguments (not used).
+
+## Value
+
+A `vismi` object, returned invisibly.

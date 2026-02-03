@@ -56,8 +56,9 @@ vismi(
 
 - m:
 
-  An integer specifying the number of imputed datasets to plot. It
-  should be smaller than `length(imp_list)`. Default is NULL (plot all).
+  An integer specifying the number of imputed datasets used for
+  visualisation. It should be smaller than `length(imp_list)`. Default
+  is NULL (plot all).
 
 - imp_idx:
 
@@ -117,11 +118,10 @@ vismi(
 
 ## Value
 
-A plotly or ggplot2 object visualizing the imputed data.
+A plotly or ggplot2 object visualising the multiply-imputed data.
 
 ## Examples
 
 ``` r
-vismi(data = newborn, imp_list = imp_newborn, x = "weight_kg")
-
+vismi(data = nhanes3, imp_list = imp_nhanes3, x = "weight_kg", y = "head_circumference_cm", z="sex")
 ```

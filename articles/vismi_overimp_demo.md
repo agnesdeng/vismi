@@ -10,10 +10,10 @@ We can obtain an overimputation object with 5 multiple imputations
 (`m = 5`), extra missing values with proportion 20% (`p = 0.2`) and test
 set ratio 20% (`test_ratio = 0.2`). Imputation method can be set to
 `"mixgb"` or `"mice"`, which would call
-[`mixgb()`](https://rdrr.io/pkg/mixgb/man/mixgb.html) or `mice` in the
-backend. Users can also pass additional argument related to
-[`mixgb()`](https://rdrr.io/pkg/mixgb/man/mixgb.html) or
-[`mice()`](https://amices.org/mice/reference/mice.html) through
+[`mixgb()`](https://agnesdeng.github.io/mixgb/reference/mixgb.html) or
+`mice` in the backend. Users can also pass additional argument related
+to [`mixgb()`](https://agnesdeng.github.io/mixgb/reference/mixgb.html)
+or [`mice()`](https://amices.org/mice/reference/mice.html) through
 [`overimp()`](../reference/overimp.md).
 
 Under this setting, 20% extra missing values will be introduced and data

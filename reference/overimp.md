@@ -1,6 +1,6 @@
 # Overimpute main function
 
-overimp wrapper function to call different imputation methods
+Overimp main function to call different imputation methods.
 
 ## Usage
 
@@ -20,28 +20,39 @@ overimp(
 
 - data:
 
-  a data frame with missing values
+  A data frame with missing values.
 
 - m:
 
-  the number of imputation
+  The number of imputation.
 
 - p:
 
-  the extra proportion of missing values
+  The extra proportion of missing values.
 
 - test_ratio:
 
-  the proportion of test set. Default is 0, meaning no test set.
+  The proportion of test set. Default is 0, meaning no test set.
 
 - method:
 
-  can be one of the following: "mixgb","mice", and more in the future.
+  Can be one of the following: "mixgb","mice", and more in the future.
 
 - seed:
 
-  random seed
+  Random seed.
 
 - ...:
 
-  other arguments to be passed into the overimp function
+  Other arguments to be passed into the overimp function.
+
+## Value
+
+An `overimp` object containing imputed training, test data (if
+applicable) and essential parameters required for plotting.
+
+## Examples
+
+``` r
+obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+```
