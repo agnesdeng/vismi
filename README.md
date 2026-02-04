@@ -12,6 +12,16 @@ more.
 
 <!-- badges: start -->
 
+[![Made with
+R](https://img.shields.io/badge/Made%20With-R-9cf)](https://github.com/agnesdeng/vismi)
+[![CRAN
+version](https://img.shields.io/cran/v/vismi?color=fcae1e)](https://cran.r-project.org/package=vismi)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/vismi)](https://cranlogs.r-pkg.org/badges/grand-total/vismi)
+[![GitHub release (latest by
+date)](https://img.shields.io/github/v/release/agnesdeng/vismi?logo=github&color=green)](https://github.com/agnesdeng/vismi/releases)
+[![R-CMD-check](https://github.com/agnesdeng/vismi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/agnesdeng/vismi/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
 ## Overview
