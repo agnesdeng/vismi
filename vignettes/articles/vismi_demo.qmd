@@ -39,7 +39,7 @@ When `verbose = TRUE`, `vismi()` will print out the following information in the
 
   This summary shows the breakdown of missingness patterns across the variables of interest (`x`, `y`, and `z`). In this example, among     `head_circumference_cm`, `weight_kg`, and `sex`, there are 13 observations missing only `head_circumference_cm`, 6 observations missing only `weight_kg`, and 111 observations missing in both `head_circumference_cm` and `weight_kg`.
 
-- Imputed data visualisation
+- Imputed data used for visualisation
 
   This section reports the number of target observations with at least one missing value in the variables of interest (x, y, and z). Only the post-imputed values of these target observations are shown in the `m` imputation panels of the `vismi()` output. We can then compare them with the observed data panel.
   
