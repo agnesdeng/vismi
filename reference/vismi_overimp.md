@@ -23,6 +23,7 @@ vismi_overimp(
   test_color_pal = NULL,
   stack_y = FALSE,
   diag_color = NULL,
+  gg_style = list(),
   seed = 2025,
   ...
 )
@@ -33,7 +34,8 @@ vismi_overimp(
 - obj:
 
   Overimputation object of class 'overimp' created by the
-  [`overimp()`](overimp.md) function.
+  [`overimp()`](https://agnesdeng.github.io/vismi/reference/overimp.md)
+  function.
 
 - x:
 
@@ -106,6 +108,99 @@ vismi_overimp(
   A character string specifying the color of the diagonal line in
   scatter plots. Default is NULL.
 
+- gg_style:
+
+  A named list of style overrides. Supplied entries are merged onto the
+  defaults, so only the keys you wish to change need to be given.
+  Unrecognised keys are silently ignored. Default is
+  [`list()`](https://rdrr.io/r/base/list.html) (use all defaults). Valid
+  keys:
+
+  `title_color`
+
+  :   Title colour (default `"#242429"`).
+
+  `title_size`
+
+  :   Title font size (default 14).
+
+  `title_face`
+
+  :   Title font face, one of `"plain"` (default), `"bold"`, `"italic"`
+      or `"bold.italic"`.
+
+  `subtitle_color`
+
+  :   Subtitle colour (default `"#242429"`).
+
+  `subtitle_size`
+
+  :   Subtitle font size (default 14).
+
+  `subtitle_face`
+
+  :   Subtitle font face (default `"plain"`).
+
+  `axis_title_color`
+
+  :   Axis title colour (default `"#35353d"`).
+
+  `axis_title_size`
+
+  :   Axis title font size (default 10).
+
+  `axis_title_face`
+
+  :   Axis title font face (default `"bold"`).
+
+  `axis_text_size`
+
+  :   Axis tick label font size (default 9).
+
+  `axis_text_angle_x`
+
+  :   Rotation of x-axis tick labels, in degrees (default 0).
+
+  `axis_text_angle_y`
+
+  :   Rotation of y-axis tick labels, in degrees (default 0).
+
+  `panel_bg_fill`
+
+  :   Panel background fill (default `"gray95"`).
+
+  `panel_bg_color`
+
+  :   Panel border colour; `NA` (default) draws no border.
+
+  `strip_bg_fill`
+
+  :   Facet strip background fill (default `"gray85"`).
+
+  `strip_bg_color`
+
+  :   Facet strip border colour; `NA` (default) draws no border.
+
+  `strip_text_size`
+
+  :   Facet strip label font size (default 8).
+
+  `grid_major_color`
+
+  :   Major grid line colour (default `"white"`).
+
+  `grid_major_linewidth`
+
+  :   Major grid line width (default 0.3).
+
+  `grid_minor_color`
+
+  :   Minor grid line colour (default `"white"`).
+
+  `grid_minor_linewidth`
+
+  :   Minor grid line width (default 0.2).
+
 - seed:
 
   An integer specifying the random seed for reproducibility. Default is
@@ -120,11 +215,14 @@ vismi_overimp(
 
 An `overimp_plot` object displaying the overimputation plots for
 training and test data (if users set `test_ratio > 0` in the
-[`overimp()`](overimp.md) function.)
+[`overimp()`](https://agnesdeng.github.io/vismi/reference/overimp.md)
+function.)
 
 ## Examples
 
 ``` r
-obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
-vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "cv")
+if (requireNamespace("mixgb", quietly = TRUE)) {
+  obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+  vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "cv")
+}
 ```

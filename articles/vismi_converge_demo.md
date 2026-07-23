@@ -11,6 +11,7 @@ packages with 5 multiple imputations (`m = 5`) and 10 iterations
 (`maxit = 10`).
 
 ``` r
+
 library(vismi)
 library(mice)
 library(mixgb)
@@ -26,6 +27,7 @@ mixgb_pmm_obj <- mixgb(data = newborn, m = 5, maxit = 30, pmm.type = "auto",
 ### Visualise convergence diagnostic for mice object
 
 ``` r
+
 vismi_converge(obj = mice_obj, x = "recumbent_length_cm", tick_vals = NULL,
     linewidth = 0.5, mean_lim = c(68, 70.5), sd_lim = c(3, 8))
 ```
@@ -35,6 +37,7 @@ vismi_converge(obj = mice_obj, x = "recumbent_length_cm", tick_vals = NULL,
 ### Visualise convergence diagnostic for mixgb object (with PMM)
 
 ``` r
+
 vismi_converge(obj = mixgb_pmm_obj, x = "recumbent_length_cm",
     tick_vals = NULL, linewidth = 0.5, mean_lim = c(68, 70.5),
     sd_lim = c(3, 8))
@@ -45,6 +48,7 @@ vismi_converge(obj = mixgb_pmm_obj, x = "recumbent_length_cm",
 ### Visualise convergence diagnostic for mixgb object (without PMM)
 
 ``` r
+
 vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm", tick_vals = NULL,
     linewidth = 0.5, mean_lim = c(68, 70.5), sd_lim = c(3, 8))
 ```
@@ -53,8 +57,9 @@ vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm", tick_vals = NULL,
 
 > **Convergence diagnostic for mixgb object**
 >
-> To use [`vismi_converge()`](../reference/vismi_converge.md) for
-> **mixgb** object, users are required to set `save.models = TRUE` in
-> [`mixgb()`](https://agnesdeng.github.io/mixgb/reference/mixgb.html) so
-> that intermediate summary statistics for imputations would be saved at
-> each iteration for plotting convergence diagnostics.
+> To use
+> [`vismi_converge()`](https://agnesdeng.github.io/vismi/reference/vismi_converge.md)
+> for **mixgb** object, users are required to set `save.models = TRUE`
+> in [`mixgb()`](https://agnesdeng.github.io/mixgb/reference/mixgb.html)
+> so that intermediate summary statistics for imputations would be saved
+> at each iteration for plotting convergence diagnostics.

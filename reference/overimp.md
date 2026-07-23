@@ -36,7 +36,10 @@ overimp(
 
 - method:
 
-  Can be one of the following: "mixgb","mice", and more in the future.
+  The imputation method to use. One of `"mixgb"` (default), `"mice"`
+  (mice with default per-variable methods), `"mice-cart"` (mice with
+  classification and regression trees), or `"mice-ranger"` (mice with
+  random forests via the ranger engine).
 
 - seed:
 
@@ -54,5 +57,7 @@ applicable) and essential parameters required for plotting.
 ## Examples
 
 ``` r
-obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+if (requireNamespace("mixgb", quietly = TRUE)) {
+  obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+}
 ```

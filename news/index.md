@@ -1,5 +1,12 @@
 # Changelog
 
+## vismi 1.0.0
+
+#### New Features
+
+- Support plot aesthetic parameters changed by users
+- Added `overimp` function for `mice`
+
 ## vismi 0.9.5
 
 CRAN release: 2026-02-03
@@ -95,7 +102,8 @@ CRAN release: 2026-02-03
 #### New Features
 
 - subset imputed datasets for plotting via `imp_idx` or `m` argument in
-  [`vismi()`](../reference/vismi.md) function. \### Bug Fixes
+  [`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md)
+  function. \### Bug Fixes
 - Misalignment issue of using plotly subplots in `.plotly_box_facet()`.
   \### Refactoring
 - Refactored other functions.
@@ -133,8 +141,9 @@ CRAN release: 2026-02-03
 
 - Added preprocessing function
 - Default parameters handling
-- A high-level main function [`vismi()`](../reference/vismi.md) will be
-  used to call all other inspection functions.
+- A high-level main function
+  [`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md) will
+  be used to call all other inspection functions.
 
 ## vismi 0.1.0
 

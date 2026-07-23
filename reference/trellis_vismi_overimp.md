@@ -128,8 +128,10 @@ all variables.
 ## Examples
 
 ``` r
-obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0, method = "mixgb")
-trellis_vismi_overimp(obj = obj, stack_y = TRUE)
+if (requireNamespace("mixgb", quietly = TRUE)) {
+  obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0, method = "mixgb")
+  trellis_vismi_overimp(obj = obj, stack_y = TRUE)
+}
 
-{"x":{"id":"5afaf3e4","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Overimputation_diagnostic_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
+{"x":{"id":"e0e08d6d","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Overimputation_diagnostic_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
 ```

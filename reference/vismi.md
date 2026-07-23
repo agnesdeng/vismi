@@ -22,6 +22,8 @@ vismi(
   title = "auto",
   subtitle = "auto",
   color_pal = NULL,
+  plotly_style = list(),
+  gg_style = list(),
   marginal_x = "box+rug",
   marginal_y = NULL,
   verbose = FALSE,
@@ -90,6 +92,176 @@ vismi(
 
   A named vector of colors for different imputation sets. If NULL
   (default), a default color palette is used.
+
+- plotly_style:
+
+  A named list of style overrides for interactive (`interactive = TRUE`)
+  plots. Unrecognised keys are silently ignored. Default is
+  [`list()`](https://rdrr.io/r/base/list.html) (use all defaults). Valid
+  keys:
+
+  `title_size`
+
+  :   Title font size (default 20).
+
+  `title_color`
+
+  :   Title colour (default `"#242429"`).
+
+  `title_font`
+
+  :   Title font family (default `"Helvetica, Arial, sans-serif"`).
+
+  `axis_title_size`
+
+  :   Axis title font size (default 14).
+
+  `axis_title_font`
+
+  :   Axis title font family (default `"Arial Black"`).
+
+  `axis_title_color`
+
+  :   Axis title colour (default `"#35353d"`).
+
+  `plot_bgcolor`
+
+  :   Background colour of the plot area (default `"#f2f7fc"`).
+
+  `paper_bgcolor`
+
+  :   Background colour of the full figure (default `"#fff"`).
+
+  `gridcolor`
+
+  :   Grid line colour (default `"#999"`).
+
+  Additional keys for 3D numeric plots (`x`, `y`, `z` all numeric):
+
+  `scene3d_domain_x`
+
+  :   Numeric vector of length 2 defining the horizontal extent of the
+      3D scene on the paper (default `c(0, 1)`, full width).
+
+  `scene3d_domain_y`
+
+  :   Numeric vector of length 2 defining the vertical extent of the 3D
+      scene on the paper (default `c(0.05, 0.95)`).
+
+  `scene3d_title_y`
+
+  :   Vertical position of the title in paper coordinates (default
+      `0.9`). Decrease to move the title down and reduce the gap between
+      the title and the 3D box.
+
+  `scene3d_margin_t`
+
+  :   Top margin in pixels (default `0`).
+
+  `scene3d_margin_r`
+
+  :   Right margin in pixels (default `0`).
+
+  `scene3d_margin_b`
+
+  :   Bottom margin in pixels (default `0`).
+
+  `scene3d_margin_l`
+
+  :   Left margin in pixels (default `0`).
+
+  `scene3d_eye_x`
+
+  :   Camera eye x position (default `1.25`). Negative values flip the
+      viewing direction.
+
+  `scene3d_eye_y`
+
+  :   Camera eye y position (default `1.25`).
+
+  `scene3d_eye_z`
+
+  :   Camera eye z position (default `1.25`). Smaller values lower the
+      viewing angle; values near `0` give a near-horizontal view.
+
+- gg_style:
+
+  A named list of style overrides for static (`interactive = FALSE`)
+  plots. Unrecognised keys are silently ignored. Default is
+  [`list()`](https://rdrr.io/r/base/list.html) (use all defaults). Valid
+  keys:
+
+  `gg_title_size`
+
+  :   Title font size (default 14).
+
+  `gg_title_face`
+
+  :   Title font face, e.g. `"bold"` (default).
+
+  `title_color`
+
+  :   Title colour (default `"#242429"`).
+
+  `gg_subtitle_size`
+
+  :   Subtitle font size (default 14).
+
+  `gg_subtitle_face`
+
+  :   Subtitle font face (default `"plain"`).
+
+  `subtitle_color`
+
+  :   Subtitle colour (default `"#242429"`).
+
+  `gg_axis_title_size`
+
+  :   Axis title font size (default 10).
+
+  `gg_axis_title_face`
+
+  :   Axis title font face (default `"bold"`).
+
+  `axis_title_color`
+
+  :   Axis title colour (default `"#35353d"`).
+
+  `gg_axis_text_size`
+
+  :   Axis tick label font size (default 9).
+
+  `panel_bg_fill`
+
+  :   Panel background fill colour (default `"gray95"`).
+
+  `panel_bg_color`
+
+  :   Panel background border colour (default `NA`).
+
+  `strip_bg_fill`
+
+  :   Facet strip background fill (default `"gray85"`).
+
+  `strip_bg_color`
+
+  :   Facet strip background border colour (default `NA`).
+
+  `grid_major_color`
+
+  :   Major grid line colour (default `"white"`).
+
+  `grid_major_linewidth`
+
+  :   Major grid line width (default `0.3`).
+
+  `grid_minor_color`
+
+  :   Minor grid line colour (default `"white"`).
+
+  `grid_minor_linewidth`
+
+  :   Minor grid line width (default `0.2`).
 
 - marginal_x:
 

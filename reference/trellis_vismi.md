@@ -106,5 +106,5 @@ for all variables.
 ``` r
 trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box")
 
-{"x":{"id":"a2c128eb","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Distributional_characteristics_for_multiply_imputed_values_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
+{"x":{"id":"9b1a733a","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Distributional_characteristics_for_multiply_imputed_values_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
 ```

@@ -3,15 +3,17 @@
 ## Introduction
 
 This vignette demonstrates how to use the
-[`vismi()`](../reference/vismi.md) function from the **vismi** package
-to visualise and compare the distributional characteristics of observed
-and imputed data. The [`vismi()`](../reference/vismi.md) function can
-automatically generate suitable static and interactive visualisations
-for one, two, or three variables, which can be numeric or factor
-(categorical) variables.
+[`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md)
+function from the **vismi** package to visualise and compare the
+distributional characteristics of observed and imputed data. The
+[`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md)
+function can automatically generate suitable static and interactive
+visualisations for one, two, or three variables, which can be numeric or
+factor (categorical) variables.
 
-When `verbose = TRUE`, [`vismi()`](../reference/vismi.md) will print out
-the following information in the console:
+When `verbose = TRUE`,
+[`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md) will
+print out the following information in the console:
 
 - Sanity checks:
 
@@ -33,15 +35,17 @@ the following information in the console:
   missing only `weight_kg`, and 111 observations missing in both
   `head_circumference_cm` and `weight_kg`.
 
-- Imputed data visualisation
+- Imputed data used for visualisation
 
   This section reports the number of target observations with at least
   one missing value in the variables of interest (x, y, and z). Only the
   post-imputed values of these target observations are shown in the `m`
-  imputation panels of the [`vismi()`](../reference/vismi.md) output. We
-  can then compare them with the observed data panel.
+  imputation panels of the
+  [`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md)
+  output. We can then compare them with the observed data panel.
 
 ``` r
+
 library(vismi)
 vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
     y = "weight_kg", z = "sex", verbose = TRUE)
@@ -75,7 +79,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 ```
 
 Users need to provide the following inputs to
-[`vismi()`](../reference/vismi.md):
+[`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md):
 
 - `data`: the original incomplete dataset (a data frame or tibble or
   data table).
@@ -90,7 +94,8 @@ Users need to provide the following inputs to
 
 - `x`, `y`, `z` : the variable names (as strings) to be visualised. `x`
   is required, while `y` and `z` are optional. Depending on the number
-  of variables provided, [`vismi()`](../reference/vismi.md) will
+  of variables provided,
+  [`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md) will
   generate suitable visualisations.
 
 - `interactive`: a logical argument indicating whether to generate an
@@ -98,7 +103,9 @@ Users need to provide the following inputs to
   **ggplot2**). Default is `FALSE` (static plot).
 
 - other arguments: users can pass on different plot settings. See the
-  documentation of [`vismi()`](../reference/vismi.md) for more details.
+  documentation of
+  [`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md) for
+  more details.
 
 ## 1D visualisation
 
@@ -107,6 +114,7 @@ Users need to provide the following inputs to
 #### Static
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
     marginal_x = "box+rug")
 ```
@@ -116,6 +124,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 #### Interactive
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
     interactive = TRUE, marginal_x = "box+rug")
 ```
@@ -125,6 +134,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 #### Static
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "smoke")
 ```
 
@@ -133,6 +143,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "smoke")
 #### Interactive
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "smoke", interactive = TRUE)
 ```
 
@@ -143,6 +154,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "smoke", interactive = TRUE)
 #### Static
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
     y = "recumbent_length_cm", marginal_x = "box+rug", marginal_y = "box+rug")
 ```
@@ -152,6 +164,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 #### Interactive
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
     y = "recumbent_length_cm", interactive = TRUE, marginal_x = "box+rug",
     marginal_y = "box+rug")
@@ -162,6 +175,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 #### Static
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm",
     y = "sex")
 ```
@@ -171,6 +185,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm",
 #### Interactive
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm",
     y = "sex", interactive = TRUE)
 ```
@@ -180,6 +195,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm",
 #### Static
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "smoke")
 ```
 
@@ -188,6 +204,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "smoke")
 #### Interactive
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "smoke",
     interactive = TRUE)
 ```
@@ -199,6 +216,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "smoke",
 #### Static
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm",
     y = "head_circumference_cm", z = "weight_kg")
 ```
@@ -208,6 +226,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm",
 #### Interactive
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm",
     y = "head_circumference_cm", z = "weight_kg", interactive = TRUE,
     point_size = 3)
@@ -218,6 +237,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "recumbent_length_cm",
 #### Static
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
     y = "smoke", z = "recumbent_length_cm")
 ```
@@ -227,6 +247,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 #### Interactive
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
     y = "smoke", z = "recumbent_length_cm", interactive = TRUE,
     point_size = 3)
@@ -237,6 +258,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 #### Static
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
     y = "sex", z = "smoke")
 ```
@@ -246,6 +268,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 #### Interactive
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
     y = "sex", z = "smoke", interactive = TRUE, point_size = 3)
 ```
@@ -255,6 +278,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 #### Static
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "race",
     z = "smoke")
 ```
@@ -264,6 +288,7 @@ vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "race",
 #### Interactive
 
 ``` r
+
 vismi(data = newborn, imp_list = imp_newborn, x = "sex", y = "race",
     z = "smoke", interactive = TRUE)
 ```

@@ -1,4 +1,4 @@
-pandoc: 3.6.3
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -6,4 +6,7 @@ articles:
   articles/vismi_converge_demo: vismi_converge_demo.html
   articles/vismi_demo: vismi_demo.html
   articles/vismi_overimp_demo: vismi_overimp_demo.html
-last_built: 2026-02-03T18:05Z
+last_built: 2026-07-23T12:33Z
+urls:
+  reference: https://agnesdeng.github.io/vismi/reference
+  article: https://agnesdeng.github.io/vismi/articles
