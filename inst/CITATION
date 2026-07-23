@@ -1,8 +1,10 @@
+if (!exists("meta") || is.null(meta)) meta <- packageDescription("vismi")
+
 bibentry(
   bibtype  = "Manual",
   title    = "vismi: Visual Diagnostics for Multiple Imputation",
   author   = "Yongshi Deng, Thomas Lumley",
   year     = format(Sys.Date(), "%Y"),
-  note    = paste("R package version", packageVersion("vismi")),
+  note     = paste("R package version", meta$Version),
   url      = "https://CRAN.R-project.org/package=vismi"
 )
