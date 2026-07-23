@@ -77,11 +77,11 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 Users need to provide the following inputs to
 [`vismi()`](../reference/vismi.md):
 
-- `data`: the original incomplete dataset (a data frame or tibble or
+- `data`: the original incomplete dataset (a data frame, tibble or
   data table).
 
-- `imp_list`: a list of imputed datasets (a list of data frames or
-  tibbles or data tables). This can be obtained using
+- `imp_list`: a list of imputed datasets (a list of data frames, tibbles
+  or data tables). This can be obtained using
   [`mixgb()`](https://agnesdeng.github.io/mixgb/reference/mixgb.html)
   from the **mixgb** package,
   [`mice()`](https://amices.org/mice/reference/mice.html) from the

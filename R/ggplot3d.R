@@ -1,4 +1,4 @@
-ggplot_3num <- function(all_dt, x, y, z, color_pal, point_size, alpha, title, subtitle) {
+ggplot_3num <- function(all_dt, x, y, z, color_pal, point_size, alpha, title, subtitle, gg_style = list()) {
   GGally::ggpairs(
     all_dt,
     columns = c(x, y, z),
@@ -7,12 +7,12 @@ ggplot_3num <- function(all_dt, x, y, z, color_pal, point_size, alpha, title, su
       alpha = alpha
     ),
   ) + scale_color_manual(values = as.vector(color_pal)) +
-    labs(title = title, subtitle = subtitle)+
-    .ggplot_theme()
+    labs(title = title, subtitle = subtitle) +
+    .ggplot_theme(gg_style = gg_style)
 }
 
 
-ggplot_3fac <- function(all_dt, x, y, z, color_pal, title, subtitle) {
+ggplot_3fac <- function(all_dt, x, y, z, color_pal, title, subtitle, gg_style = list()) {
   all_sum <- all_dt |>
     group_by(Group, .data[[x]], .data[[y]], .data[[z]]) |>
     summarise(count = n(), .groups = "drop") |>
@@ -41,12 +41,12 @@ ggplot_3fac <- function(all_dt, x, y, z, color_pal, title, subtitle) {
     scale_fill_manual(values = color_pal) +
     scale_alpha_manual(values = seq(0.3, 1, length.out = length(unique(all_dt[[z]])))) +
     labs(x = "Proportion", y = "Combination", title = title, subtitle = subtitle) +
-    guides(fill = "none", color = "none", alpha = guide_legend(override.aes = list(size = 3)))+
-    .ggplot_theme_3fac()
+    guides(fill = "none", color = "none", alpha = guide_legend(override.aes = list(size = 3))) +
+    .ggplot_theme_3fac(gg_style = gg_style)
 }
 
 
-ggplot_1fac2num <- function(all_dt, x, y, z, color_pal, point_size, alpha, title, subtitle) {
+ggplot_1fac2num <- function(all_dt, x, y, z, color_pal, point_size, alpha, title, subtitle, gg_style = list()) {
   fig <- ggplot(all_dt, aes(x = .data[[x]], y = .data[[y]])) +
     geom_point(alpha = alpha, aes(color = Group, fill = Group), size = point_size) +
     facet_grid(.data[[z]] ~ Group, labeller = labeller(
@@ -57,14 +57,14 @@ ggplot_1fac2num <- function(all_dt, x, y, z, color_pal, point_size, alpha, title
     scale_color_manual(values = color_pal) +
     scale_fill_manual(values = color_pal) +
     # scale_y_continuous(sec.axis = sec_axis(~., name = z, breaks = NULL, labels = NULL))+
-    labs(x = x, y = y, title = title, subtitle = subtitle)+
-    .ggplot_theme()
+    labs(x = x, y = y, title = title, subtitle = subtitle) +
+    .ggplot_theme(gg_style = gg_style)
 
   gridExtra::arrangeGrob(fig, right = z)
 }
 
 
-ggplot_2fac1num <- function(all_dt, x, y, z, color_pal, point_size, alpha, boxpoints, title, subtitle) {
+ggplot_2fac1num <- function(all_dt, x, y, z, color_pal, point_size, alpha, boxpoints, title, subtitle, gg_style = list()) {
   if (isFALSE(boxpoints)) {
     fig <- ggplot(all_dt, aes(x = .data[[x]], y = .data[[y]])) +
       geom_boxplot(alpha = alpha, aes(fill = Group), outlier.shape = NA)
@@ -85,8 +85,8 @@ ggplot_2fac1num <- function(all_dt, x, y, z, color_pal, point_size, alpha, boxpo
     scale_color_manual(values = color_pal) +
     scale_fill_manual(values = color_pal) +
     # scale_y_continuous(sec.axis = sec_axis(~., name = z, breaks = NULL, labels = NULL))+
-    labs(x = x, y = y, title = title, subtitle = subtitle)+
-    .ggplot_theme()
+    labs(x = x, y = y, title = title, subtitle = subtitle) +
+    .ggplot_theme(gg_style = gg_style)
 
   gridExtra::arrangeGrob(fig, right = z)
 }

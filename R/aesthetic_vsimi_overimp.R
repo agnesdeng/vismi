@@ -27,6 +27,8 @@
     axis_title_size = 10,
     axis_title_face = "bold",
     axis_text_size = 9,
+    axis_text_angle_x = 0,
+    axis_text_angle_y = 0,
     panel_bg_fill = "gray95",
     panel_bg_color = NA,
     strip_bg_fill = "gray85",
@@ -39,9 +41,9 @@
   )
 }
 
-.ggplot_overimp_theme <- function(fig, showlegend = TRUE, markdown_axis_titles = FALSE) {
+.ggplot_overimp_theme <- function(fig, showlegend = TRUE, markdown_axis_titles = FALSE, gg_style = list()) {
 
-  style <- .vismi_overimp_style()
+  style <- modifyList(.vismi_overimp_style(), gg_style)
 
   if (showlegend == FALSE) {
     fig <- fig + guides(fill = "none", color = "none")
@@ -63,8 +65,10 @@
       #axis.title.y = element_text(size = 10, margin = margin(0, r = 5, 0, l = 0)),
       plot.title = element_text(size = style$title_size, colour = style$title_color, face = style$title_face),
       plot.subtitle = element_text(size = style$subtitle_size, colour = style$subtitle_color, face = style$subtitle_face),
-      axis.text.x = element_text(size = style$axis_text_size),
-      axis.text.y = element_text(size = style$axis_text_size),
+      axis.text.x = element_text(size = style$axis_text_size, angle = style$axis_text_angle_x,
+                                  hjust = if (style$axis_text_angle_x != 0) 1 else 0.5,
+                                  vjust = if (style$axis_text_angle_x != 0) 1 else 0.5),
+      axis.text.y = element_text(size = style$axis_text_size, angle = style$axis_text_angle_y),
       legend.position = "right", # or "bottom", "top", "left", "none"
       legend.title = element_text(size = 12, face = "bold"),
       legend.text = element_text(size = 8),

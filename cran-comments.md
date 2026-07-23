@@ -1,7 +1,5 @@
-## Resubmission
-This is a resubmission. In this version I have edited examples to reduce running time to pass CRAN submission checks.
-
-
-# vismi 0.9.5
+## Submission
+── R CMD check results ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── vismi 1.0.0 ────
+Duration: 36.7s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔

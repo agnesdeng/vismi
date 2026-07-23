@@ -16,6 +16,89 @@
 #' @param subtitle A string specifying the subtitle of the plot. Default is "auto" (automatic subtitle based on \code{x,y,z} input). If NULL, no subtitle is shown.
 #' @param integerAsFactor A logical value indicating whether to treat integer variables as factors
 #' (TRUE) or numeric (FALSE). Default is FALSE.
+#' @param plotly_style A named list of style overrides for interactive
+#'   (\code{interactive = TRUE}) plots. Unrecognised keys are silently ignored.
+#'   Default is \code{list()} (use all defaults). Valid keys:
+#'   \describe{
+#'     \item{\code{title_size}}{Title font size (default 20).}
+#'     \item{\code{title_color}}{Title colour (default \code{"#242429"}).}
+#'     \item{\code{title_font}}{Title font family
+#'       (default \code{"Helvetica, Arial, sans-serif"}).}
+#'     \item{\code{axis_title_size}}{Axis title font size (default 14).}
+#'     \item{\code{axis_title_font}}{Axis title font family
+#'       (default \code{"Arial Black"}).}
+#'     \item{\code{axis_title_color}}{Axis title colour
+#'       (default \code{"#35353d"}).}
+#'     \item{\code{plot_bgcolor}}{Background colour of the plot area
+#'       (default \code{"#f2f7fc"}).}
+#'     \item{\code{paper_bgcolor}}{Background colour of the full figure
+#'       (default \code{"#fff"}).}
+#'     \item{\code{gridcolor}}{Grid line colour (default \code{"#999"}).}
+#'   }
+#'   Additional keys for 3D numeric plots (\code{x}, \code{y}, \code{z} all
+#'   numeric):
+#'   \describe{
+#'     \item{\code{scene3d_domain_x}}{Numeric vector of length 2 defining the
+#'       horizontal extent of the 3D scene on the paper
+#'       (default \code{c(0, 1)}, full width).}
+#'     \item{\code{scene3d_domain_y}}{Numeric vector of length 2 defining the
+#'       vertical extent of the 3D scene on the paper
+#'       (default \code{c(0.05, 0.95)}).}
+#'     \item{\code{scene3d_title_y}}{Vertical position of the title in paper
+#'       coordinates (default \code{0.9}). Decrease to move the title down
+#'       and reduce the gap between the title and the 3D box.}
+#'     \item{\code{scene3d_margin_t}}{Top margin in pixels (default \code{0}).}
+#'     \item{\code{scene3d_margin_r}}{Right margin in pixels (default
+#'       \code{0}).}
+#'     \item{\code{scene3d_margin_b}}{Bottom margin in pixels (default
+#'       \code{0}).}
+#'     \item{\code{scene3d_margin_l}}{Left margin in pixels (default
+#'       \code{0}).}
+#'     \item{\code{scene3d_eye_x}}{Camera eye x position (default
+#'       \code{1.25}). Negative values flip the viewing direction.}
+#'     \item{\code{scene3d_eye_y}}{Camera eye y position (default
+#'       \code{1.25}).}
+#'     \item{\code{scene3d_eye_z}}{Camera eye z position (default
+#'       \code{1.25}). Smaller values lower the viewing angle; values near
+#'       \code{0} give a near-horizontal view.}
+#'   }
+#' @param gg_style A named list of style overrides for static
+#'   (\code{interactive = FALSE}) plots. Unrecognised keys are silently
+#'   ignored. Default is \code{list()} (use all defaults). Valid keys:
+#'   \describe{
+#'     \item{\code{gg_title_size}}{Title font size (default 14).}
+#'     \item{\code{gg_title_face}}{Title font face, e.g. \code{"bold"}
+#'       (default).}
+#'     \item{\code{title_color}}{Title colour (default \code{"#242429"}).}
+#'     \item{\code{gg_subtitle_size}}{Subtitle font size (default 14).}
+#'     \item{\code{gg_subtitle_face}}{Subtitle font face (default
+#'       \code{"plain"}).}
+#'     \item{\code{subtitle_color}}{Subtitle colour
+#'       (default \code{"#242429"}).}
+#'     \item{\code{gg_axis_title_size}}{Axis title font size (default 10).}
+#'     \item{\code{gg_axis_title_face}}{Axis title font face (default
+#'       \code{"bold"}).}
+#'     \item{\code{axis_title_color}}{Axis title colour
+#'       (default \code{"#35353d"}).}
+#'     \item{\code{gg_axis_text_size}}{Axis tick label font size
+#'       (default 9).}
+#'     \item{\code{panel_bg_fill}}{Panel background fill colour
+#'       (default \code{"gray95"}).}
+#'     \item{\code{panel_bg_color}}{Panel background border colour
+#'       (default \code{NA}).}
+#'     \item{\code{strip_bg_fill}}{Facet strip background fill
+#'       (default \code{"gray85"}).}
+#'     \item{\code{strip_bg_color}}{Facet strip background border colour
+#'       (default \code{NA}).}
+#'     \item{\code{grid_major_color}}{Major grid line colour
+#'       (default \code{"white"}).}
+#'     \item{\code{grid_major_linewidth}}{Major grid line width
+#'       (default \code{0.3}).}
+#'     \item{\code{grid_minor_color}}{Minor grid line colour
+#'       (default \code{"white"}).}
+#'     \item{\code{grid_minor_linewidth}}{Minor grid line width
+#'       (default \code{0.2}).}
+#'   }
 #' @param color_pal A named vector of colors for different imputation sets. If NULL
 #' (default), a default color palette is used.
 #' @param marginal_x A character string specifying the type of marginal plot to add for the x variable in 2D plots.
@@ -31,7 +114,12 @@
 #' @export
 #' @examples
 #' vismi(data = nhanes3, imp_list = imp_nhanes3, x = "weight_kg", y = "head_circumference_cm", z="sex")
-vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx = NULL, interactive = FALSE, integerAsFactor = FALSE, title = "auto", subtitle = "auto", color_pal = NULL, marginal_x = "box+rug", marginal_y = NULL, verbose = FALSE, ...) {
+vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL,
+                  m = NULL, imp_idx = NULL, interactive = FALSE,
+                  integerAsFactor = FALSE, title = "auto", subtitle = "auto",
+                  color_pal = NULL, plotly_style = list(), gg_style = list(),
+                  marginal_x = "box+rug", marginal_y = NULL,
+                  verbose = FALSE, ...) {
   # check data
   data <- .validate_data(data = data, integerAsFactor = integerAsFactor, max_levels = round(0.5 * nrow(data)),verbose = verbose)
 
@@ -79,8 +167,10 @@ vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_id
 
   if (interactive) {
     params <- modifyList(.vismi_interactive_params(), users_params)
+    resolved_plotly_style <- modifyList(.vismi_plotly_style(), plotly_style)
   } else {
     params <- modifyList(.vismi_static_params(), users_params)
+    resolved_gg_style <- modifyList(.vismi_gg_style(), gg_style)
   }
 
   point_size <- params$point_size
@@ -250,7 +340,9 @@ vismi <- function(data, imp_list, x = NULL, y = NULL, z = NULL, m = NULL, imp_id
     alpha = alpha,
     nbins = nbins,
     width = width,
-    boxpoints = boxpoints
+    boxpoints = boxpoints,
+    plotly_style = if (interactive) resolved_plotly_style else list(),
+    gg_style = if (!interactive) resolved_gg_style else list()
   )
 
   # Call the plotting function

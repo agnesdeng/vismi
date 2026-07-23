@@ -59,6 +59,14 @@
     all_dt <- rbindlist(list(mt_dt, imp_dt), use.names = TRUE)
     all_dt[, Group := factor(Group, levels = c("Masked true", imp_names))]
 
+    # rbindlist may coerce factor columns to character when levels differ across items;
+    # restore original factor levels from dt so downstream code can rely on levels()
+    for (v in vars) {
+      if (is.factor(dt[[v]])) {
+        all_dt[, (v) := factor(as.character(get(v)), levels = levels(dt[[v]]))]
+      }
+    }
+
     # integerAsFactor
     int <- sapply(all_dt[, ..vars], is.integer)
 

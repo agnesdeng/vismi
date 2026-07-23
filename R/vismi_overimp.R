@@ -18,6 +18,44 @@
 #' @param test_color_pal A vector of colors for the test data. If NULL, default colors will be used.
 #' @param stack_y A logical indicating whether to stack y values in certain plots. Default is FALSE.
 #' @param diag_color A character string specifying the color of the diagonal line in scatter plots. Default is NULL.
+#' @param gg_style A named list of style overrides. Supplied entries are merged onto the
+#'   defaults, so only the keys you wish to change need to be given.
+#'   Unrecognised keys are silently ignored. Default is \code{list()} (use all
+#'   defaults). Valid keys:
+#'   \describe{
+#'     \item{\code{title_color}}{Title colour (default \code{"#242429"}).}
+#'     \item{\code{title_size}}{Title font size (default 14).}
+#'     \item{\code{title_face}}{Title font face, one of \code{"plain"}
+#'       (default), \code{"bold"}, \code{"italic"} or \code{"bold.italic"}.}
+#'     \item{\code{subtitle_color}}{Subtitle colour (default \code{"#242429"}).}
+#'     \item{\code{subtitle_size}}{Subtitle font size (default 14).}
+#'     \item{\code{subtitle_face}}{Subtitle font face (default \code{"plain"}).}
+#'     \item{\code{axis_title_color}}{Axis title colour (default
+#'       \code{"#35353d"}).}
+#'     \item{\code{axis_title_size}}{Axis title font size (default 10).}
+#'     \item{\code{axis_title_face}}{Axis title font face (default
+#'       \code{"bold"}).}
+#'     \item{\code{axis_text_size}}{Axis tick label font size (default 9).}
+#'     \item{\code{axis_text_angle_x}}{Rotation of x-axis tick labels, in
+#'       degrees (default 0).}
+#'     \item{\code{axis_text_angle_y}}{Rotation of y-axis tick labels, in
+#'       degrees (default 0).}
+#'     \item{\code{panel_bg_fill}}{Panel background fill (default
+#'       \code{"gray95"}).}
+#'     \item{\code{panel_bg_color}}{Panel border colour; \code{NA} (default)
+#'       draws no border.}
+#'     \item{\code{strip_bg_fill}}{Facet strip background fill (default
+#'       \code{"gray85"}).}
+#'     \item{\code{strip_bg_color}}{Facet strip border colour; \code{NA}
+#'       (default) draws no border.}
+#'     \item{\code{strip_text_size}}{Facet strip label font size (default 8).}
+#'     \item{\code{grid_major_color}}{Major grid line colour (default
+#'       \code{"white"}).}
+#'     \item{\code{grid_major_linewidth}}{Major grid line width (default 0.3).}
+#'     \item{\code{grid_minor_color}}{Minor grid line colour (default
+#'       \code{"white"}).}
+#'     \item{\code{grid_minor_linewidth}}{Minor grid line width (default 0.2).}
+#'   }
 #' @param seed An integer specifying the random seed for reproducibility. Default is 2025.
 #' @param ... Additional arguments to customize the plots, such as position, point_size, linewidth, alpha, xlim, ylim, boxpoints, width.
 #' @return An \code{overimp_plot} object displaying the overimputation plots for training and test data (if users set \code{test_ratio > 0} in the \code{overimp()} function.)
@@ -25,7 +63,7 @@
 #' @examples
 #' obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
 #' vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "cv")
-vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = NULL, seed = 2025, ...) {
+vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = NULL, gg_style = list(), seed = 2025, ...) {
   # checking
   if (!inherits(obj, "overimp")) stop("Object must be of class 'overimp'")
 
@@ -92,7 +130,8 @@ vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx =
 
   # number of variables
   D <- length(vars)
-  default_title <- "Masked true vs multiply-imputed values:"
+  method_label <- if (!is.null(obj$method)) paste0(" via ", obj$method) else ""
+  default_title <- paste0("Masked true vs multiply-imputed values", method_label, ":")
 
   if (D == 1) {
     x <- vars[1]
@@ -102,9 +141,6 @@ vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx =
     if (identical(subtitle, "auto")) {
       subtitle <- x
     }
-    #comb_title <- paste("Masked true vs multiply-imputed values:", x)
-    # comb_title <-grid::textGrob(paste("Masked true vs multiply-imputed values:", x),
-    # gp = grid::gpar(fontsize = 14, fontface = "bold"))
 
 
     plot_map <- list(
@@ -142,10 +178,6 @@ vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx =
     if (identical(subtitle, "auto")) {
       subtitle <- paste(y, "vs", x)
     }
-    #comb_title <- paste("Masked true vs multiply-imputed values:", y, "vs", x)
-
-    # comb_title <-grid::textGrob(paste("Masked true vs multiply-imputed values:", y, "vs", x),
-    # gp = grid::gpar(fontsize = 14, fontface = "bold"))
 
     type_comb <- paste0(sort(types), collapse = "_")
 
@@ -214,6 +246,7 @@ vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx =
     width = width,
     stack_y = stack_y,
     diag_color = diag_color,
+    gg_style = gg_style,
     seed = seed
   )
 

@@ -1,5 +1,5 @@
 # plot imputed vs masked true for a single numeric variable ---------------
-overimp1D_cv_num <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, train_color_pal, test_color_pal) {
+overimp1D_cv_num <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, train_color_pal, test_color_pal, gg_style = list()) {
   .transform_data <- function(data, x) {
     mt_data <- data |>
       filter(Group == "Masked true") |>
@@ -46,7 +46,7 @@ overimp1D_cv_num <- function(plot_data, x, title, subtitle, point_size, xlim, yl
       x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
       # x = paste("Masked true:", x), y = paste("Imputed:", x)
     )
-  train_plot <- .ggplot_overimp_theme(train_plot, showlegend = TRUE, markdown_axis_titles = TRUE)
+  train_plot <- .ggplot_overimp_theme(train_plot, showlegend = TRUE, markdown_axis_titles = TRUE, gg_style = gg_style)
 
 
   if (!is.null(xlim)) train_plot <- train_plot + xlim(xlim) else train_plot <- train_plot + xlim(c(min_val, max_val))
@@ -69,7 +69,7 @@ overimp1D_cv_num <- function(plot_data, x, title, subtitle, point_size, xlim, yl
         x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
         # x = paste("Masked true:", x), y = paste("Imputed:", x)
       )
-    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, markdown_axis_titles = TRUE)
+    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, markdown_axis_titles = TRUE, gg_style = gg_style)
 
     if (!is.null(xlim)) test_plot <- test_plot + xlim(xlim) else test_plot <- test_plot + xlim(c(min_val, max_val))
     if (!is.null(ylim)) test_plot <- test_plot + ylim(ylim) else test_plot <- test_plot + ylim(c(min_val, max_val))
@@ -98,8 +98,8 @@ overimp1D_cv_num <- function(plot_data, x, title, subtitle, point_size, xlim, yl
 
 
 #  plot imputed vs masked true for a single fac variable ------------------
-overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, train_color_pal, test_color_pal, stack_y, diag_color, seed) {
-  .transform_data <- function(data, x) {
+overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, train_color_pal, test_color_pal, stack_y, diag_color, seed, gg_style = list()) {
+  .transform_data <- function(data, x, all_levels) {
     mt_data <- data |>
       filter(Group == "Masked true") |>
       dplyr::select(row_index, `Masked true` = all_of(x))
@@ -108,14 +108,12 @@ overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, yl
       filter(Group != "Masked true") |>
       left_join(mt_data, by = "row_index")
 
-
     n_groups <- length(unique(join_data$Group))
-    spacing <- 0.8 / n_groups # 0.8 is the total width available for all groups
+    spacing <- 0.8 / n_groups
 
     join_data <- join_data |>
       mutate(
-        x_num = as.numeric(as.factor(.data$`Masked true`)),
-        # Create an offset: Group 1 moves left, Group 2 stays center, Group 3 moves right
+        x_num = as.numeric(factor(.data$`Masked true`, levels = all_levels)),
         group_idx = as.numeric(as.factor(Group)),
         group_offset = (.data$group_idx - (max(.data$group_idx) + 1) / 2) * spacing
       )
@@ -123,10 +121,9 @@ overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, yl
     join_data
   }
 
-
-  # two different version of plots
-  train_data <- .transform_data(data = plot_data$train$all_dt, x)
-  x_labels <- levels(train_data$`Masked true`)
+  all_levels <- levels(plot_data$train$all_dt[[x]])
+  x_labels   <- all_levels
+  train_data <- .transform_data(data = plot_data$train$all_dt, x, all_levels)
 
   if (stack_y) {
     if (!is.null(diag_color)) {
@@ -179,14 +176,19 @@ overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, yl
         size = point_size
       ) +
       scale_x_continuous(
-        breaks = 1:length(x_labels), # The integer positions
-        labels = x_labels # The original names
+        breaks = seq_along(x_labels),
+        labels = x_labels,
+        limits = c(0.5, length(x_labels) + 0.5)
+      ) +
+      scale_y_continuous(
+        breaks = seq_along(x_labels),
+        labels = x_labels,
+        limits = c(0.5, length(x_labels) + 0.5)
       ) +
       scale_color_manual(values = train_color_pal) +
       labs(
         title = "Training Data",
         x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
-        # x = paste("Masked true:", x), y = paste("Imputed:", x)
       ) +
       theme(
         panel.grid.minor = element_blank(),
@@ -199,21 +201,22 @@ overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, yl
         size = point_size
       ) +
       scale_x_continuous(
-        breaks = 1:length(x_labels), # The integer positions
-        labels = x_labels # The original names
+        breaks = seq_along(x_labels),
+        labels = x_labels,
+        limits = c(0.5, length(x_labels) + 0.5)
       ) +
+      scale_y_discrete(limits = x_labels) +
       scale_color_manual(values = train_color_pal) +
       labs(
         title = "Training Data",
         x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
-        # x = paste("Masked true:", x), y = paste("Imputed:", x)
       )
   }
-  train_plot <- .ggplot_overimp_theme(train_plot, showlegend = TRUE, markdown_axis_titles = TRUE)
+  train_plot <- .ggplot_overimp_theme(train_plot, showlegend = TRUE, markdown_axis_titles = TRUE, gg_style = gg_style)
 
 
   if (!is.null(plot_data$test)) {
-    test_data <- .transform_data(data = plot_data$test$all_dt, x)
+    test_data <- .transform_data(data = plot_data$test$all_dt, x, all_levels)
 
     if (stack_y) {
       if (!is.null(diag_color)) {
@@ -266,14 +269,19 @@ overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, yl
           size = point_size
         ) +
         scale_x_continuous(
-          breaks = 1:length(x_labels), # The integer positions
-          labels = x_labels # The original names
+          breaks = seq_along(x_labels),
+          labels = x_labels,
+          limits = c(0.5, length(x_labels) + 0.5)
+        ) +
+        scale_y_continuous(
+          breaks = seq_along(x_labels),
+          labels = x_labels,
+          limits = c(0.5, length(x_labels) + 0.5)
         ) +
         scale_color_manual(values = test_color_pal) +
         labs(
-          title = "Training Data",
+          title = "Test Data",
           x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
-          # x = paste("Masked true:", x), y = paste("Imputed:", x)
         ) +
         theme(
           panel.grid.minor = element_blank(),
@@ -286,19 +294,20 @@ overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, yl
           size = point_size
         ) +
         scale_x_continuous(
-          breaks = 1:length(x_labels), # The integer positions
-          labels = x_labels # The original names
+          breaks = seq_along(x_labels),
+          labels = x_labels,
+          limits = c(0.5, length(x_labels) + 0.5)
         ) +
+        scale_y_discrete(limits = x_labels) +
         scale_color_manual(values = test_color_pal) +
         labs(
           title = "Test Data",
           x = paste0("Masked true: **", x, "**"), y = paste0("Imputed: **", x, "**")
-          # x = paste("Masked true:", x), y = paste("Imputed:", x)
         )
     }
 
 
-    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, markdown_axis_titles = TRUE)
+    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, markdown_axis_titles = TRUE, gg_style = gg_style)
 
 
     combined <- train_plot + test_plot +
@@ -324,12 +333,12 @@ overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, yl
 
 
 # overimp1D_qq ------------------------------------------------------------
-overimp1D_qq <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, train_color_pal, test_color_pal) {
+overimp1D_qq <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, train_color_pal, test_color_pal, gg_style = list()) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(sample = .data[[x]], color = Group)) +
     stat_qq(size = point_size) +
     scale_color_manual(values = train_color_pal) +
     labs(title = "Training Data")
-  train_plot <- .ggplot_overimp_theme(train_plot)
+  train_plot <- .ggplot_overimp_theme(train_plot, gg_style = gg_style)
 
   if (!is.null(xlim)) train_plot <- train_plot + xlim(xlim)
   if (!is.null(ylim)) train_plot <- train_plot + ylim(ylim)
@@ -341,7 +350,7 @@ overimp1D_qq <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, 
       coord_cartesian(xlim = xrange) +
       scale_color_manual(values = test_color_pal) +
       labs(title = "Test Data")
-    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE)
+    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, gg_style = gg_style)
 
     if (!is.null(xlim)) test_plot <- test_plot + xlim(xlim)
     if (!is.null(ylim)) test_plot <- test_plot + ylim(ylim)
@@ -368,12 +377,12 @@ overimp1D_qq <- function(plot_data, x, title, subtitle, point_size, xlim, ylim, 
 }
 
 # overimp1D_qqline --------------------------------------------------------
-overimp1D_qqline <- function(plot_data, x, title, subtitle, linewidth, xlim, ylim, train_color_pal, test_color_pal) {
+overimp1D_qqline <- function(plot_data, x, title, subtitle, linewidth, xlim, ylim, train_color_pal, test_color_pal, gg_style = list()) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(sample = .data[[x]], color = Group)) +
     stat_qq_line(linewidth = linewidth) +
     scale_color_manual(values = train_color_pal) +
     labs(title = "Training Data")
-  train_plot <- .ggplot_overimp_theme(train_plot)
+  train_plot <- .ggplot_overimp_theme(train_plot, gg_style = gg_style)
 
   if (!is.null(xlim)) train_plot <- train_plot + xlim(xlim)
   if (!is.null(ylim)) train_plot <- train_plot + ylim(ylim)
@@ -385,7 +394,7 @@ overimp1D_qqline <- function(plot_data, x, title, subtitle, linewidth, xlim, yli
       coord_cartesian(xlim = xrange) +
       scale_color_manual(values = test_color_pal) +
       labs(title = "Test Data")
-    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE)
+    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, gg_style = gg_style)
 
     if (!is.null(xlim)) test_plot <- test_plot + xlim(xlim)
     if (!is.null(ylim)) test_plot <- test_plot + ylim(ylim)
@@ -415,14 +424,14 @@ overimp1D_qqline <- function(plot_data, x, title, subtitle, linewidth, xlim, yli
 
 # #overimp1D_ridge --------------------------------------------------------
 
-overimp1D_ridge <- function(plot_data, x, title, subtitle, alpha, xlim, train_color_pal, test_color_pal) {
+overimp1D_ridge <- function(plot_data, x, title, subtitle, alpha, xlim, train_color_pal, test_color_pal, gg_style = list()) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]])) +
     geom_density_ridges(alpha = alpha, aes(y = Group, fill = Group)) +
     scale_fill_manual(values = train_color_pal) +
     scale_y_discrete(limits = rev) +
     labs(title = "Training Data", x = x) +
     guides(fill = "none")
-  train_plot <- .ggplot_overimp_theme(train_plot)
+  train_plot <- .ggplot_overimp_theme(train_plot, gg_style = gg_style)
 
   if (!is.null(xlim)) train_plot <- train_plot + xlim(xlim)
 
@@ -435,7 +444,7 @@ overimp1D_ridge <- function(plot_data, x, title, subtitle, alpha, xlim, train_co
       scale_y_discrete(limits = rev) +
       labs(title = "Test Data", x = x) +
       guides(fill = "none")
-    test_plot <- .ggplot_overimp_theme(test_plot)
+    test_plot <- .ggplot_overimp_theme(test_plot, gg_style = gg_style)
 
     if (!is.null(xlim)) test_plot <- test_plot + xlim(xlim)
 
@@ -462,12 +471,12 @@ overimp1D_ridge <- function(plot_data, x, title, subtitle, alpha, xlim, train_co
 
 
 # #overimp1D_density --------------------------------------------------------
-overimp1D_density <- function(plot_data, x, title, subtitle, alpha, linewidth, xlim, ylim, train_color_pal, test_color_pal) {
+overimp1D_density <- function(plot_data, x, title, subtitle, alpha, linewidth, xlim, ylim, train_color_pal, test_color_pal, gg_style = list()) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]], color = Group)) +
     geom_density(alpha = alpha, linewidth = linewidth) +
     scale_color_manual(values = train_color_pal) +
     labs(title = "Training Data", x = x)
-  train_plot <- .ggplot_overimp_theme(train_plot)
+  train_plot <- .ggplot_overimp_theme(train_plot, gg_style = gg_style)
 
   if (!is.null(xlim)) train_plot <- train_plot + xlim(xlim)
   if (!is.null(ylim)) train_plot <- train_plot + ylim(ylim)
@@ -479,7 +488,7 @@ overimp1D_density <- function(plot_data, x, title, subtitle, alpha, linewidth, x
       coord_cartesian(xlim = xrange) +
       scale_color_manual(values = test_color_pal) +
       labs(title = "Test Data", x = x)
-    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE)
+    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, gg_style = gg_style)
 
     if (!is.null(xlim)) test_plot <- test_plot + xlim(xlim)
     if (!is.null(ylim)) test_plot <- test_plot + ylim(ylim)
@@ -507,14 +516,14 @@ overimp1D_density <- function(plot_data, x, title, subtitle, alpha, linewidth, x
 
 
 # overimp1D_bar --------------------------------------------------------
-overimp1D_bar <- function(plot_data, x, title, subtitle, position, alpha, ylim, train_color_pal, test_color_pal) {
+overimp1D_bar <- function(plot_data, x, title, subtitle, position, alpha, ylim, train_color_pal, test_color_pal, gg_style = list()) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]])) +
     geom_bar(aes(fill = Group)) +
     facet_grid(vars(Group)) +
     scale_fill_manual(values = train_color_pal) +
     labs(title = "Training Data") +
     guides(fill = "none")
-  train_plot <- .ggplot_overimp_theme(train_plot)
+  train_plot <- .ggplot_overimp_theme(train_plot, gg_style = gg_style)
 
   if (!is.null(ylim)) train_plot <- train_plot + ylim(ylim)
 
@@ -525,7 +534,7 @@ overimp1D_bar <- function(plot_data, x, title, subtitle, position, alpha, ylim, 
       scale_fill_manual(values = test_color_pal) +
       labs(title = "Test Data") +
       guides(fill = "none")
-    test_plot <- .ggplot_overimp_theme(test_plot)
+    test_plot <- .ggplot_overimp_theme(test_plot, gg_style = gg_style)
 
     if (!is.null(ylim)) test_plot <- test_plot + ylim(ylim)
 
@@ -553,13 +562,13 @@ overimp1D_bar <- function(plot_data, x, title, subtitle, position, alpha, ylim, 
 
 
 # overimp1D_dodge --------------------------------------------------------
-overimp1D_dodge <- function(plot_data, x, title, subtitle, position, alpha, ylim, train_color_pal, test_color_pal) {
+overimp1D_dodge <- function(plot_data, x, title, subtitle, position, alpha, ylim, train_color_pal, test_color_pal, gg_style = list()) {
   train_plot <- ggplot(plot_data$train$all_dt, aes(x = .data[[x]], fill = Group)) +
     geom_bar(alpha = alpha, position = position) +
     # scale_color_manual(values = train_color_pal) +
     scale_fill_manual(values = train_color_pal) +
     labs(title = "Training Data")
-  train_plot <- .ggplot_overimp_theme(train_plot)
+  train_plot <- .ggplot_overimp_theme(train_plot, gg_style = gg_style)
 
   if (!is.null(ylim)) train_plot <- train_plot + ylim(ylim)
 
@@ -569,7 +578,7 @@ overimp1D_dodge <- function(plot_data, x, title, subtitle, position, alpha, ylim
       # scale_color_manual(values = train_color_pal) +
       scale_fill_manual(values = train_color_pal) +
       labs(title = "Test Data")
-    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE)
+    test_plot <- .ggplot_overimp_theme(test_plot, showlegend = FALSE, gg_style = gg_style)
 
     if (!is.null(ylim)) test_plot <- test_plot + ylim(ylim)
 

@@ -1,5 +1,5 @@
 plotly_2num <- function(all_dt, imp_list, x, y, color_pal,
-                        point_size, alpha, marginal_x, marginal_y, nbins, title, subtitle) {
+                        point_size, alpha, marginal_x, marginal_y, nbins, title, subtitle, plotly_style = list()) {
   # set the canva: left 0 right 1 bottom 0 top 1
   main_x <- c(0, 0.8)
   main_y <- c(0, 0.7)
@@ -96,13 +96,13 @@ plotly_2num <- function(all_dt, imp_list, x, y, color_pal,
   }
 
 
-  fig <- .plotly_layout_common(fig, title, subtitle, x)
+  fig <- .plotly_layout_common(fig, title, subtitle, x, plotly_style = plotly_style)
   fig
 }
 
 
 plotly_1fac1num <- function(all_dt, imp_list, x, y, color_pal,
-                            point_size, alpha, boxpoints, title, subtitle) {
+                            point_size, alpha, boxpoints, title, subtitle, plotly_style = list()) {
   fig <- plot_ly()
 
   for (group in levels(all_dt$Group)) {
@@ -137,12 +137,12 @@ plotly_1fac1num <- function(all_dt, imp_list, x, y, color_pal,
   )
 
 
-  fig <- .plotly_layout_common(fig, title, subtitle, x)
+  fig <- .plotly_layout_common(fig, title, subtitle, x, plotly_style = plotly_style)
   fig
 }
 
 
-plotly_2fac <- function(all_dt, imp_list, x, y, color_pal, alpha, title, subtitle) {
+plotly_2fac <- function(all_dt, imp_list, x, y, color_pal, alpha, title, subtitle, plotly_style = list()) {
   all_sum <- all_dt |>
     group_by(Group, .data[[x]], .data[[y]]) |>
     summarise(count = n(), .groups = "drop") |>
@@ -233,6 +233,6 @@ plotly_2fac <- function(all_dt, imp_list, x, y, color_pal, alpha, title, subtitl
   )
 
 
-  fig <- .plotly_layout_2fac(combine, title, subtitle, y_levels, y, x)
+  fig <- .plotly_layout_2fac(combine, title, subtitle, y_levels, y, x, plotly_style = plotly_style)
   fig
 }

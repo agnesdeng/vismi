@@ -1,4 +1,4 @@
-ggplot_2num <- function(all_dt, x, y, color_pal, point_size, alpha, marginal_x, marginal_y, title, subtitle) {
+ggplot_2num <- function(all_dt, x, y, color_pal, point_size, alpha, marginal_x, marginal_y, title, subtitle, gg_style = list()) {
   fig <- ggplot(all_dt, aes(x = .data[[x]], y = .data[[y]])) +
     geom_point(alpha = alpha, aes(color = Group, fill = Group), size = point_size) +
     facet_grid(cols = vars(Group)) +
@@ -34,13 +34,12 @@ ggplot_2num <- function(all_dt, x, y, color_pal, point_size, alpha, marginal_x, 
     }
   }
 
-  fig+
-    .ggplot_theme()
-
+  fig +
+    .ggplot_theme(gg_style = gg_style)
 }
 
 
-ggplot_1fac1num <- function(all_dt, x, y, color_pal, point_size, alpha, boxpoints, title, subtitle) {
+ggplot_1fac1num <- function(all_dt, x, y, color_pal, point_size, alpha, boxpoints, title, subtitle, gg_style = list()) {
   if (isFALSE(boxpoints)) {
     fig <- ggplot(all_dt, aes(x = .data[[x]], y = .data[[y]])) +
       geom_boxplot(alpha = alpha, aes(fill = Group, color = Group), outlier.shape = NA)
@@ -57,14 +56,12 @@ ggplot_1fac1num <- function(all_dt, x, y, color_pal, point_size, alpha, boxpoint
     facet_grid(cols = vars(Group)) +
     scale_color_manual(values = color_pal) +
     scale_fill_manual(values = color_pal) +
-    labs(x = x, y = y, title = title, subtitle = subtitle)+
-    .ggplot_theme()
-
-
+    labs(x = x, y = y, title = title, subtitle = subtitle) +
+    .ggplot_theme(gg_style = gg_style)
 }
 
 
-ggplot_2fac <- function(all_dt, x, y, color_pal, alpha, width, title, subtitle) {
+ggplot_2fac <- function(all_dt, x, y, color_pal, alpha, width, title, subtitle, gg_style = list()) {
   all_sum <- all_dt |>
     group_by(Group, .data[[x]], .data[[y]]) |>
     summarise(count = n(), .groups = "drop") |>
@@ -89,9 +86,8 @@ ggplot_2fac <- function(all_dt, x, y, color_pal, alpha, width, title, subtitle) 
     )) +
     scale_fill_manual(values = color_pal) +
     # scale_y_continuous(sec.axis = sec_axis(~., name = y, breaks = NULL, labels = NULL)) +
-    labs(x = x, y = "Proportion", title = title, subtitle = subtitle)+
-    .ggplot_theme()
-
+    labs(x = x, y = "Proportion", title = title, subtitle = subtitle) +
+    .ggplot_theme(gg_style = gg_style)
 
   gridExtra::arrangeGrob(fig, right = y)
 }

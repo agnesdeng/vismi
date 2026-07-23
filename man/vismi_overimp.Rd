@@ -20,6 +20,7 @@ vismi_overimp(
   test_color_pal = NULL,
   stack_y = FALSE,
   diag_color = NULL,
+  gg_style = list(),
   seed = 2025,
   ...
 )
@@ -57,6 +58,45 @@ axis. Default is NULL.}
 \item{stack_y}{A logical indicating whether to stack y values in certain plots. Default is FALSE.}
 
 \item{diag_color}{A character string specifying the color of the diagonal line in scatter plots. Default is NULL.}
+
+\item{gg_style}{A named list of style overrides. Supplied entries are merged onto the
+defaults, so only the keys you wish to change need to be given.
+Unrecognised keys are silently ignored. Default is \code{list()} (use all
+defaults). Valid keys:
+\describe{
+  \item{\code{title_color}}{Title colour (default \code{"#242429"}).}
+  \item{\code{title_size}}{Title font size (default 14).}
+  \item{\code{title_face}}{Title font face, one of \code{"plain"}
+    (default), \code{"bold"}, \code{"italic"} or \code{"bold.italic"}.}
+  \item{\code{subtitle_color}}{Subtitle colour (default \code{"#242429"}).}
+  \item{\code{subtitle_size}}{Subtitle font size (default 14).}
+  \item{\code{subtitle_face}}{Subtitle font face (default \code{"plain"}).}
+  \item{\code{axis_title_color}}{Axis title colour (default
+    \code{"#35353d"}).}
+  \item{\code{axis_title_size}}{Axis title font size (default 10).}
+  \item{\code{axis_title_face}}{Axis title font face (default
+    \code{"bold"}).}
+  \item{\code{axis_text_size}}{Axis tick label font size (default 9).}
+  \item{\code{axis_text_angle_x}}{Rotation of x-axis tick labels, in
+    degrees (default 0).}
+  \item{\code{axis_text_angle_y}}{Rotation of y-axis tick labels, in
+    degrees (default 0).}
+  \item{\code{panel_bg_fill}}{Panel background fill (default
+    \code{"gray95"}).}
+  \item{\code{panel_bg_color}}{Panel border colour; \code{NA} (default)
+    draws no border.}
+  \item{\code{strip_bg_fill}}{Facet strip background fill (default
+    \code{"gray85"}).}
+  \item{\code{strip_bg_color}}{Facet strip border colour; \code{NA}
+    (default) draws no border.}
+  \item{\code{strip_text_size}}{Facet strip label font size (default 8).}
+  \item{\code{grid_major_color}}{Major grid line colour (default
+    \code{"white"}).}
+  \item{\code{grid_major_linewidth}}{Major grid line width (default 0.3).}
+  \item{\code{grid_minor_color}}{Minor grid line colour (default
+    \code{"white"}).}
+  \item{\code{grid_minor_linewidth}}{Minor grid line width (default 0.2).}
+}}
 
 \item{seed}{An integer specifying the random seed for reproducibility. Default is 2025.}
 

@@ -16,6 +16,9 @@
 }
 
 
+# gg style default setting ------------------------------------------------
+
+
 .vismi_gg_style <- function() {
   list(
     title_color = "#242429",
@@ -32,6 +35,7 @@
     panel_bg_color = NA,
     strip_bg_fill = "gray85",
     strip_bg_color = NA,
+    strip_text_size = 7,
     grid_major_color = "white",
     grid_major_linewidth = 0.3,
     grid_minor_color = "white",
@@ -41,8 +45,8 @@
 
 
 # vismi gg theme -------------------------------------------------------------
-.ggplot_base_theme <- function() {
-  style <- .vismi_gg_style()
+.ggplot_base_theme <- function(gg_style = list()) {
+  style <- modifyList(.vismi_gg_style(), gg_style)
 
     # guides(fill = "none", color = "none",shape = guide_legend(override.aes = list(size = 3)))
     # guides(fill = "none", color = "none", shape = guide_legend(override.aes = list(size = 3)))+
@@ -57,19 +61,18 @@
       axis.title.y = element_text(size = style$gg_axis_title_size, colour = style$axis_title_color, face = style$gg_axis_title_face),
       axis.text.x = element_text(size = style$gg_axis_text_size),
       axis.text.y = element_text(size = style$gg_axis_text_size),
+      strip.text = element_text(size = style$strip_text_size)
     )
 }
 
-.ggplot_theme <- function() {
-
- .ggplot_base_theme()+
+.ggplot_theme <- function(gg_style = list()) {
+  .ggplot_base_theme(gg_style = gg_style) +
     theme(legend.position = "none")
 }
 
 
-.ggplot_theme_3fac <- function() {
-
-  .ggplot_base_theme()+
+.ggplot_theme_3fac <- function(gg_style = list()) {
+  .ggplot_base_theme(gg_style = gg_style) +
     theme(
       axis.text.x = element_markdown(),
       axis.text.y = element_markdown(),
@@ -90,13 +93,23 @@
     axis_title_size = 14,
     plot_bgcolor = "#f2f7fc",
     paper_bgcolor = "#fff",
-    gridcolor = "#999"
+    gridcolor = "#999",
+    scene3d_domain_x = c(0, 1),
+    scene3d_domain_y = c(0.05, 0.95),
+    scene3d_title_y = 0.9,
+    scene3d_margin_t = 0,
+    scene3d_margin_r = 0,
+    scene3d_margin_b = 0,
+    scene3d_margin_l = 0,
+    scene3d_eye_x = 1.25,
+    scene3d_eye_y = 1.25,
+    scene3d_eye_z = 1.25
   )
 }
 
 
-.plotly_layout_common <- function(fig, title, subtitle, x) {
-  style <- .vismi_plotly_style()
+.plotly_layout_common <- function(fig, title, subtitle, x, plotly_style = list()) {
+  style <- modifyList(.vismi_plotly_style(), plotly_style)
 
   title_parts <- list(
     title = if (!is.null(title)) paste0("<b>", title, "</b>"),
@@ -144,14 +157,14 @@
         family = style$title_font
       )
     ),
-    margin = list(l = 70, r = 70, t = 70, b = 70), # increase right and top margin to avoid cutoffs
+    margin = list(l = 70, r = 70, t = 100, b = 70), # increase right and top margin to avoid cutoffs
     legend = list(
       yref = "container",
       xref = "paper",
       x = 0.5, # x position (0 = left, 1 = right)
-      y = -0.15, # y position (0 = bottom, 1 = top)
+      y = 1.02, # y position (0 = bottom, 1 = top)
       xanchor = "center", # "left", "center", "right"
-      yanchor = "top", # "top", "middle", "bottom"
+      yanchor = "bottom", # "top", "middle", "bottom"
       orientation = "h", # "v" = vertical, "h" = horizontal
       itemsizing = "constant"
     ),
@@ -170,8 +183,8 @@
 }
 
 
-.plotly_layout_2fac <- function(fig, title, subtitle, y_levels, y, x) {
-  style <- .vismi_plotly_style()
+.plotly_layout_2fac <- function(fig, title, subtitle, y_levels, y, x, plotly_style = list()) {
+  style <- modifyList(.vismi_plotly_style(), plotly_style)
 
   title_parts <- list(
     title = if (!is.null(title)) paste0("<b>", title, "</b>"),
@@ -261,14 +274,14 @@
         family = style$title_font
       )
     ),
-    margin = list(l = 70, r = 70, t = 70, b = 70), # increase right and top margin to avoid cutoffs
+    margin = list(l = 70, r = 70, t = 100, b = 70), # increase right and top margin to avoid cutoffs
     legend = list(
       yref = "container",
       xref = "paper",
       x = 0.5, # x position (0 = left, 1 = right)
-      y = -0.15, # y position (0 = bottom, 1 = top)
+      y = 1.02, # y position (0 = bottom, 1 = top)
       xanchor = "center", # "left", "center", "right"
-      yanchor = "top", # "top", "middle", "bottom"
+      yanchor = "bottom", # "top", "middle", "bottom"
       orientation = "h", # "v" = vertical, "h" = horizontal
       itemsizing = "constant"
     )
@@ -278,8 +291,8 @@
 }
 
 
-.plotly_layout_facet3d <- function(fig, title, subtitle, z_levels, y, z, x) {
-  style <- .vismi_plotly_style()
+.plotly_layout_facet3d <- function(fig, title, subtitle, z_levels, y, z, x, plotly_style = list()) {
+  style <- modifyList(.vismi_plotly_style(), plotly_style)
 
   title_parts <- list(
     title = if (!is.null(title)) paste0("<b>", title, "</b>"),
@@ -370,14 +383,14 @@
         family = style$title_font
       )
     ),
-    margin = list(l = 70, r = 70, t = 70, b = 70), # increase right and top margin to avoid cutoffs
+    margin = list(l = 70, r = 70, t = 100, b = 70), # increase right and top margin to avoid cutoffs
     legend = list(
       yref = "container",
       xref = "paper",
       x = 0.5, # x position (0 = left, 1 = right)
-      y = -0.15, # y position (0 = bottom, 1 = top)
+      y = 1.02, # y position (0 = bottom, 1 = top)
       xanchor = "center", # "left", "center", "right"
-      yanchor = "top", # "top", "middle", "bottom"
+      yanchor = "bottom", # "top", "middle", "bottom"
       orientation = "h", # "v" = vertical, "h" = horizontal
       itemsizing = "constant"
     )
@@ -387,8 +400,8 @@
 }
 
 
-.plotly_layout_scatter3d <- function(fig, title, subtitle) {
-  style <- .vismi_plotly_style()
+.plotly_layout_scatter3d <- function(fig, title, subtitle, plotly_style = list()) {
+  style <- modifyList(.vismi_plotly_style(), plotly_style)
 
   title_parts <- list(
     title = if (!is.null(title)) paste0("<b>", title, "</b>"),
@@ -406,8 +419,10 @@
 
   fig <- fig |> layout(
     scene = list(
-      # bgcolor = "#f2f7fc",  # canvas rectangle box area color
-      # change the background of the 3D box
+      domain = list(x = style$scene3d_domain_x, y = style$scene3d_domain_y),
+      camera = list(eye = list(x = style$scene3d_eye_x,
+                               y = style$scene3d_eye_y,
+                               z = style$scene3d_eye_z)),
       xaxis = list(title = list(font = list(
         size = style$axis_title_size,
         family = style$axis_title_font, color = style$axis_title_color
@@ -421,14 +436,13 @@
         family = style$axis_title_font, color = style$axis_title_color
       )), showbackground = TRUE, backgroundcolor = style$plot_bgcolor, gridcolor = style$gridcolor)
     ),
-    paper_bgcolor = style$paper_bgcolor, # the whole paper
-    # plot_bgcolor="#f2f7fc", # has no effect here
+    paper_bgcolor = style$paper_bgcolor,
     title = list(
       text = title_text,
-      x = 0, # horizontal position (0 = left, 0.5 = center, 1 = right)
-      y = 0.96, # vertical position (1 = top, 1 = bottom)
-      xanchor = "left", # anchor for x position ("left", "center", "right")
-      yanchor = "top", # anchor for y position ("top", "middle", "bottom")
+      x = 0,
+      y = style$scene3d_title_y,
+      xanchor = "left",
+      yanchor = "top",
       xref = "paper",
       font = list(
         size = style$title_size,
@@ -436,13 +450,14 @@
         family = style$title_font
       )
     ),
-    margin = list(r = 50, t = 50), # increase right and top margin to avoid cutoffs
+    margin = list(t = style$scene3d_margin_t, r = style$scene3d_margin_r,
+                  b = style$scene3d_margin_b, l = style$scene3d_margin_l),
     legend = list(
-      x = 0.5, # x position (0 = left, 1 = right)
-      y = -0.2, # y position (0 = bottom, 1 = top)
-      xanchor = "center", # "left", "center", "right"
-      yanchor = "top", # "top", "middle", "bottom"
-      orientation = "h", # "v" = vertical, "h" = horizontal
+      x = 0.8, # x position (0 = left, 1 = right)
+      y = 0.5, # y position (0 = bottom, 1 = top)
+      xanchor = "left", # "left", "center", "right"
+      yanchor = "middle", # "top", "middle", "bottom"
+      orientation = "v", # "v" = vertical, "h" = horizontal
       itemsizing = "constant"
     )
   )

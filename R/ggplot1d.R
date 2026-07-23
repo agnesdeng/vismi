@@ -1,4 +1,4 @@
-ggplot_1num <- function(all_dt, x, color_pal, point_size, alpha, nbins, marginal_x, title, subtitle) {
+ggplot_1num <- function(all_dt, x, color_pal, point_size, alpha, nbins, marginal_x, title, subtitle, gg_style = list()) {
   if (is.null(nbins)) {
     breaks <- pretty(range(all_dt[[x]]),
       n = grDevices::nclass.Sturges(all_dt[[x]]),
@@ -41,13 +41,12 @@ ggplot_1num <- function(all_dt, x, color_pal, point_size, alpha, nbins, marginal
     }
   }
 
-   fig+
-    .ggplot_theme()
-
+  fig +
+    .ggplot_theme(gg_style = gg_style)
 }
 
 
-ggplot_1fac <- function(all_dt, x, color_pal = NULL, alpha = 0.8, width = 0.8, title, subtitle) {
+ggplot_1fac <- function(all_dt, x, color_pal = NULL, alpha = 0.8, width = 0.8, title, subtitle, gg_style = list()) {
   fig <- ggplot(all_dt, aes(x = .data[[x]])) +
     geom_bar(stat = "count", alpha = alpha, width = width, aes(color = Group, fill = Group, y = after_stat(prop), group = Group)) +
     scale_y_continuous(labels = scales::percent) +
@@ -57,6 +56,6 @@ ggplot_1fac <- function(all_dt, x, color_pal = NULL, alpha = 0.8, width = 0.8, t
     scale_fill_manual(values = color_pal) +
     scale_color_manual(values = color_pal)
 
-  fig+
-    .ggplot_theme()
+  fig +
+    .ggplot_theme(gg_style = gg_style)
 }

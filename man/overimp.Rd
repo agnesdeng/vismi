@@ -23,7 +23,10 @@ overimp(
 
 \item{test_ratio}{The proportion of test set. Default is 0, meaning no test set.}
 
-\item{method}{Can be one of the following: "mixgb","mice", and more in the future.}
+\item{method}{The imputation method to use. One of \code{"mixgb"} (default),
+\code{"mice"} (mice with default per-variable methods), \code{"mice-cart"}
+(mice with classification and regression trees), or \code{"mice-ranger"}
+(mice with random forests via the ranger engine).}
 
 \item{seed}{Random seed.}
 

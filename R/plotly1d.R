@@ -1,4 +1,4 @@
-plotly_1num <- function(all_dt, x, color_pal, point_size, alpha, nbins, marginal_x, title, subtitle) {
+plotly_1num <- function(all_dt, x, color_pal, point_size, alpha, nbins, marginal_x, title, subtitle, plotly_style = list()) {
   n_levels <- nlevels(all_dt$Group)
   names_levels <- levels(all_dt$Group)
 
@@ -97,12 +97,12 @@ plotly_1num <- function(all_dt, x, color_pal, point_size, alpha, nbins, marginal
     )
   }
 
-  fig <- .plotly_layout_common(fig, title, subtitle, x)
+  fig <- .plotly_layout_common(fig, title, subtitle, x, plotly_style = plotly_style)
   fig
 }
 
 
-plotly_1fac <- function(all_dt, x, color_pal, alpha, title, subtitle) {
+plotly_1fac <- function(all_dt, x, color_pal, alpha, title, subtitle, plotly_style = list()) {
   fig <- plot_ly()
 
   all_sum <- all_dt |>
@@ -175,7 +175,7 @@ plotly_1fac <- function(all_dt, x, color_pal, alpha, title, subtitle) {
   )
 
 
-  fig <- .plotly_layout_common(fig, title, subtitle, x)
+  fig <- .plotly_layout_common(fig, title, subtitle, x, plotly_style = plotly_style)
 
   fig
 }

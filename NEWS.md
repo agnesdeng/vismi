@@ -1,3 +1,8 @@
+# vismi 1.0.0
+### New Features
+- Support plot aesthetic parameters changed by users
+- Added `overimp` function for `mice`
+
 # vismi 0.9.5
 ### Improvements
 - Edited examples to reduce running time to pass CRAN submission checks.

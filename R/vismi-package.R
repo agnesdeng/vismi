@@ -25,5 +25,5 @@
 #' @importFrom trelliscopejs trelliscope
 #' @importFrom utils combn modifyList askYesNo
 #' @references Yongshi Deng, Thomas Lumley. (2026), vismi: Visual Diagnostics for Multiple Imputation,
-#' R package version 0.9.3
+#' R package version 1.0.0
 "_PACKAGE"

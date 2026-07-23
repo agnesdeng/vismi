@@ -1,4 +1,4 @@
-plotly_3num <- function(all_dt, x, y, z, color_pal, point_size, alpha, title, subtitle) {
+plotly_3num <- function(all_dt, x, y, z, color_pal, point_size, alpha, title, subtitle, plotly_style = list()) {
   fig <- plot_ly(all_dt,
     x = as.formula(paste0("~", x)),
     y = as.formula(paste0("~", y)),
@@ -25,12 +25,12 @@ plotly_3num <- function(all_dt, x, y, z, color_pal, point_size, alpha, title, su
     ))
 
 
-  fig <- .plotly_layout_scatter3d(fig, title, subtitle)
+  fig <- .plotly_layout_scatter3d(fig, title, subtitle, plotly_style = plotly_style)
   fig
 }
 
 
-plotly_3fac <- function(all_dt, x, y, z, color_pal, alpha, title, subtitle) {
+plotly_3fac <- function(all_dt, x, y, z, color_pal, alpha, title, subtitle, plotly_style = list()) {
   all_sum <- all_dt |>
     group_by(Group, .data[[x]], .data[[y]], .data[[z]]) |>
     summarise(count = n(), .groups = "drop") |>
@@ -76,13 +76,13 @@ plotly_3fac <- function(all_dt, x, y, z, color_pal, alpha, title, subtitle) {
     )
 
 
-  fig <- .plotly_layout_common(fig, title, subtitle, x)
+  fig <- .plotly_layout_common(fig, title, subtitle, x, plotly_style = plotly_style)
   fig
 }
 
 
 plotly_1fac2num <- function(all_dt, x, y, z, color_pal,
-                            point_size, alpha, boxpoints, title, subtitle) {
+                            point_size, alpha, boxpoints, title, subtitle, plotly_style = list()) {
   z_levels <- levels(all_dt[[z]])
 
   plots <- lapply(z_levels, function(z_level) {
@@ -126,13 +126,13 @@ plotly_1fac2num <- function(all_dt, x, y, z, color_pal,
   )
 
 
-  fig <- .plotly_layout_facet3d(combine, title, subtitle, z_levels, y, z, x)
+  fig <- .plotly_layout_facet3d(combine, title, subtitle, z_levels, y, z, x, plotly_style = plotly_style)
   fig
 }
 
 
 plotly_2fac1num <- function(all_dt, x, y, z, color_pal,
-                            point_size, alpha, boxpoints, title, subtitle) {
+                            point_size, alpha, boxpoints, title, subtitle, plotly_style = list()) {
   z_levels <- levels(all_dt[[z]])
 
   plots <- lapply(z_levels, function(z_level) {
@@ -185,6 +185,6 @@ plotly_2fac1num <- function(all_dt, x, y, z, color_pal,
   )
 
 
-  fig <- .plotly_layout_facet3d(combine, title, subtitle, z_levels, y, z, x)
+  fig <- .plotly_layout_facet3d(combine, title, subtitle, z_levels, y, z, x, plotly_style = plotly_style)
   fig
 }
