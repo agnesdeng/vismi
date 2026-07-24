@@ -49,3 +49,20 @@ jobs:
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+
+  debian-gcc-devel:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/r-hub/containers/ubuntu-gcc12:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          Rscript -e 'if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak")'
+          Rscript -e 'pak::local_install_dev_deps(dependencies = TRUE)'
+          Rscript -e 'pak::pkg_install("rcmdcheck")'
+
+      - name: Check
+        run: Rscript -e 'rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning")'
