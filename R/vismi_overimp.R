@@ -62,7 +62,9 @@
 #' @export
 #' @examples
 #' if (requireNamespace("mixgb", quietly = TRUE)) {
-#'   obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+#'   # nthread is capped at 2 to comply with CRAN policy on shared check machines
+#'   obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb",
+#'                   xgb.params = list(nthread = 2))
 #'   vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "cv")
 #' }
 vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = NULL, gg_style = list(), seed = 2025, ...) {

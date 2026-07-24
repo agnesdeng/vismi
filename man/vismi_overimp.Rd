@@ -110,7 +110,9 @@ This function provides overimputation diagnostics for assessing imputations gene
 }
 \examples{
 if (requireNamespace("mixgb", quietly = TRUE)) {
-  obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+  # nthread is capped at 2 to comply with CRAN policy on shared check machines
+  obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb",
+                  xgb.params = list(nthread = 2))
   vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "cv")
 }
 }

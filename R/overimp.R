@@ -14,7 +14,9 @@
 #' @export
 #' @examples
 #' if (requireNamespace("mixgb", quietly = TRUE)) {
-#'   obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+#'   # nthread is capped at 2 to comply with CRAN policy on shared check machines
+#'   obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb",
+#'                   xgb.params = list(nthread = 2))
 #' }
 overimp <- function(data, m = 5, p = 0.2, test_ratio = 0, method = "mixgb", seed = NULL, ...) {
   if (method == "mixgb") {

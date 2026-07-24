@@ -20,7 +20,9 @@
 #'   set.seed(2026)
 #'   # Please set maxit to be a higher value (e.g. maxit = 20) for convergence checks
 #'   # (maxit is small here to keep the example fast for CRAN checks)
-#'   mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 3, pmm.type = "auto", save.models = TRUE)
+#'   # nthread is capped at 2 to comply with CRAN policy on shared check machines
+#'   mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 3, pmm.type = "auto", save.models = TRUE,
+#'                       xgb.params = list(nthread = 2))
 #'   vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm")
 #' }
 vismi_converge <- function(obj,

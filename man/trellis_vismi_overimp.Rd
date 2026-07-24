@@ -71,7 +71,9 @@ Generates a Trelliscope display for overimputation diagnostics across all variab
 }
 \examples{
 if (requireNamespace("mixgb", quietly = TRUE)) {
-  obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0, method = "mixgb")
+  # nthread is capped at 2 to comply with CRAN policy on shared check machines
+  obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0, method = "mixgb",
+                  xgb.params = list(nthread = 2))
   trellis_vismi_overimp(obj = obj, stack_y = TRUE)
 }
 }
