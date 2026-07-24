@@ -1,3 +1,30 @@
+# Breakdown of how the extra (artificial) missingness overlaps across the
+# requested variables, e.g. how many rows had only x masked, only y masked,
+# or both x and y masked.
+.overimp_mask_pattern <- function(NA_loc, vars) {
+  mask_idx <- setNames(lapply(vars, function(v) which(NA_loc[, v])), vars)
+
+  comb_list <- unlist(
+    lapply(seq_along(vars), function(k) combn(vars, k, simplify = FALSE)),
+    recursive = FALSE
+  )
+
+  counts <- vapply(comb_list, function(comb) {
+    rows <- Reduce(intersect, mask_idx[comb])
+    other_vars <- setdiff(vars, comb)
+    for (v in other_vars) rows <- setdiff(rows, mask_idx[[v]])
+    length(rows)
+  }, integer(1))
+
+  data.frame(
+    `Variable(s) masked` = vapply(comb_list, function(comb) paste(comb, collapse = ", "), character(1)),
+    Count = as.integer(counts),
+    row.names = NULL,
+    check.names = FALSE
+  )
+}
+
+
 # Prepare plot data (dt and colors) for overimputation plots
 .overimp_postprocess <- function(obj, vars, m, imp_idx, integerAsFactor) {
   .get_plot_data <- function(imp_list, NA_loc, dt, vars, m, imp_idx, integerAsFactor) {

@@ -14,7 +14,6 @@
 #' @importFrom grDevices nclass.Sturges colorRampPalette
 #' @importFrom gridExtra arrangeGrob
 #' @importFrom grid textGrob gpar
-#' @importFrom mixgb mixgb impute_new
 #' @importFrom patchwork plot_layout plot_annotation
 #' @importFrom plotly plot_ly layout add_histogram add_lines add_trace subplot
 #' @importFrom purrr map

@@ -10,7 +10,7 @@ diagnostics.
 ## References
 
 Yongshi Deng, Thomas Lumley. (2026), vismi: Visual Diagnostics for
-Multiple Imputation, R package version 0.9.3
+Multiple Imputation, R package version 1.0.0
 
 ## See also
 

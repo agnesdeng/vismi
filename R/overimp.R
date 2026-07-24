@@ -13,7 +13,9 @@
 #' @return An \code{overimp} object containing imputed training, test data (if applicable) and essential parameters required for plotting.
 #' @export
 #' @examples
-#' obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+#' if (requireNamespace("mixgb", quietly = TRUE)) {
+#'   obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+#' }
 overimp <- function(data, m = 5, p = 0.2, test_ratio = 0, method = "mixgb", seed = NULL, ...) {
   if (method == "mixgb") {
     overimp_fun <- "overimp_mixgb"

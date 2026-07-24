@@ -3,15 +3,17 @@
 ## Introduction
 
 This vignette demonstrates how to use the
-[`vismi()`](../reference/vismi.md) function from the **vismi** package
-to visualise and compare the distributional characteristics of observed
-and imputed data. The [`vismi()`](../reference/vismi.md) function can
-automatically generate suitable static and interactive visualisations
-for one, two, or three variables, which can be numeric or factor
-(categorical) variables.
+[`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md)
+function from the **vismi** package to visualise and compare the
+distributional characteristics of observed and imputed data. The
+[`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md)
+function can automatically generate suitable static and interactive
+visualisations for one, two, or three variables, which can be numeric or
+factor (categorical) variables.
 
-When `verbose = TRUE`, [`vismi()`](../reference/vismi.md) will print out
-the following information in the console:
+When `verbose = TRUE`,
+[`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md) will
+print out the following information in the console:
 
 - Sanity checks:
 
@@ -33,13 +35,14 @@ the following information in the console:
   missing only `weight_kg`, and 111 observations missing in both
   `head_circumference_cm` and `weight_kg`.
 
-- Imputed data visualisation
+- Imputed data used for visualisation
 
   This section reports the number of target observations with at least
   one missing value in the variables of interest (x, y, and z). Only the
   post-imputed values of these target observations are shown in the `m`
-  imputation panels of the [`vismi()`](../reference/vismi.md) output. We
-  can then compare them with the observed data panel.
+  imputation panels of the
+  [`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md)
+  output. We can then compare them with the observed data panel.
 
 ``` r
 library(vismi)
@@ -75,13 +78,13 @@ vismi(data = newborn, imp_list = imp_newborn, x = "head_circumference_cm",
 ```
 
 Users need to provide the following inputs to
-[`vismi()`](../reference/vismi.md):
+[`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md):
 
-- `data`: the original incomplete dataset (a data frame, tibble or
+- `data`: the original incomplete dataset (a data frame or tibble or
   data table).
 
-- `imp_list`: a list of imputed datasets (a list of data frames, tibbles
-  or data tables). This can be obtained using
+- `imp_list`: a list of imputed datasets (a list of data frames or
+  tibbles or data tables). This can be obtained using
   [`mixgb()`](https://agnesdeng.github.io/mixgb/reference/mixgb.html)
   from the **mixgb** package,
   [`mice()`](https://amices.org/mice/reference/mice.html) from the
@@ -90,7 +93,8 @@ Users need to provide the following inputs to
 
 - `x`, `y`, `z` : the variable names (as strings) to be visualised. `x`
   is required, while `y` and `z` are optional. Depending on the number
-  of variables provided, [`vismi()`](../reference/vismi.md) will
+  of variables provided,
+  [`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md) will
   generate suitable visualisations.
 
 - `interactive`: a logical argument indicating whether to generate an
@@ -98,7 +102,9 @@ Users need to provide the following inputs to
   **ggplot2**). Default is `FALSE` (static plot).
 
 - other arguments: users can pass on different plot settings. See the
-  documentation of [`vismi()`](../reference/vismi.md) for more details.
+  documentation of
+  [`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md) for
+  more details.
 
 ## 1D visualisation
 

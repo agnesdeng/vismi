@@ -45,8 +45,12 @@ A Trelliscope display object visualising convergence diagnostics for all variabl
 Generates a Trelliscope display for convergence diagnostics across all variables.
 }
 \examples{
-library(mixgb)
-set.seed(2026)
-mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 4, pmm.type = "auto", save.models = TRUE)
-trellis_vismi_converge(obj = mixgb_obj)
+if (requireNamespace("mixgb", quietly = TRUE)) {
+  library(mixgb)
+  set.seed(2026)
+  # Please set maxit to be a higher value (e.g. maxit = 20) for convergence checks
+  # (maxit is small here to keep the example fast for CRAN checks)
+  mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 3, pmm.type = "auto", save.models = TRUE)
+  trellis_vismi_converge(obj = mixgb_obj)
+}
 }

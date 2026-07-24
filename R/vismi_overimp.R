@@ -61,8 +61,10 @@
 #' @return An \code{overimp_plot} object displaying the overimputation plots for training and test data (if users set \code{test_ratio > 0} in the \code{overimp()} function.)
 #' @export
 #' @examples
-#' obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
-#' vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "cv")
+#' if (requireNamespace("mixgb", quietly = TRUE)) {
+#'   obj <- overimp(data = nhanes3, m = 3, p = 0.2, test_ratio = 0.2, method = "mixgb")
+#'   vismi_overimp(obj = obj, x = "head_circumference_cm", num_plot = "cv")
+#' }
 vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx = NULL, integerAsFactor = FALSE, title = "auto", subtitle = "auto", num_plot = "cv", fac_plot = "cv", train_color_pal = NULL, test_color_pal = NULL, stack_y = FALSE, diag_color = NULL, gg_style = list(), seed = 2025, ...) {
   # checking
   if (!inherits(obj, "overimp")) stop("Object must be of class 'overimp'")
@@ -84,12 +86,26 @@ vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx =
 
   p <- obj$params$p
   extra_vars <- names(p)
-  if (!is.null(extra_vars)) {
+
+  if (is.null(extra_vars)) {
+    # scalar p: masking is drawn from all observed cells pooled together, so
+    # find which variables actually ended up with at least one masked cell
+    train_masked <- colnames(obj$params$trainNA_loc)[colSums(obj$params$trainNA_loc) > 0]
+    test_masked <- if (!is.null(obj$params$testNA_loc)) {
+      colnames(obj$params$testNA_loc)[colSums(obj$params$testNA_loc) > 0]
+    } else {
+      character(0)
+    }
+    vars_masked <- union(train_masked, test_masked)
+
+    cli::cli_inform("Extra missing values (p = {p}) were added to the following variables: {.var {vars_masked}}")
+    cli::rule()
+  } else {
     vars_with_p <- paste0(extra_vars, "=", p, collapse = ", ")
     cli::cli_inform("Extra missing values were added to the following variables before overimputation: {vars_with_p}")
     cli::rule()
 
-    if (!vars %in% extra_vars) {
+    if (!any(vars %in% extra_vars)) {
       cli::cli_abort(c(
         "No extra missing values were added to the specified {cli::qty(vars)} variable{?s} ({.var {cli::cli_vec(vars)}}).",
         "i" = "Please choose from: {cli::cli_vec(extra_vars)}."
@@ -105,6 +121,14 @@ vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx =
       "Please check your spelling. Variable(s) not found in data: ",
       paste(nonexist_vars, collapse = ", ")
     )
+  }
+
+  cli::cli_h2("Breakdown of extra missingness combinations (training data)")
+  print(.overimp_mask_pattern(obj$params$trainNA_loc, vars))
+
+  if (!is.null(obj$params$testNA_loc)) {
+    cli::cli_h2("Breakdown of extra missingness combinations (test data)")
+    print(.overimp_mask_pattern(obj$params$testNA_loc, vars))
   }
 
 
@@ -130,6 +154,11 @@ vismi_overimp <- function(obj, x = NULL, y = NULL, z = NULL, m = NULL, imp_idx =
 
   # number of variables
   D <- length(vars)
+
+  if (D > 1 && (!missing(num_plot) || !missing(fac_plot))) {
+    cli::cli_alert_warning("Note that {.arg num_plot} and {.arg fac_plot} only apply when a single variable is specified; ignored here.")
+  }
+
   method_label <- if (!is.null(obj$method)) paste0(" via ", obj$method) else ""
   default_title <- paste0("Masked true vs multiply-imputed values", method_label, ":")
 

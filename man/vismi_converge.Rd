@@ -48,8 +48,12 @@ Two side-by-side ggplot2 object showing the mean and standard deviation (SD) of 
 This function generates convergence diagnostic plots showing the mean and standard deviation (SD) of imputed values for a specified variable across iterations.
 }
 \examples{
-library(mixgb)
-set.seed(2026)
-mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 4, pmm.type = "auto", save.models = TRUE)
-vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm")
+if (requireNamespace("mixgb", quietly = TRUE)) {
+  library(mixgb)
+  set.seed(2026)
+  # Please set maxit to be a higher value (e.g. maxit = 20) for convergence checks
+  # (maxit is small here to keep the example fast for CRAN checks)
+  mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 3, pmm.type = "auto", save.models = TRUE)
+  vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm")
+}
 }

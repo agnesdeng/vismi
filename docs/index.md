@@ -12,24 +12,26 @@ more.
 The package has been completely redesigned. Please check **Articles**
 section for more details.
 
-- [`vismi()`](reference/vismi.md): visualise multiply-imputed missing
-  data through distributional characteristics
+- [`vismi()`](https://agnesdeng.github.io/vismi/reference/vismi.md):
+  visualise multiply-imputed missing data through distributional
+  characteristics
 
-- [`vismi_overimp()`](reference/vismi_overimp.md): visualise
-  multiply-imputed missing data through overimputation
+- [`vismi_overimp()`](https://agnesdeng.github.io/vismi/reference/vismi_overimp.md):
+  visualise multiply-imputed missing data through overimputation
 
-- [`vismi_converge()`](reference/vismi_converge.md): visualise
-  convergence diagnostics for imputed values of an incomplete variable
+- [`vismi_converge()`](https://agnesdeng.github.io/vismi/reference/vismi_converge.md):
+  visualise convergence diagnostics for imputed values of an incomplete
+  variable
 
 With the support of
 [trelliscopejs](https://hafen.github.io/trelliscopejs/), **vismi**
 provides trelliscope displays to inspect all variables at once via
 
-- [`trellis_vismi()`](reference/trellis_vismi.md)
+- [`trellis_vismi()`](https://agnesdeng.github.io/vismi/reference/trellis_vismi.md)
 
-- [`trellis_vismi_overimp()`](reference/trellis_vismi_overimp.md)
+- [`trellis_vismi_overimp()`](https://agnesdeng.github.io/vismi/reference/trellis_vismi_overimp.md)
 
-- [`trellis_vismi_converge()`](reference/trellis_vismi_converge.md)
+- [`trellis_vismi_converge()`](https://agnesdeng.github.io/vismi/reference/trellis_vismi_converge.md)
 
 ## Installation
 

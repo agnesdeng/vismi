@@ -86,8 +86,10 @@ Two side-by-side ggplot2 object showing the mean and standard deviation
 ## Examples
 
 ``` r
-library(mixgb)
-set.seed(2026)
-mixgb_obj <- mixgb(data = nhanes3, m = 5, maxit = 5, pmm.type = "auto", save.models = TRUE)
-vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm")
+if (requireNamespace("mixgb", quietly = TRUE)) {
+  library(mixgb)
+  set.seed(2026)
+  mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 4, pmm.type = "auto", save.models = TRUE)
+  vismi_converge(obj = mixgb_obj, x = "recumbent_length_cm")
+}
 ```

@@ -14,7 +14,7 @@ set ratio 20% (`test_ratio = 0.2`). Imputation method can be set to
 `mice` in the backend. Users can also pass additional argument related
 to [`mixgb()`](https://agnesdeng.github.io/mixgb/reference/mixgb.html)
 or [`mice()`](https://amices.org/mice/reference/mice.html) through
-[`overimp()`](../reference/overimp.md).
+[`overimp()`](https://agnesdeng.github.io/vismi/reference/overimp.md).
 
 Under this setting, 20% extra missing values will be introduced and data
 will be split into training data (80%) and test data (20%). An

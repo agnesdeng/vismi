@@ -29,7 +29,7 @@
       )
   } else {
     # only one variable
-      if (length(vars == 1)) {
+      if (length(vars) == 1) {
         cli::cli_inform(
           "For each imputed set, a total of {length(na_indices)} observations with missingness in the specified variable {.var {vars}} are shown."
         )

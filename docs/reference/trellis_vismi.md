@@ -104,7 +104,7 @@ for all variables.
 ## Examples
 
 ``` r
-trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box+rug")
+trellis_vismi(data = nhanes3, imp_list = imp_nhanes3, marginal_x = "box")
 
-{"x":{"id":"419f563c","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Distributional_characteristics_for_multiply_imputed_values_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
+{"x":{"id":"0bdcfd9c","config_info":"'appfiles/config.jsonp'","self_contained":false,"latest_display":{"name":"Distributional_characteristics_for_multiply_imputed_values_across_all_variables","group":"common"},"spa":true,"in_knitr":false,"in_shiny":false,"in_notebook":false},"evals":[],"jsHooks":[]}
 ```

@@ -114,7 +114,7 @@ overimp1D_cv_fac <- function(plot_data, x, title, subtitle, point_size, xlim, yl
     join_data <- join_data |>
       mutate(
         x_num = as.numeric(factor(.data$`Masked true`, levels = all_levels)),
-        group_idx = as.numeric(as.factor(Group)),
+        group_idx = as.numeric(droplevels(Group)),
         group_offset = (.data$group_idx - (max(.data$group_idx) + 1) / 2) * spacing
       )
 

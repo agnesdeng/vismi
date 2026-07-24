@@ -4,11 +4,11 @@ With the support of
 [trelliscopejs](https://hafen.github.io/trelliscopejs/), **vismi**
 provides trelliscope displays to inspect all variables at once via
 
-- [`trellis_vismi()`](../reference/trellis_vismi.md)
+- [`trellis_vismi()`](https://agnesdeng.github.io/vismi/reference/trellis_vismi.md)
 
-- [`trellis_vismi_overimp()`](../reference/trellis_vismi_overimp.md)
+- [`trellis_vismi_overimp()`](https://agnesdeng.github.io/vismi/reference/trellis_vismi_overimp.md)
 
-- [`trellis_vismi_converge()`](../reference/trellis_vismi_converge.md)
+- [`trellis_vismi_converge()`](https://agnesdeng.github.io/vismi/reference/trellis_vismi_converge.md)
 
 ``` r
 library(vismi)

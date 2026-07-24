@@ -6,6 +6,11 @@ overimp_mixgb <- function(data, p = 0.2, m = 5, test_ratio = 0, seed = NULL,
                           verbose = FALSE,
                           xgb.params = list(),
                           nrounds = 100, early_stopping_rounds = NULL, print_every_n = 10L, xgboost_verbose = 0, ...) {
+  if (!requireNamespace("mixgb", quietly = TRUE)) {
+    stop("Package \"mixgb\" is required for method = \"mixgb\" but is not installed. ",
+         "Please install it with install.packages(\"mixgb\").", call. = FALSE)
+  }
+
   # Use internal preprocessing
   params <- .overimp_preprocess(data, p = p, test_ratio = test_ratio, seed = seed)
 
@@ -25,7 +30,7 @@ overimp_mixgb <- function(data, p = 0.2, m = 5, test_ratio = 0, seed = NULL,
   if (!is.null(test_data)) save.models <- TRUE
 
   # Run mixgb
-  train_obj <- mixgb(
+  train_obj <- mixgb::mixgb(
     data = trainNA_data,
     m = m,
     maxit = maxit,
@@ -54,7 +59,7 @@ overimp_mixgb <- function(data, p = 0.2, m = 5, test_ratio = 0, seed = NULL,
 
   # Handle test data if provided
   if (!is.null(test_data)) {
-    imputed_test <- impute_new(object = train_obj, newdata = testNA_data)
+    imputed_test <- mixgb::impute_new(object = train_obj, newdata = testNA_data)
   } else {
     imputed_test <- NULL
   }

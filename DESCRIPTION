@@ -25,7 +25,6 @@ Imports:
     ggtext,
     gridExtra,
     ggridges,
-    mixgb (>= 2.2.3),
     patchwork,
     plotly,
     purrr,
@@ -36,5 +35,6 @@ Imports:
     trelliscopejs
 Suggests:
     mice,
+    mixgb (>= 2.2.3),
     ranger
 RoxygenNote: 7.3.3

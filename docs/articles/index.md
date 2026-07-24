@@ -3,10 +3,10 @@
 ### All vignettes
 
 - [Trelliscopejs Display for Multiple Imputation
-  Diagnostics](trellis_demo.md):
+  Diagnostics](https://agnesdeng.github.io/vismi/articles/trellis_demo.md):
 - [Convergence Diagnostics for Multiple
-  Imputation](vismi_converge_demo.md):
+  Imputation](https://agnesdeng.github.io/vismi/articles/vismi_converge_demo.md):
 - [Distributional Characteristics for Multiple
-  Imputation](vismi_demo.md):
+  Imputation](https://agnesdeng.github.io/vismi/articles/vismi_demo.md):
 - [Overimputation Diagnostics for Multiple
-  Imputation](vismi_overimp_demo.md):
+  Imputation](https://agnesdeng.github.io/vismi/articles/vismi_overimp_demo.md):

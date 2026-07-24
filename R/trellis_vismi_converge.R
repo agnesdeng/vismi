@@ -13,10 +13,14 @@
 #' @return A Trelliscope display object visualising convergence diagnostics for all variables.
 #' @export
 #' @examples
-#' library(mixgb)
-#' set.seed(2026)
-#' mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 4, pmm.type = "auto", save.models = TRUE)
-#' trellis_vismi_converge(obj = mixgb_obj)
+#' if (requireNamespace("mixgb", quietly = TRUE)) {
+#'   library(mixgb)
+#'   set.seed(2026)
+#'   # Please set maxit to be a higher value (e.g. maxit = 20) for convergence checks
+#'   # (maxit is small here to keep the example fast for CRAN checks)
+#'   mixgb_obj <- mixgb(data = nhanes3, m = 3, maxit = 3, pmm.type = "auto", save.models = TRUE)
+#'   trellis_vismi_converge(obj = mixgb_obj)
+#' }
 trellis_vismi_converge <- function(obj, tick_vals = NULL, color_pal = NULL, title = "auto", subtitle = "auto", nrow = 2, ncol = 4, path = NULL, verbose = FALSE, ...) {
   if (inherits(obj, "mixgb")) {
     mis_vars <- obj$params$missing.vars
